@@ -411,7 +411,6 @@
         .about-card {
             width: 100%;
             aspect-ratio: 3/4;
-            background: linear-gradient(145deg, var(--bg-2) 0%, var(--bg-1) 100%);
             border: 1px solid var(--glass-b);
             border-radius: var(--r);
             display: flex;
@@ -420,19 +419,22 @@
             position: relative;
             overflow: hidden;
         }
+        .about-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
         .about-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(145deg, var(--gold-dim) 0%, transparent 55%);
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+            z-index: 1;
         }
-        .about-card-icon {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -60%);
-            opacity: 0.08;
-            color: var(--gold);
-        }
+        .about-card-icon { display: none; }
         .about-quote {
             position: relative;
             z-index: 1;
@@ -856,7 +858,7 @@
             <ul class="nav-links">
                 <li><a href="#sobre">Sobre mí</a></li>
                 <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#contacto"><button class="nav-btn">Agenda llamada</button></a></li>
+                <li><a href="https://calendar.app.google/wycRS4DMjQmGkJBh9" target="_blank" rel="noopener noreferrer"><button class="nav-btn">Agenda llamada</button></a></li>
             </ul>
             <button class="ham" id="ham" aria-label="Menú">
                 <span></span><span></span><span></span>
@@ -869,7 +871,7 @@
     <ul>
         <li><a href="#sobre">Sobre mí</a></li>
         <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="https://calendar.app.google/wycRS4DMjQmGkJBh9" target="_blank" rel="noopener noreferrer">Contacto</a></li>
     </ul>
 </nav>
 
@@ -898,7 +900,7 @@
             </p>
 
             <div class="hero-btns">
-                <a href="#contacto" class="btn-primary">
+                <a href="https://calendar.app.google/wycRS4DMjQmGkJBh9" target="_blank" rel="noopener noreferrer" class="btn-primary">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.34 2 2 0 0 1 3.59 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     Agenda tu llamada gratis
                 </a>
@@ -948,10 +950,8 @@
             <!-- Left: photo placeholder + pull quote -->
             <div class="rev">
                 <div class="about-card">
-                    <div class="about-card-icon" aria-hidden="true">
-                        <svg width="200" height="200" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
-                    </div>
-                    <blockquote class="about-quote">
+                    <img src="oscar.jpg" alt="Oscar — Consultor de Ventas & Business Coach">
+                    <blockquote class="about-quote" style="position:relative;z-index:2">
                         Aprendí a construir empresas en el camino. Ahora enseño lo que nadie te dice en los libros.
                     </blockquote>
                 </div>
@@ -1049,10 +1049,6 @@
                 </div>
                 <h3 class="svc-title">Entrenamiento de Equipos de Ventas</h3>
                 <p class="svc-desc">Transforma tu equipo con metodologías modernas y capacitación práctica en herramientas de IA. De la improvisación a un sistema que genera resultados consistentes.</p>
-                <div class="svc-foot">
-                    <span class="svc-price">$1,000 – $5,000</span>
-                    <a href="#contacto"><button class="btn-svc">Quiero esto</button></a>
-                </div>
             </div>
 
             <!-- Card 2 -->
@@ -1062,10 +1058,6 @@
                 </div>
                 <h3 class="svc-title">Consultoría 1:1 para Empresarios</h3>
                 <p class="svc-desc">Trabaja directamente con Oscar para reestructurar tu operación de ventas. Sesiones enfocadas, sin rodeos, con plan de acción concreto y acompañamiento real.</p>
-                <div class="svc-foot">
-                    <span class="svc-price">$1,000 – $5,000</span>
-                    <a href="#contacto"><button class="btn-svc">Quiero esto</button></a>
-                </div>
             </div>
 
             <!-- Card 3 -->
@@ -1075,10 +1067,6 @@
                 </div>
                 <h3 class="svc-title">Auditoría de Ventas</h3>
                 <p class="svc-desc">Diagnosticamos exactamente dónde tu empresa está perdiendo dinero en el proceso de ventas. Entregable: reporte detallado + plan de acción priorizado.</p>
-                <div class="svc-foot">
-                    <span class="svc-price">$1,000 – $5,000</span>
-                    <a href="#contacto"><button class="btn-svc">Quiero esto</button></a>
-                </div>
             </div>
 
         </div>
@@ -1126,7 +1114,7 @@
             <span class="label" style="justify-content:center">¿Tienes una empresa?</span>
             <h2 class="cta-h2">¿Listo para <span>vender más?</span></h2>
             <p class="cta-sub">La llamada diagnóstico es completamente gratis. 15 minutos que pueden cambiar el rumbo de tu empresa.</p>
-            <a href="#" class="btn-cta">
+            <a href="https://calendar.app.google/wycRS4DMjQmGkJBh9" target="_blank" rel="noopener noreferrer" class="btn-cta">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 Agenda tu llamada diagnóstico — Es gratis
             </a>
