@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#07904E;--ink:#0f0f0e;--mute:#888;--bg:#f3f4f1;--card:#fff;--line:#e8e8e5;--gs:#edf8f2;}
+html,body{min-height:100%;background:var(--bg);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+.topbar{background:var(--card);border-bottom:1px solid var(--line);padding:13px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:10px;flex-wrap:wrap;}
+.back{font-size:8pt;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);text-decoration:none;white-space:nowrap;}
+.back:hover{color:var(--g);}
+.logo{display:flex;align-items:baseline;gap:6px;line-height:1;}
+.lo{font-family:'Anton',sans-serif;font-size:15pt;text-transform:uppercase;}
+.lb{font-family:'Playfair Display',serif;font-style:italic;font-size:12pt;color:var(--mute);}
+.tb-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.sync-msg{font-size:8pt;letter-spacing:.1em;white-space:nowrap;}
+.sync-msg.ok{color:var(--g);}
+.sync-msg.err{color:#c0392b;}
+.sync-btn{background:none;border:1.5px solid var(--line);border-radius:6px;padding:8px 13px;font-size:8.5pt;font-weight:700;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;color:var(--ink);display:flex;align-items:center;gap:7px;transition:border-color .15s,color .15s;white-space:nowrap;}
+.sync-btn:hover:not(:disabled){border-color:var(--g);color:var(--g);}
+.sync-btn:disabled{opacity:.5;cursor:not-allowed;}
+.gear-btn{width:34px;height:34px;border:1.5px solid var(--line);border-radius:6px;background:none;cursor:pointer;font-size:15pt;color:var(--mute);display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s;flex-shrink:0;}
+.gear-btn:hover{border-color:var(--g);color:var(--g);}
+.add-btn{background:var(--g);color:#fff;border:none;border-radius:6px;padding:9px 16px;font-size:8.5pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+.add-btn:hover{background:#058240;}
+
+.pipe-bar{background:var(--card);border-bottom:1px solid var(--line);padding:10px 28px;display:flex;gap:24px;flex-wrap:wrap;align-items:center;}
+.pipe-item{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:64px;cursor:pointer;}
+.pi-count{font-family:'Anton',sans-serif;font-size:17pt;line-height:1;}
+.pi-label{font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);}
+.pi-dot{width:7px;height:7px;border-radius:50%;margin-top:2px;}
+.pipe-total{margin-left:auto;text-align:right;}
+.pt-label{font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.pt-val{font-family:'Anton',sans-serif;font-size:18pt;color:var(--g);line-height:1;}
+
+.filter-wrap{padding:14px 28px 4px;display:flex;gap:8px;flex-wrap:wrap;}
+.ftab{padding:7px 13px;border-radius:20px;font-size:8.5pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:1.5px solid var(--line);background:none;color:var(--mute);transition:all .15s;}
+.ftab.on,.ftab:hover{border-color:var(--g);color:var(--g);background:var(--gs);}
+.ftab-n{display:inline-block;background:rgba(7,144,78,.12);color:var(--g);border-radius:9px;font-size:7pt;padding:1px 6px;margin-left:4px;font-weight:700;}
+.ftab.on .ftab-n{background:var(--g);color:#fff;}
+
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px 28px 100px;}
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;}
+.es-title{font-family:'Anton',sans-serif;font-size:22pt;text-transform:uppercase;color:#ccc;margin-bottom:8px;}
+.es-sub{font-size:11pt;color:var(--mute);}
+
+.ccard{background:var(--card);border-radius:10px;padding:20px;cursor:pointer;border:1.5px solid transparent;transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column;gap:10px;}
+.ccard:hover{border-color:rgba(7,144,78,.3);box-shadow:0 4px 18px rgba(0,0,0,.06);}
+.cc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.cc-empresa{font-family:'Anton',sans-serif;font-size:14pt;text-transform:uppercase;line-height:.93;}
+.phase-badge{font-size:7pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:11px;white-space:nowrap;flex-shrink:0;}
+.pb-lead{background:#f0f0ee;color:#666;}
+.pb-diagnostico{background:#e8f0ff;color:#1a56db;}
+.pb-propuesta{background:#fff8e8;color:#b45309;}
+.pb-onboarding{background:#edfaf3;color:#158444;}
+.pb-activo{background:#07904E;color:#fff;}
+.pb-cierre{background:#111;color:#fff;}
+.cc-nombre{font-size:10pt;color:var(--mute);}
+.cc-val{font-family:'Anton',sans-serif;font-size:19pt;color:var(--g);line-height:1;}
+.cc-val span{font-size:10pt;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--mute);font-weight:400;margin-left:3px;}
+.cc-action{font-size:9pt;color:#555;display:flex;align-items:flex-start;gap:5px;line-height:1.45;}
+.cc-date{font-size:8pt;color:var(--mute);}
+.cc-notion{font-size:7.5pt;color:var(--mute);display:flex;align-items:center;gap:4px;opacity:.7;}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;}
+.modal{background:var(--card);border-radius:12px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;padding:28px;}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.mt{font-family:'Anton',sans-serif;font-size:17pt;text-transform:uppercase;}
+.mclose{width:32px;height:32px;border:1.5px solid var(--line);border-radius:50%;background:none;cursor:pointer;color:var(--ink);font-size:14pt;display:flex;align-items:center;justify-content:center;}
+.frow{margin-bottom:13px;}
+.flbl{font-size:8pt;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:5px;display:block;}
+.finp,.fsel,.fta{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:6px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11pt;color:var(--ink);background:var(--card);outline:none;}
+.finp:focus,.fsel:focus,.fta:focus{border-color:var(--g);}
+.fta{min-height:68px;resize:vertical;line-height:1.55;}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mfooter{display:flex;align-items:center;gap:10px;margin-top:22px;justify-content:flex-end;}
+.btn-del{padding:9px 15px;border:1.5px solid #ffd0d0;border-radius:6px;background:none;font-size:8.5pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:#cc2222;margin-right:auto;}
+.btn-sec{padding:9px 16px;border:1.5px solid var(--line);border-radius:6px;background:none;font-size:8.5pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:var(--mute);}
+.btn-pri{padding:9px 18px;border:none;border-radius:6px;background:var(--g);color:#fff;font-size:8.5pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;}
+.test-msg{padding:9px 13px;border-radius:6px;font-size:10pt;margin-bottom:12px;}
+.test-msg.ok{background:#edf8f2;color:var(--g);}
+.test-msg.err{background:#fff4f4;color:#c0392b;}
+
+@media(max-width:900px){.cgrid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.cgrid{grid-template-columns:1fr;}.pipe-bar{gap:12px;}}
+</style>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><rect width="120" height="80" fill="#f3f4f1"/><text x="60" y="46" font-family="sans-serif" font-size="16" font-weight="bold" fill="#07904E" text-anchor="middle">CRM</text></svg></template>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel">
+const PHASES=[
+  {id:'lead',label:'Lead',color:'#888',dot:'#b0b0b0'},
+  {id:'diagnostico',label:'Diagnóstico',color:'#1a56db',dot:'#3b82f6'},
+  {id:'propuesta',label:'Propuesta',color:'#b45309',dot:'#f59e0b'},
+  {id:'onboarding',label:'Onboarding',color:'#158444',dot:'#34d399'},
+  {id:'activo',label:'Activo',color:'#07904E',dot:'#07904E'},
+  {id:'cierre',label:'Cierre',color:'#555',dot:'#555'},
+];
+const PHASE_MAP=Object.fromEntries(PHASES.map(p=>[p.id,p]));
+
+/* ─── NOTION HELPERS ─── */
+const NCFG_KEY='ob2b-notion-cfg';
+const getNCfg=()=>{try{return JSON.parse(localStorage.getItem(NCFG_KEY))||{};}catch{return {};}};
+const saveNCfg=(c)=>localStorage.setItem(NCFG_KEY,JSON.stringify(c));
+
+async function nFetch(cfg,path,method='GET',body=null){
+  if(!cfg.proxyUrl||!cfg.token) throw new Error('Notion no configurado. Haz clic en ⚙');
+  const url=`${cfg.proxyUrl.replace(/\/$/,'')}/v1/${path}`;
+  const r=await fetch(url,{method,headers:{'Authorization':`Bearer ${cfg.token}`,'Content-Type':'application/json','Notion-Version':'2022-06-28'},body:body?JSON.stringify(body):null});
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.message||`Error ${r.status}`);
+  return d;
+}
+
+function cliToProps(c){
+  return{
+    'Empresa':{title:[{text:{content:c.empresa||'Sin nombre'}}]},
+    'Contacto':{rich_text:[{text:{content:c.nombre||''}}]},
+    'Email':{email:c.email||null},
+    'Teléfono':{phone_number:c.telefono||null},
+    'Fase':{select:{name:PHASE_MAP[c.fase]?.label||c.fase}},
+    'Valor USD':{number:parseFloat(c.valor)||0},
+    'Próxima Acción':{rich_text:[{text:{content:c.proximaAccion||''}}]},
+    'Notas':{rich_text:[{text:{content:(c.notas||'').slice(0,2000)}}]},
+    'Fecha de Ingreso':c.fecha?{date:{start:c.fecha}}:{date:null},
+  };
+}
+
+/* ─── NOTION SETTINGS MODAL ─── */
+function NotionSettings({onClose}){
+  const [cfg,setCfg]=React.useState(getNCfg());
+  const [testing,setTesting]=React.useState(false);
+  const [msg,setMsg]=React.useState(null);
+  const test=async()=>{
+    setTesting(true);setMsg(null);
+    try{await nFetch(cfg,'users/me');setMsg({ok:true,text:'✓ Conexión exitosa con Notion'});}
+    catch(e){setMsg({ok:false,text:'✗ '+e.message});}
+    setTesting(false);
+  };
+  return(
+    <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
+      <div className="modal">
+        <div className="mh"><span className="mt">Notion · Sync</span><button className="mclose" onClick={onClose}>✕</button></div>
+        <div className="frow">
+          <label className="flbl">Worker URL (Cloudflare)</label>
+          <input className="finp" value={cfg.proxyUrl||''} placeholder="https://mi-worker.workers.dev" onChange={e=>setCfg({...cfg,proxyUrl:e.target.value})}/>
+          <small style={{color:'#888',fontSize:'8.5pt',display:'block',marginTop:'5px'}}><a href="Notion Setup.html" target="_blank" style={{color:'var(--g)'}}>¿Cómo configurarlo? Ver guía paso a paso →</a></small>
+        </div>
+        <div className="frow">
+          <label className="flbl">Token de Integración</label>
+          <input className="finp" value={cfg.token||''} type="password" placeholder="secret_xxxxxxxxxxxxxxxx" onChange={e=>setCfg({...cfg,token:e.target.value})}/>
+        </div>
+        <div className="frow2">
+          <div className="frow">
+            <label className="flbl">ID Base Datos CRM</label>
+            <input className="finp" value={cfg.crmDbId||''} placeholder="32 caracteres" onChange={e=>setCfg({...cfg,crmDbId:e.target.value})}/>
+          </div>
+          <div className="frow">
+            <label className="flbl">ID Base Datos KPIs</label>
+            <input className="finp" value={cfg.kpiDbId||''} placeholder="32 caracteres" onChange={e=>setCfg({...cfg,kpiDbId:e.target.value})}/>
+          </div>
+        </div>
+        {msg&&<div className={`test-msg${msg.ok?' ok':' err'}`}>{msg.text}</div>}
+        <div className="mfooter">
+          <button className="btn-sec" onClick={test} disabled={testing} style={{marginRight:'auto'}}>{testing?'Conectando...':'Probar conexión'}</button>
+          <button className="btn-sec" onClick={onClose}>Cancelar</button>
+          <button className="btn-pri" onClick={()=>{saveNCfg(cfg);onClose();}}>Guardar</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── EMPTY FORM ─── */
+function emptyF(){return{id:null,empresa:'',nombre:'',email:'',telefono:'',fase:'lead',valor:'',proximaAccion:'',notas:'',fecha:new Date().toISOString().slice(0,10)};}
+
+/* ─── CRM MAIN ─── */
+function CRM(){
+  const [cs,setCs]=React.useState([]);
+  const [filter,setFilter]=React.useState('all');
+  const [modal,setModal]=React.useState(false);
+  const [showCfg,setShowCfg]=React.useState(false);
+  const [form,setForm]=React.useState(emptyF());
+  const [syncSt,setSyncSt]=React.useState({loading:false,msg:'',ok:true});
+
+  React.useEffect(()=>{const s=localStorage.getItem('ob2b-crm');if(s)setCs(JSON.parse(s));},[]);
+  React.useEffect(()=>{localStorage.setItem('ob2b-crm',JSON.stringify(cs));},[cs]);
+
+  const upF=(k,v)=>setForm(f=>({...f,[k]:v}));
+  const openAdd=()=>{setForm(emptyF());setModal(true);};
+  const openEdit=(c)=>{setForm({...c});setModal(true);};
+
+  const save=()=>{
+    if(!form.empresa.trim()&&!form.nombre.trim())return;
+    if(form.id){setCs(arr=>arr.map(c=>c.id===form.id?{...form}:c));}
+    else{setCs(arr=>[...arr,{...form,id:Date.now().toString()}]);}
+    setModal(false);
+  };
+  const del=()=>{if(confirm('¿Eliminar este cliente/lead?')){setCs(arr=>arr.filter(c=>c.id!==form.id));setModal(false);}};
+
+  /* NOTION SYNC */
+  const syncWithNotion=async()=>{
+    const cfg=getNCfg();
+    if(!cfg.proxyUrl||!cfg.token||!cfg.crmDbId){setShowCfg(true);return;}
+    setSyncSt({loading:true,msg:'Sincronizando con Notion...',ok:true});
+    try{
+      const ex=await nFetch(cfg,`databases/${cfg.crmDbId}/query`,'POST',{page_size:100});
+      const nPages={};
+      ex.results.forEach(p=>{nPages[p.id]=true;});
+      const updated=await Promise.all(cs.map(async c=>{
+        if(c.notionPageId&&nPages[c.notionPageId]){
+          await nFetch(cfg,`pages/${c.notionPageId}`,'PATCH',{properties:cliToProps(c)});
+          return c;
+        }else{
+          const p=await nFetch(cfg,'pages','POST',{parent:{database_id:cfg.crmDbId},properties:cliToProps(c)});
+          return{...c,notionPageId:p.id};
+        }
+      }));
+      setCs(updated);
+      localStorage.setItem('ob2b-crm',JSON.stringify(updated));
+      const t=new Date().toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'});
+      setSyncSt({loading:false,msg:`✓ Notion · ${t}`,ok:true});
+    }catch(e){
+      setSyncSt({loading:false,msg:`✗ ${e.message}`,ok:false});
+    }
+  };
+
+  const filtered=filter==='all'?cs:cs.filter(c=>c.fase===filter);
+  const pipeline=cs.filter(c=>c.fase!=='cierre').reduce((s,c)=>s+(parseFloat(c.valor)||0),0);
+  const countOf=id=>cs.filter(c=>c.fase===id).length;
+
+  return(
+    <div>
+      <div className="topbar">
+        <a href="index.html" className="back">← Inicio</a>
+        <div className="logo"><span className="lo">OSCAR</span><span className="lb">B2B</span></div>
+        <div className="tb-right">
+          {syncSt.msg&&<span className={`sync-msg${syncSt.ok?' ok':' err'}`}>{syncSt.msg}</span>}
+          <button className="sync-btn" onClick={syncWithNotion} disabled={syncSt.loading} title="Sincronizar con Notion">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M13 7.5A5.5 5.5 0 1 1 7.5 2c1.52 0 2.9.61 3.9 1.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 2v4H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Notion
+          </button>
+          <button className="gear-btn" onClick={()=>setShowCfg(true)} title="Configurar Notion">⚙</button>
+          <button className="add-btn" onClick={openAdd}>
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2v9M2 6.5h9" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            Nuevo Lead
+          </button>
+        </div>
+      </div>
+
+      <div className="pipe-bar">
+        {PHASES.map(p=>(
+          <div className="pipe-item" key={p.id} onClick={()=>setFilter(filter===p.id?'all':p.id)}>
+            <span className="pi-count" style={{color:p.dot}}>{countOf(p.id)}</span>
+            <span className="pi-label">{p.label}</span>
+            <div className="pi-dot" style={{background:p.dot}}></div>
+          </div>
+        ))}
+        <div className="pipe-total">
+          <div className="pt-label">Pipeline activo</div>
+          <div className="pt-val">${pipeline.toLocaleString('es-VE')}</div>
+        </div>
+      </div>
+
+      <div className="filter-wrap">
+        <button className={`ftab${filter==='all'?' on':''}`} onClick={()=>setFilter('all')}>Todos <span className="ftab-n">{cs.length}</span></button>
+        {PHASES.map(p=>(
+          <button key={p.id} className={`ftab${filter===p.id?' on':''}`} onClick={()=>setFilter(filter===p.id?'all':p.id)}>
+            {p.label} <span className="ftab-n">{countOf(p.id)}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="cgrid">
+        {filtered.length===0&&(
+          <div className="empty-state">
+            <div className="es-title">{filter==='all'?'Sin clientes aún':'Sin resultados'}</div>
+            <p className="es-sub">{filter==='all'?'Agrega tu primer lead con el botón "Nuevo Lead"':'No hay clientes en esta fase todavía.'}</p>
+          </div>
+        )}
+        {filtered.map(c=>{
+          const ph=PHASE_MAP[c.fase]||PHASES[0];
+          return(
+            <div className="ccard" key={c.id} onClick={()=>openEdit(c)}>
+              <div className="cc-top">
+                <span className="cc-empresa">{c.empresa||c.nombre||'Sin nombre'}</span>
+                <span className={`phase-badge pb-${c.fase}`}>{ph.label}</span>
+              </div>
+              {c.nombre&&c.empresa&&<div className="cc-nombre">{c.nombre}</div>}
+              {c.valor&&<div className="cc-val">${parseFloat(c.valor).toLocaleString('es-VE')}<span>USD</span></div>}
+              {c.proximaAccion&&(
+                <div className="cc-action">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#888" stroke-width="1.2"/><path d="M6 3.5v3l2 1" stroke="#888" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  {c.proximaAccion}
+                </div>
+              )}
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                {c.fecha&&<div className="cc-date">Ingresó: {c.fecha}</div>}
+                {c.notionPageId&&<div className="cc-notion"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="#ccc" stroke-width="1"/><path d="M5 2v3l1.5 1" stroke="#ccc" stroke-width="1" stroke-linecap="round"/></svg>Notion</div>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {modal&&(
+        <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)setModal(false);}}>
+          <div className="modal">
+            <div className="mh"><span className="mt">{form.id?'Editar':'Nuevo Lead'}</span><button className="mclose" onClick={()=>setModal(false)}>✕</button></div>
+            <div className="frow2">
+              <div className="frow"><label className="flbl">Empresa</label><input className="finp" value={form.empresa} placeholder="Nombre de la empresa" onChange={e=>upF('empresa',e.target.value)}/></div>
+              <div className="frow"><label className="flbl">Contacto</label><input className="finp" value={form.nombre} placeholder="Nombre completo" onChange={e=>upF('nombre',e.target.value)}/></div>
+            </div>
+            <div className="frow2">
+              <div className="frow"><label className="flbl">Email</label><input className="finp" type="email" value={form.email} placeholder="email@empresa.com" onChange={e=>upF('email',e.target.value)}/></div>
+              <div className="frow"><label className="flbl">Teléfono</label><input className="finp" value={form.telefono} placeholder="+58 XXX XXX XXXX" onChange={e=>upF('telefono',e.target.value)}/></div>
+            </div>
+            <div className="frow2">
+              <div className="frow"><label className="flbl">Fase</label><select className="fsel" value={form.fase} onChange={e=>upF('fase',e.target.value)}>{PHASES.map(p=><option key={p.id} value={p.id}>{p.label}</option>)}</select></div>
+              <div className="frow"><label className="flbl">Valor (USD)</label><input className="finp" type="number" value={form.valor} placeholder="0" onChange={e=>upF('valor',e.target.value)}/></div>
+            </div>
+            <div className="frow2">
+              <div className="frow"><label className="flbl">Fecha ingreso</label><input className="finp" type="date" value={form.fecha} onChange={e=>upF('fecha',e.target.value)}/></div>
+              <div className="frow"><label className="flbl">Próxima acción</label><input className="finp" value={form.proximaAccion} placeholder="Ej: Enviar propuesta" onChange={e=>upF('proximaAccion',e.target.value)}/></div>
+            </div>
+            <div className="frow"><label className="flbl">Notas</label><textarea className="fta" value={form.notas} placeholder="Contexto, historial, observaciones..." onChange={e=>upF('notas',e.target.value)}/></div>
+            <div className="mfooter">
+              {form.id&&<button className="btn-del" onClick={del}>Eliminar</button>}
+              <button className="btn-sec" onClick={()=>setModal(false)}>Cancelar</button>
+              <button className="btn-pri" onClick={save}>{form.id?'Guardar':'Agregar'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showCfg&&<NotionSettings onClose={()=>setShowCfg(false)}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<CRM/>);
+</script>
+</body>
+</html>

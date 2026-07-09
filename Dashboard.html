@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard KPIs — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#07904E;--ink:#0f0f0e;--mute:#888;--bg:#f3f4f1;--card:#fff;--line:#e8e8e5;--gs:#edf8f2;}
+html,body{min-height:100%;background:var(--bg);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+.topbar{background:var(--card);border-bottom:1px solid var(--line);padding:13px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;gap:10px;flex-wrap:wrap;}
+.back{font-size:8pt;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);text-decoration:none;white-space:nowrap;}
+.back:hover{color:var(--g);}
+.logo{display:flex;align-items:baseline;gap:6px;line-height:1;}
+.lo{font-family:'Anton',sans-serif;font-size:15pt;text-transform:uppercase;}
+.lb{font-family:'Playfair Display',serif;font-style:italic;font-size:12pt;color:var(--mute);}
+.tb-right{display:flex;align-items:center;gap:9px;}
+.sync-msg{font-size:8pt;letter-spacing:.1em;white-space:nowrap;}
+.sync-msg.ok{color:var(--g);}
+.sync-msg.err{color:#c0392b;}
+.sync-btn{background:none;border:1.5px solid var(--line);border-radius:6px;padding:8px 13px;font-size:8.5pt;font-weight:700;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;color:var(--ink);display:flex;align-items:center;gap:7px;transition:border-color .15s,color .15s;white-space:nowrap;}
+.sync-btn:hover:not(:disabled){border-color:var(--g);color:var(--g);}
+.sync-btn:disabled{opacity:.5;cursor:not-allowed;}
+.gear-btn{width:34px;height:34px;border:1.5px solid var(--line);border-radius:6px;background:none;cursor:pointer;font-size:15pt;color:var(--mute);display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s;}
+.gear-btn:hover{border-color:var(--g);color:var(--g);}
+
+.month-bar{padding:26px 28px 18px;display:flex;align-items:center;gap:18px;}
+.mnav{width:36px;height:36px;border:1.5px solid var(--line);border-radius:50%;background:none;cursor:pointer;font-size:14pt;color:var(--ink);display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;flex-shrink:0;}
+.mnav:hover{border-color:var(--g);background:var(--gs);}
+.mname{font-family:'Anton',sans-serif;font-size:34pt;text-transform:uppercase;line-height:1;}
+.myr{font-family:'Playfair Display',serif;font-style:italic;font-size:19pt;color:var(--mute);margin-left:6px;}
+
+.sec-ey{font-size:7.5pt;letter-spacing:.34em;text-transform:uppercase;color:var(--mute);padding:0 28px 10px;display:flex;align-items:center;gap:10px;}
+.sec-ey::before{content:"";display:block;width:18px;height:1.5px;background:var(--g);}
+
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:0 28px 26px;}
+.kcard{background:var(--card);border-radius:10px;padding:22px;cursor:pointer;border:1.5px solid transparent;transition:border-color .15s,box-shadow .15s;user-select:none;}
+.kcard:hover{border-color:rgba(7,144,78,.28);box-shadow:0 4px 20px rgba(0,0,0,.05);}
+.kcard.ed{border-color:var(--g);}
+.kc-lbl{font-size:8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:10px;}
+.kc-num{font-family:'Anton',sans-serif;font-size:48pt;line-height:.84;color:var(--g);display:flex;align-items:baseline;gap:3px;}
+.kc-num.sm{font-size:34pt;}
+.kc-num input{font-family:'Anton',sans-serif;font-size:inherit;line-height:.84;color:inherit;border:none;outline:none;background:transparent;width:100%;}
+.kc-hint{font-size:8pt;color:var(--mute);margin-top:7px;opacity:.6;}
+.kc-suf{font-size:18pt;font-weight:700;color:var(--g);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;}
+.kc-suf.sm{font-size:14pt;}
+
+.sem-head{display:flex;align-items:baseline;gap:12px;padding:10px 28px 12px;border-top:1px solid var(--line);margin-top:4px;}
+.sem-title{font-family:'Anton',sans-serif;font-size:20pt;text-transform:uppercase;}
+.sem-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:12pt;color:var(--mute);}
+
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:0 28px 26px;}
+
+.notas-wrap{padding:0 28px 48px;}
+.n-lbl{font-size:8pt;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:7px;}
+.n-ta{width:100%;min-height:90px;border:1.5px solid var(--line);border-radius:8px;padding:14px 16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11pt;color:var(--ink);background:var(--card);resize:vertical;outline:none;line-height:1.6;}
+.n-ta:focus{border-color:var(--g);}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;}
+.modal{background:var(--card);border-radius:12px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;padding:28px;}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.mt{font-family:'Anton',sans-serif;font-size:17pt;text-transform:uppercase;}
+.mclose{width:32px;height:32px;border:1.5px solid var(--line);border-radius:50%;background:none;cursor:pointer;color:var(--ink);font-size:14pt;display:flex;align-items:center;justify-content:center;}
+.frow{margin-bottom:13px;}
+.flbl{font-size:8pt;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:5px;display:block;}
+.finp{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:6px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11pt;color:var(--ink);background:var(--card);outline:none;}
+.finp:focus{border-color:var(--g);}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mfooter{display:flex;align-items:center;gap:10px;margin-top:22px;justify-content:flex-end;}
+.btn-sec{padding:9px 16px;border:1.5px solid var(--line);border-radius:6px;background:none;font-size:8.5pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:var(--mute);}
+.btn-pri{padding:9px 18px;border:none;border-radius:6px;background:var(--g);color:#fff;font-size:8.5pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;}
+.test-msg{padding:9px 13px;border-radius:6px;font-size:10pt;margin-bottom:12px;}
+.test-msg.ok{background:#edf8f2;color:var(--g);}
+.test-msg.err{background:#fff4f4;color:#c0392b;}
+
+@media(max-width:900px){.kgrid,.sgrid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.kgrid,.sgrid{grid-template-columns:1fr;}.kc-num{font-size:36pt;}}
+</style>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><rect width="120" height="80" fill="#f3f4f1"/><rect x="20" y="50" width="14" height="20" rx="2" fill="#07904E" opacity=".4"/><rect x="40" y="35" width="14" height="35" rx="2" fill="#07904E" opacity=".7"/><rect x="60" y="22" width="14" height="48" rx="2" fill="#07904E"/><rect x="80" y="40" width="14" height="30" rx="2" fill="#07904E" opacity=".5"/></svg></template>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script type="text/babel">
+const MOS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const NOW=new Date();
+const ZERO={lg:0,tc:0,rm:0,va:0,el:0,ce:0,rp:0,ra:0,notas:''};
+
+/* ─── NOTION HELPERS ─── */
+const NCFG_KEY='ob2b-notion-cfg';
+const getNCfg=()=>{try{return JSON.parse(localStorage.getItem(NCFG_KEY))||{};}catch{return {};}};
+const saveNCfg=(c)=>localStorage.setItem(NCFG_KEY,JSON.stringify(c));
+
+async function nFetch(cfg,path,method='GET',body=null){
+  if(!cfg.proxyUrl||!cfg.token) throw new Error('Notion no configurado');
+  const r=await fetch(`${cfg.proxyUrl.replace(/\/$/,'')}/v1/${path}`,{method,headers:{'Authorization':`Bearer ${cfg.token}`,'Content-Type':'application/json','Notion-Version':'2022-06-28'},body:body?JSON.stringify(body):null});
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.message||`Error ${r.status}`);
+  return d;
+}
+
+function datToProps(dat,yr,mo){
+  return{
+    'Período':{title:[{text:{content:`${yr}-${String(mo+1).padStart(2,'0')}`}}]},
+    'Leads Generados':{number:dat.lg||0},
+    'Tasa de Cierre %':{number:dat.tc||0},
+    'Revenue Mensual $':{number:dat.rm||0},
+    'Velocidad Atención (días)':{number:dat.va||0},
+    'Empresas Llamadas':{number:dat.el||0},
+    'Contactos Efectivos':{number:dat.ce||0},
+    'Registros Proveedor':{number:dat.rp||0},
+    'Reuniones Agendadas':{number:dat.ra||0},
+    'Notas':{rich_text:[{text:{content:(dat.notas||'').slice(0,2000)}}]},
+  };
+}
+
+/* ─── NOTION SETTINGS MODAL ─── */
+function NotionSettings({onClose}){
+  const [cfg,setCfg]=React.useState(getNCfg());
+  const [testing,setTesting]=React.useState(false);
+  const [msg,setMsg]=React.useState(null);
+  const test=async()=>{
+    setTesting(true);setMsg(null);
+    try{await nFetch(cfg,'users/me');setMsg({ok:true,text:'✓ Conexión exitosa con Notion'});}
+    catch(e){setMsg({ok:false,text:'✗ '+e.message});}
+    setTesting(false);
+  };
+  return(
+    <div className="overlay" onClick={e=>{if(e.target===e.currentTarget)onClose();}}>
+      <div className="modal">
+        <div className="mh"><span className="mt">Notion · Sync</span><button className="mclose" onClick={onClose}>✕</button></div>
+        <div className="frow">
+          <label className="flbl">Worker URL (Cloudflare)</label>
+          <input className="finp" value={cfg.proxyUrl||''} placeholder="https://mi-worker.workers.dev" onChange={e=>setCfg({...cfg,proxyUrl:e.target.value})}/>
+          <small style={{color:'#888',fontSize:'8.5pt',display:'block',marginTop:'5px'}}><a href="Notion Setup.html" target="_blank" style={{color:'var(--g)'}}>¿Cómo configurarlo? Ver guía →</a></small>
+        </div>
+        <div className="frow">
+          <label className="flbl">Token de Integración</label>
+          <input className="finp" value={cfg.token||''} type="password" placeholder="secret_xxxxxxxxxxxxxxxx" onChange={e=>setCfg({...cfg,token:e.target.value})}/>
+        </div>
+        <div className="frow2">
+          <div className="frow">
+            <label className="flbl">ID Base Datos CRM</label>
+            <input className="finp" value={cfg.crmDbId||''} placeholder="32 caracteres" onChange={e=>setCfg({...cfg,crmDbId:e.target.value})}/>
+          </div>
+          <div className="frow">
+            <label className="flbl">ID Base Datos KPIs</label>
+            <input className="finp" value={cfg.kpiDbId||''} placeholder="32 caracteres" onChange={e=>setCfg({...cfg,kpiDbId:e.target.value})}/>
+          </div>
+        </div>
+        {msg&&<div className={`test-msg${msg.ok?' ok':' err'}`}>{msg.text}</div>}
+        <div className="mfooter">
+          <button className="btn-sec" onClick={test} disabled={testing} style={{marginRight:'auto'}}>{testing?'Conectando...':'Probar conexión'}</button>
+          <button className="btn-sec" onClick={onClose}>Cancelar</button>
+          <button className="btn-pri" onClick={()=>{saveNCfg(cfg);onClose();}}>Guardar</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── DASHBOARD ─── */
+function Dashboard(){
+  const [yr,setYr]=React.useState(NOW.getFullYear());
+  const [mo,setMo]=React.useState(NOW.getMonth());
+  const [dat,setDat]=React.useState({...ZERO});
+  const [ef,setEf]=React.useState(null);
+  const [ev,setEv]=React.useState('');
+  const [saved,setSaved]=React.useState(true);
+  const [showCfg,setShowCfg]=React.useState(false);
+  const [syncSt,setSyncSt]=React.useState({loading:false,msg:'',ok:true});
+
+  const KEY=`ob2b-kpi-${yr}-${mo}`;
+
+  React.useEffect(()=>{
+    const s=localStorage.getItem(KEY);
+    setDat(s?JSON.parse(s):{...ZERO});setSaved(true);
+  },[yr,mo]);
+
+  const upd=(f,v)=>{
+    const nd={...dat,[f]:f==='notas'?v:(parseFloat(v)||0)};
+    setDat(nd);localStorage.setItem(KEY,JSON.stringify(nd));
+    setSaved(false);clearTimeout(window._svt);
+    window._svt=setTimeout(()=>setSaved(true),1000);
+  };
+
+  const prevMo=()=>{if(mo===0){setMo(11);setYr(y=>y-1);}else setMo(m=>m-1);};
+  const nextMo=()=>{if(mo===11){setMo(0);setYr(y=>y+1);}else setMo(m=>m+1);};
+
+  /* NOTION SYNC */
+  const syncWithNotion=async()=>{
+    const cfg=getNCfg();
+    if(!cfg.proxyUrl||!cfg.token||!cfg.kpiDbId){setShowCfg(true);return;}
+    setSyncSt({loading:true,msg:'Sincronizando...',ok:true});
+    try{
+      const period=`${yr}-${String(mo+1).padStart(2,'0')}`;
+      // Search for existing page
+      const ex=await nFetch(cfg,`databases/${cfg.kpiDbId}/query`,'POST',{
+        filter:{property:'Período',title:{equals:period}},page_size:1
+      });
+      if(ex.results.length>0){
+        // Update existing
+        await nFetch(cfg,`pages/${ex.results[0].id}`,'PATCH',{properties:datToProps(dat,yr,mo)});
+      }else{
+        // Create new
+        await nFetch(cfg,'pages','POST',{parent:{database_id:cfg.kpiDbId},properties:datToProps(dat,yr,mo)});
+      }
+      const t=new Date().toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'});
+      setSyncSt({loading:false,msg:`✓ Notion · ${t}`,ok:true});
+    }catch(e){
+      setSyncSt({loading:false,msg:`✗ ${e.message}`,ok:false});
+    }
+  };
+
+  function MCard({f,lbl,sm,suf}){
+    const isEd=ef===f;
+    const raw=dat[f];
+    const disp=f==='rm'?'$'+raw.toLocaleString('es-VE'):String(raw);
+    return(
+      <div className={`kcard${isEd?' ed':''}`} onClick={()=>{if(!isEd){setEf(f);setEv(String(raw));}}}>
+        <div className="kc-lbl">{lbl}</div>
+        <div className={`kc-num${sm?' sm':''}`}>
+          {isEd
+            ?<input autoFocus value={ev} onChange={e=>setEv(e.target.value)}
+                onBlur={()=>{upd(f,ev);setEf(null);}}
+                onKeyDown={e=>{if(e.key==='Enter'){upd(f,ev);setEf(null);}if(e.key==='Escape')setEf(null);}}/>
+            :<span>{disp}</span>
+          }
+          {suf&&!isEd&&<span className={`kc-suf${sm?' sm':''}`}>{suf}</span>}
+        </div>
+        {!isEd&&<div className="kc-hint">↓ clic para editar</div>}
+      </div>
+    );
+  }
+
+  return(
+    <div>
+      <div className="topbar">
+        <a href="index.html" className="back">← Centro de Operaciones</a>
+        <div className="logo"><span className="lo">OSCAR</span><span className="lb">B2B</span></div>
+        <div className="tb-right">
+          {syncSt.msg&&<span className={`sync-msg${syncSt.ok?' ok':' err'}`}>{syncSt.msg}</span>}
+          {!syncSt.msg&&<span className={`sync-msg${saved?' ok':''}`}>{saved?'● Guardado':'○ Guardando...'}</span>}
+          <button className="sync-btn" onClick={syncWithNotion} disabled={syncSt.loading} title="Sincronizar con Notion">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M13 7.5A5.5 5.5 0 1 1 7.5 2c1.52 0 2.9.61 3.9 1.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 2v4H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Notion
+          </button>
+          <button className="gear-btn" onClick={()=>setShowCfg(true)} title="Configurar Notion">⚙</button>
+        </div>
+      </div>
+
+      <div className="month-bar">
+        <button className="mnav" onClick={prevMo}>‹</button>
+        <div><span className="mname">{MOS[mo]}</span><span className="myr">{yr}</span></div>
+        <button className="mnav" onClick={nextMo}>›</button>
+      </div>
+
+      <div className="sec-ey">KPIs Principales · Haz clic para editar</div>
+      <div className="kgrid">
+        <MCard f="lg" lbl="Leads Generados"/>
+        <MCard f="tc" lbl="Tasa de Cierre" suf="%"/>
+        <MCard f="rm" lbl="Revenue Mensual"/>
+        <MCard f="va" lbl="Velocidad de Atención" suf=" días"/>
+      </div>
+
+      <div className="sem-head">
+        <span className="sem-title">SEMILLAS SEMBRADAS</span>
+        <span className="sem-sub">Actividades de prospección</span>
+      </div>
+      <div className="sgrid">
+        <MCard f="el" lbl="Empresas Llamadas" sm/>
+        <MCard f="ce" lbl="Contactos Efectivos" sm/>
+        <MCard f="rp" lbl="Registros como Proveedor" sm/>
+        <MCard f="ra" lbl="Reuniones Agendadas" sm/>
+      </div>
+
+      <div className="notas-wrap">
+        <div className="n-lbl">Notas del Mes</div>
+        <textarea className="n-ta" value={dat.notas} placeholder="Observaciones, qué funcionó, qué ajustar, contexto del período..." onChange={e=>upd('notas',e.target.value)}/>
+      </div>
+
+      {showCfg&&<NotionSettings onClose={()=>setShowCfg(false)}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Dashboard/>);
+</script>
+</body>
+</html>

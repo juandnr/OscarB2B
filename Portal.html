@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portal de Cliente — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#07904E;--ink:#0f0f0e;--mute:#777;--bg:#f3f4f1;--card:#fff;--line:#e8e8e5;}
+html,body{background:var(--bg);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100%;}
+
+/* HEADER */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:16px 36px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:baseline;gap:7px;line-height:1;text-decoration:none;color:var(--ink);}
+.lo{font-family:'Anton',sans-serif;font-size:16pt;text-transform:uppercase;}
+.lb{font-family:'Playfair Display',serif;font-style:italic;font-size:13pt;color:var(--mute);}
+.h-client{font-size:9pt;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);}
+.h-company{font-size:11pt;font-weight:700;color:var(--ink);}
+
+/* HERO */
+.hero{background:var(--g);padding:40px 36px 36px;color:#fff;}
+.hero-ey{font-size:8pt;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px;}
+.hero-h{font-family:'Anton',sans-serif;font-size:44pt;text-transform:uppercase;line-height:.9;}
+.hero-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:17pt;color:rgba(255,255,255,.75);margin-top:10px;line-height:1.35;}
+
+/* PHASE PROGRESS */
+.phase-progress{margin-top:28px;}
+.pp-label{font-size:8pt;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px;}
+.pp-steps{display:flex;align-items:center;gap:0;}
+.pp-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative;}
+.pp-step::after{content:"";position:absolute;top:8px;left:50%;width:100%;height:2px;background:rgba(255,255,255,.2);}
+.pp-step:last-child::after{display:none;}
+.pp-dot{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:transparent;z-index:1;transition:all .2s;}
+.pp-step.done .pp-dot{background:rgba(255,255,255,.9);border-color:rgba(255,255,255,.9);}
+.pp-step.active .pp-dot{background:var(--g);border:3px solid #fff;width:22px;height:22px;box-shadow:0 0 0 3px rgba(255,255,255,.35);}
+.pp-step.done::after{background:rgba(255,255,255,.7);}
+.pp-name{font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-top:8px;text-align:center;line-height:1.3;}
+.pp-step.done .pp-name,.pp-step.active .pp-name{color:#fff;}
+
+/* BODY LAYOUT */
+.body-wrap{max-width:1100px;margin:0 auto;padding:32px 36px 60px;display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start;}
+
+/* CARDS */
+.card{background:var(--card);border-radius:10px;padding:24px;}
+.card-ey{font-size:7.5pt;letter-spacing:.3em;text-transform:uppercase;color:var(--mute);margin-bottom:4px;display:flex;align-items:center;gap:9px;}
+.card-ey::before{content:"";display:block;width:16px;height:1.5px;background:var(--g);}
+.card-title{font-family:'Anton',sans-serif;font-size:18pt;text-transform:uppercase;margin-bottom:14px;}
+
+/* SESSION CARD */
+.sess-date{font-family:'Anton',sans-serif;font-size:26pt;color:var(--g);line-height:.9;}
+.sess-time{font-size:11pt;color:var(--mute);margin-bottom:10px;}
+.sess-agenda{font-size:11pt;line-height:1.65;color:#444;text-wrap:pretty;}
+.sess-link{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--g);color:#fff;text-decoration:none;padding:10px 18px;border-radius:6px;font-size:9pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transition:background .15s;}
+.sess-link:hover{background:#058240;}
+
+/* MILESTONES */
+.timeline{display:flex;flex-direction:column;gap:0;margin-top:14px;}
+.milestone{display:grid;grid-template-columns:36px 1fr;gap:0 10px;padding:10px 0;border-bottom:.5px solid var(--line);position:relative;}
+.milestone:last-child{border-bottom:none;}
+.ms-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0;}
+.ms-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;}
+.ms-dot.done{background:var(--g);border-color:var(--g);}
+.ms-dot.active{background:var(--card);border-color:var(--g);border-width:2.5px;}
+.ms-check{width:8px;height:8px;}
+.ms-label{font-size:11pt;font-weight:700;color:var(--ink);margin-bottom:1px;}
+.ms-done .ms-label{color:var(--mute);text-decoration:line-through;font-weight:400;}
+.ms-active .ms-label{color:var(--g);}
+.ms-date{font-size:8.5pt;color:var(--mute);}
+
+/* FILES */
+.file-list{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+.file-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--line);border-radius:7px;text-decoration:none;color:var(--ink);transition:border-color .15s,background .15s;}
+.file-item:hover{border-color:var(--g);background:#f9fff9;}
+.fi-icon{width:32px;height:32px;background:#edf8f2;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fi-name{font-size:10.5pt;font-weight:700;flex:1;}
+.fi-date{font-size:8.5pt;color:var(--mute);}
+
+/* CONTACT CARD */
+.contact-card{background:var(--ink);border-radius:10px;padding:24px;color:#fff;margin-top:20px;}
+.cc-logo-o{font-family:'Anton',sans-serif;font-size:20pt;text-transform:uppercase;line-height:.9;}
+.cc-logo-b{font-family:'Playfair Display',serif;font-style:italic;font-size:16pt;color:rgba(255,255,255,.45);}
+.cc-body{font-size:10.5pt;line-height:1.65;color:rgba(255,255,255,.65);margin:10px 0 16px;text-wrap:pretty;}
+.cc-contacts{display:flex;flex-direction:column;gap:6px;font-size:9.5pt;color:rgba(255,255,255,.75);}
+.cc-contacts a{color:rgba(255,255,255,.85);text-decoration:none;font-weight:600;}
+
+footer{border-top:1px solid var(--line);padding:16px 36px;display:flex;justify-content:space-between;align-items:center;}
+.fl{font-size:8pt;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);}
+
+@media(max-width:860px){.body-wrap{grid-template-columns:1fr;}.hero-h{font-size:34pt;}.pp-name{font-size:6.5pt;}}
+@media(max-width:500px){header,.hero,.body-wrap,footer{padding-left:18px;padding-right:18px;}}
+</style>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><rect width="120" height="80" fill="#07904E"/><text x="60" y="46" font-family="sans-serif" font-size="13" font-weight="bold" fill="white" text-anchor="middle">PORTAL</text></svg></template>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo"><span class="lo">OSCAR</span><span class="lb">B2B</span></a>
+  <div style="text-align:right;">
+    <div class="h-client">Portal de Cliente</div>
+    <div class="h-company" id="h-company"></div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-ey">Tu espacio de trabajo</div>
+  <h1 class="hero-h" id="hero-greeting"></h1>
+  <p class="hero-sub" id="hero-sub"></p>
+
+  <div class="phase-progress">
+    <div class="pp-label">Estado del proyecto</div>
+    <div class="pp-steps" id="phase-steps"></div>
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <!-- LEFT COL -->
+  <div style="display:flex;flex-direction:column;gap:20px;">
+
+    <!-- Próxima Sesión -->
+    <div class="card" id="session-card">
+      <div class="card-ey">Próxima Sesión</div>
+      <div class="card-title">AGENDA</div>
+      <div class="sess-date" id="sess-fecha"></div>
+      <div class="sess-time" id="sess-hora"></div>
+      <p class="sess-agenda" id="sess-agenda"></p>
+      <a class="sess-link" id="sess-link" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="#fff" stroke-width="1.5"/><path d="M9 7L5 5v4l4-2z" fill="#fff"/></svg>
+        Unirme a la sesión
+      </a>
+    </div>
+
+    <!-- Milestones -->
+    <div class="card">
+      <div class="card-ey">Seguimiento</div>
+      <div class="card-title">PROGRESO DEL PROYECTO</div>
+      <div class="timeline" id="milestones"></div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT COL -->
+  <div>
+
+    <!-- Files -->
+    <div class="card">
+      <div class="card-ey">Recursos</div>
+      <div class="card-title">ARCHIVOS COMPARTIDOS</div>
+      <div class="file-list" id="files"></div>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact-card">
+      <div class="cc-logo-o">OSCAR</div>
+      <div class="cc-logo-b">B2B</div>
+      <p class="cc-body">Cualquier duda o consulta entre sesiones, escríbeme directamente.</p>
+      <div class="cc-contacts" id="contact-info"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span class="fl">Oscar B2B · oscarb2b.com</span>
+  <span class="fl" id="footer-date"></span>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// EDITAR AQUÍ — Personaliza para cada cliente antes de enviar
+// ══════════════════════════════════════════════════════════════
+const CLIENTE = {
+  nombre: "[Nombre del Cliente]",
+  empresa: "[Nombre de la Empresa]",
+  faseActual: "onboarding", // lead | diagnostico | propuesta | onboarding | activo | cierre
+  saludo: "Tu proyecto está avanzando.",
+  sesion: {
+    fecha: "[Día, DD de Mes]",
+    hora: "[HH:MM AM/PM · Hora Venezuela]",
+    agenda: "Descripción de lo que cubriremos en la próxima sesión. Edita este texto con los temas reales de la reunión.",
+    link: "#"
+  },
+  milestones: [
+    { label: "Contrato firmado", done: true, fecha: "—" },
+    { label: "Llamada de diagnóstico", done: true, fecha: "—" },
+    { label: "Propuesta entregada", done: true, fecha: "—" },
+    { label: "Sesión de onboarding", done: false, active: true, fecha: "Próximamente" },
+    { label: "Fase activa — Sesión 1", done: false, active: false, fecha: "Por definir" },
+    { label: "Revisión de resultados", done: false, active: false, fecha: "Por definir" }
+  ],
+  archivos: [
+    { nombre: "Contrato de Servicios.pdf", fecha: "—" },
+    { nombre: "Documento de Bienvenida.pdf", fecha: "—" },
+    { nombre: "Propuesta Personalizada.pdf", fecha: "—" }
+  ],
+  contacto: {
+    whatsapp: "[+58 XXX XXX XXXX]",
+    email: "[oscar@oscarb2b.com]",
+    web: "oscarb2b.com"
+  }
+};
+// ══════════════════════════════════════════════════════════════
+
+const PHASE_LABELS = {
+  lead: 'Lead',
+  diagnostico: 'Diagnóstico',
+  propuesta: 'Propuesta',
+  onboarding: 'Onboarding',
+  activo: 'Activo',
+  cierre: 'Completado'
+};
+const PHASE_ORDER = ['lead','diagnostico','propuesta','onboarding','activo','cierre'];
+const phaseIdx = PHASE_ORDER.indexOf(CLIENTE.faseActual);
+
+// Render
+document.getElementById('h-company').textContent = CLIENTE.empresa;
+document.getElementById('hero-greeting').textContent = 'Hola, ' + CLIENTE.nombre.split(' ')[0] + '.';
+document.getElementById('hero-sub').textContent = CLIENTE.saludo;
+
+// Phase steps
+const stepsEl = document.getElementById('phase-steps');
+PHASE_ORDER.forEach((ph, i) => {
+  const div = document.createElement('div');
+  div.className = 'pp-step' + (i < phaseIdx ? ' done' : '') + (i === phaseIdx ? ' active' : '');
+  div.innerHTML = `<div class="pp-dot">${i < phaseIdx ? '<svg class="ms-check" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>' : ''}</div><span class="pp-name">${PHASE_LABELS[ph]}</span>`;
+  stepsEl.appendChild(div);
+});
+
+// Session
+document.getElementById('sess-fecha').textContent = CLIENTE.sesion.fecha;
+document.getElementById('sess-hora').textContent = CLIENTE.sesion.hora;
+document.getElementById('sess-agenda').textContent = CLIENTE.sesion.agenda;
+document.getElementById('sess-link').href = CLIENTE.sesion.link;
+
+// Milestones
+const tlEl = document.getElementById('milestones');
+CLIENTE.milestones.forEach(m => {
+  const cls = m.done ? 'ms-done' : (m.active ? 'ms-active' : '');
+  const dotCls = m.done ? 'done' : (m.active ? 'active' : '');
+  const check = m.done ? '<svg class="ms-check" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>' : '';
+  tlEl.innerHTML += `<div class="milestone ${cls}"><div class="ms-dot-wrap"><div class="ms-dot ${dotCls}">${check}</div></div><div><div class="ms-label">${m.label}</div><div class="ms-date">${m.fecha}</div></div></div>`;
+});
+
+// Files
+const filesEl = document.getElementById('files');
+CLIENTE.archivos.forEach(f => {
+  filesEl.innerHTML += `<div class="file-item"><div class="fi-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="1.5" stroke="#07904E" stroke-width="1.5"/><path d="M6 5h4M6 8h4M6 11h2" stroke="#07904E" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="fi-name">${f.nombre}</span><span class="fi-date">${f.fecha}</span></div>`;
+});
+
+// Contact
+const cEl = document.getElementById('contact-info');
+const c = CLIENTE.contacto;
+if(c.whatsapp) cEl.innerHTML += `<div>WhatsApp: <a href="https://wa.me/${c.whatsapp.replace(/\D/g,'')}">${c.whatsapp}</a></div>`;
+if(c.email) cEl.innerHTML += `<div>Email: <a href="mailto:${c.email}">${c.email}</a></div>`;
+if(c.web) cEl.innerHTML += `<div>Web: <a href="https://${c.web}" target="_blank">${c.web}</a></div>`;
+
+// Footer date
+const mo=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const now=new Date();
+document.getElementById('footer-date').textContent=`Actualizado ${now.getDate()} de ${mo[now.getMonth()]} ${now.getFullYear()}`;
+</script>
+</body>
+</html>
