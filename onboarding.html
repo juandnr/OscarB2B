@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oscar B2B — Centro de Operaciones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#07904E;--bg:#090b09;--surf:#101410;--bdr:rgba(255,255,255,.07);--mute:rgba(255,255,255,.38);}
+html,body{height:100%;background:var(--bg);color:#fff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+body{display:flex;flex-direction:column;min-height:100vh;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 52px;border-bottom:1px solid var(--bdr);}
+.logo{display:flex;align-items:baseline;gap:7px;line-height:1;}
+.lo{font-family:'Anton',sans-serif;font-size:18pt;text-transform:uppercase;letter-spacing:-.01em;}
+.lb{font-family:'Playfair Display',serif;font-style:italic;font-size:15pt;color:var(--mute);}
+.nav-r{font-size:7.5pt;letter-spacing:.34em;text-transform:uppercase;color:var(--mute);}
+.back-link{display:inline-flex;align-items:center;gap:7px;font-size:7.5pt;letter-spacing:.28em;text-transform:uppercase;color:var(--mute);text-decoration:none;transition:color .18s;}
+.back-link:hover{color:var(--g);}
+.hero{padding:56px 52px 40px;max-width:1300px;margin:0 auto;width:100%;}
+.hero-ey{font-size:7.5pt;letter-spacing:.36em;text-transform:uppercase;color:var(--g);margin-bottom:14px;display:flex;align-items:center;gap:11px;}
+.hero-ey::before{content:"";display:block;width:22px;height:1.5px;background:var(--g);}
+.hero h1{font-family:'Anton',sans-serif;font-size:68pt;text-transform:uppercase;line-height:.88;letter-spacing:-.01em;}
+.hero-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:18pt;color:var(--mute);margin-top:14px;line-height:1.45;}
+.gw{flex:1;padding:0 52px 64px;max-width:1300px;margin:0 auto;width:100%;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.card{display:flex;flex-direction:column;gap:14px;background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:30px;text-decoration:none;color:#fff;transition:border-color .18s,box-shadow .18s;}
+.card:hover{border-color:rgba(7,144,78,.5);box-shadow:0 0 36px rgba(7,144,78,.07);}
+.ci{width:38px;height:38px;flex-shrink:0;}
+.cn{font-family:'Anton',sans-serif;font-size:10pt;color:var(--g);letter-spacing:.1em;}
+.ct{font-family:'Anton',sans-serif;font-size:22pt;text-transform:uppercase;line-height:.93;}
+.cd{font-size:10.5pt;line-height:1.65;color:var(--mute);flex:1;}
+.cc{display:flex;align-items:center;gap:7px;font-size:8.5pt;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--g);margin-top:4px;}
+footer{border-top:1px solid var(--bdr);padding:16px 52px;display:flex;justify-content:space-between;align-items:center;}
+.fl{font-size:7.5pt;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);}
+.fd{width:6px;height:6px;border-radius:50%;background:var(--g);}
+@media(max-width:980px){.grid{grid-template-columns:1fr 1fr;}.hero h1{font-size:52pt;}nav,.hero,.gw,footer{padding-left:28px;padding-right:28px;}}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}.hero h1{font-size:38pt;}nav,.hero,.gw,footer{padding-left:18px;padding-right:18px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><span class="lo">Oscar</span><span class="lb">B2B</span></div>
+  <div class="nav-r">Centro de Operaciones</div>
+  <a href="index.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Regresar
+  </a>
+</nav>
+
+<div class="hero">
+  <div class="hero-ey">Onboarding Package</div>
+  <h1>SISTEMA<br>DE TRABAJO</h1>
+  <p class="hero-sub">Todo lo que necesitas para iniciar,<br>gestionar y escalar cada cliente.</p>
+</div>
+
+<div class="gw">
+  <div class="grid">
+
+    <a href="Contrato.html" class="card">
+      <svg class="ci" viewBox="0 0 38 38" fill="none"><rect x="7" y="3" width="22" height="32" rx="2.5" stroke="#07904E" stroke-width="1.5"/><path d="M12 12h14M12 18h14M12 24h9" stroke="#07904E" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="cn">01</span>
+      <span class="ct">CONTRATO</span>
+      <p class="cd">Plantilla de contrato profesional que protege tu trabajo, propiedad intelectual y límites.</p>
+      <span class="cc">Abrir <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#07904E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+
+    <a href="Bienvenida.html" class="card">
+      <svg class="ci" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="13" r="6" stroke="#07904E" stroke-width="1.5"/><path d="M5 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#07904E" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="cn">02</span>
+      <span class="ct">BIENVENIDA</span>
+      <p class="cd">Documento que establece expectativas claras, el proceso de trabajo y próximos pasos.</p>
+      <span class="cc">Abrir <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#07904E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+
+    <a href="Dashboard.html" class="card">
+      <svg class="ci" viewBox="0 0 38 38" fill="none"><rect x="3" y="23" width="8" height="12" rx="1.5" fill="#07904E" opacity=".4"/><rect x="15" y="14" width="8" height="21" rx="1.5" fill="#07904E" opacity=".7"/><rect x="27" y="7" width="8" height="28" rx="1.5" fill="#07904E"/></svg>
+      <span class="cn">03</span>
+      <span class="ct">DASHBOARD KPIs</span>
+      <p class="cd">Tablero de reporte para seguimiento de performance, progreso y resultados de clientes.</p>
+      <span class="cc">Abrir <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#07904E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+
+    <a href="CRM.html" class="card">
+      <svg class="ci" viewBox="0 0 38 38" fill="none"><circle cx="10" cy="10" r="4.5" stroke="#07904E" stroke-width="1.5"/><circle cx="28" cy="10" r="4.5" stroke="#07904E" stroke-width="1.5"/><circle cx="19" cy="28" r="4.5" stroke="#07904E" stroke-width="1.5"/><path d="M14.5 10h9M25 13l-6 11M13 13l6 11" stroke="#07904E" stroke-width="1.2" stroke-linecap="round" opacity=".55"/></svg>
+      <span class="cn">04</span>
+      <span class="ct">CRM</span>
+      <p class="cd">Sistema para gestionar leads, clientes y proyectos con visibilidad total del pipeline.</p>
+      <span class="cc">Abrir <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#07904E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+
+    <a href="Notion Setup.html" class="card" style="border-color:rgba(7,144,78,.18);">
+      <svg class="ci" viewBox="0 0 38 38" fill="none"><rect x="5" y="5" width="28" height="28" rx="3" stroke="#07904E" stroke-width="1.5"/><path d="M12 14h14M12 19h10M12 24h7" stroke="#07904E" stroke-width="1.5" stroke-linecap="round"/><circle cx="29" cy="9" r="5" fill="#07904E"/><path d="M27 9h4M29 7v4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="cn">00</span>
+      <span class="ct">NOTION SYNC</span>
+      <p class="cd">Guía paso a paso para conectar el CRM y Dashboard con tus bases de datos en Notion.</p>
+      <span class="cc">Configurar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#07904E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+
+    <a href="Portal.html" class="card">
+      <svg class="ci" viewBox="0 0 38 38" fill="none"><rect x="3" y="7" width="32" height="24" rx="3" stroke="#07904E" stroke-width="1.5"/><path d="M3 14h32" stroke="#07904E" stroke-width="1.5"/><circle cx="8.5" cy="10.5" r="1.5" fill="#07904E" opacity=".5"/><circle cx="14" cy="10.5" r="1.5" fill="#07904E" opacity=".7"/><circle cx="19.5" cy="10.5" r="1.5" fill="#07904E"/></svg>
+      <span class="cn">05</span>
+      <span class="ct">PORTAL CLIENTE</span>
+      <p class="cd">Espacio digital para comunicación, actualizaciones y file sharing con cada cliente.</p>
+      <span class="cc">Abrir <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#07904E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <span class="fl">Oscar B2B · oscarb2b.com</span>
+  <div class="fd"></div>
+</footer>
+
+</body>
+</html>
