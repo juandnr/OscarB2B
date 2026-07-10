@@ -108,14 +108,10 @@
         /* ── Card reveal (.cr) — GaryVee slide-up ──────── */
         .cr {
             opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
-                        transform 0.7s cubic-bezier(0.22,1,0.36,1);
+            transform: translateY(80px);
+            transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+                        transform 0.75s cubic-bezier(0.16,1,0.3,1);
         }
-        .cr.dl1 { transition-delay: 90ms; }
-        .cr.dl2 { transition-delay: 180ms; }
-        .cr.dl3 { transition-delay: 270ms; }
-        .cr.dl4 { transition-delay: 360ms; }
         .cr.on { opacity: 1; transform: none; }
 
         @media (prefers-reduced-motion: reduce) {
@@ -796,76 +792,79 @@
         <div class="sec-head rev">
             <span class="label" style="justify-content:center">Contenido</span>
             <h2 class="stitle">Lo que aprendo <span>lo comparto</span></h2>
-            <p class="sub">Artículos, herramientas y recursos sobre ventas B2B, metodología e inteligencia artificial. Todo en tiempo real, todo gratis.</p>
+            <p class="sub">Artículos, herramientas y recursos sobre ventas B2B, metodología e inteligencia artificial. En tiempo real, gratis.</p>
         </div>
 
         <div class="ed-grid">
 
-            <!-- FEATURED — 7 cols -->
+            <!-- ROW 1 -->
             <div class="ec ec-feat ec-dim cr">
                 <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">Cómo estructuré mi proceso de ventas desde cero</div>
-                <p class="ec-desc">El sistema exacto que usé para pasar de vender a puro instinto a tener un proceso reproducible, escalable y medible. Lo que funcionó, lo que no, y por qué la mayoría lo hace al revés.</p>
+                <div class="ec-title">De $385K a $438K: lo que cambió cuando dejé de vender a instinto</div>
+                <p class="ec-desc">El sistema exacto que construí para dejar de depender del talento individual y crear un proceso que mi equipo puede replicar. Metodología, herramientas y los errores que cometí en el camino.</p>
                 <div class="ec-ghost-num">01</div>
             </div>
 
-            <!-- TALL — 5 cols, 2 rows -->
-            <div class="ec ec-tall ec-dim cr dl1">
+            <div class="ec ec-tall ec-dim cr">
                 <span class="ec-tag tag-pronto">Blog · Próximamente</span>
                 <div class="ec-title">Las 5 herramientas de IA que usa mi equipo cada semana</div>
-                <p class="ec-desc">No hablo de tendencias. Hablo de lo que realmente usamos para prospectar, hacer seguimiento y cerrar más rápido. Con ejemplos reales.</p>
+                <p class="ec-desc">No tendencias. Las que realmente usamos para prospectar, hacer seguimiento y cerrar más rápido. Con ejemplos y prompts reales que puedes copiar hoy.</p>
                 <div class="ec-ghost-num">02</div>
             </div>
 
-            <!-- MED — 4 cols -->
-            <div class="ec ec-med ec-dim cr dl2">
-                <span class="ec-tag tag-pronto">Blog · Próximo</span>
-                <div class="ec-title">Por qué tu CRM no funciona</div>
-                <p class="ec-desc">El problema casi nunca es el CRM. Es adopción, estructura y proceso.</p>
+            <!-- ROW 2 -->
+            <div class="ec ec-med ec-dim cr">
+                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
+                <div class="ec-title">Por qué tu CRM no funciona (y no es culpa del CRM)</div>
+                <p class="ec-desc">El problema casi siempre es de adopción, no de tecnología. Cómo convertir tu CRM en el centro de tu operación.</p>
                 <div class="ec-ghost-num">03</div>
             </div>
 
-            <!-- MED — 3 cols (completa los 7 restantes junto al tall) -->
-            <div class="ec ec-med ec-dim cr dl3">
-                <span class="ec-tag tag-pronto">Blog · Próximo</span>
-                <div class="ec-title">Metodología vs. instinto en ventas</div>
-                <p class="ec-desc">8 años improvisando, 2 con sistema. Los números hablan solos.</p>
+            <div class="ec ec-med ec-dim cr">
+                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
+                <div class="ec-title">Cómo hacer un pitch que no parezca un pitch</div>
+                <p class="ec-desc">El framework de 3 pasos que uso para que el cliente sienta que llegó a la conclusión solo.</p>
                 <div class="ec-ghost-num">04</div>
             </div>
 
             <div class="ed-divider"></div>
 
-            <!-- WIDE — 8 cols -->
-            <div class="ec ec-wide ec-dim cr dl1">
-                <span class="ec-tag tag-tool">Herramienta · Próximo</span>
-                <div class="ec-title">Diagnóstico de equipo de ventas — Plantilla gratuita</div>
-                <p class="ec-desc">Un formulario estructurado para identificar exactamente dónde está perdiendo dinero tu equipo antes de cualquier intervención. Basado en las mismas auditorías que hago con mis clientes.</p>
+            <!-- ROW 3 -->
+            <div class="ec ec-wide ec-dim cr">
+                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
+                <div class="ec-title">Cómo medir el rendimiento de tu equipo de ventas sin microgerenciar</div>
+                <p class="ec-desc">Los 5 KPIs que realmente importan, cómo automatizar su seguimiento y cómo crear una cultura de accountability sin destruir la motivación del equipo.</p>
                 <div class="ec-ghost-num">05</div>
             </div>
 
-            <!-- SM — 4 cols -->
-            <div class="ec ec-sm ec-dim cr dl2">
-                <span class="ec-tag tag-pronto">Blog · Próximo</span>
-                <div class="ec-title">El error más caro que cometen los equipos B2B</div>
+            <div class="ec ec-sm ec-dim cr">
+                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
+                <div class="ec-title">El error más caro en ventas B2B (y cómo evitarlo)</div>
+                <p class="ec-desc">No es el precio ni la propuesta. Es algo que pasa mucho antes.</p>
                 <div class="ec-ghost-num">06</div>
             </div>
 
-            <!-- THIRDS — 4+4+4 -->
+            <div class="ed-divider"></div>
+
+            <!-- ROW 4 — tres columnas -->
             <div class="ec ec-third ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximo</span>
+                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
                 <div class="ec-title">Cómo prospectar con IA sin sonar a robot</div>
+                <p class="ec-desc">Los prompts exactos que uso para personalizar mensajes en escala sin perder autenticidad.</p>
                 <div class="ec-ghost-num">07</div>
             </div>
 
-            <div class="ec ec-third ec-dim cr dl1">
-                <span class="ec-tag tag-tool">Herramienta · Próximo</span>
-                <div class="ec-title">Script de llamada diagnóstico — descargable</div>
+            <div class="ec ec-third ec-dim cr">
+                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
+                <div class="ec-title">Metodología vs. instinto: el experimento de 6 meses</div>
+                <p class="ec-desc">Qué pasa cuando obligas a un equipo de ventas a seguir un proceso. Resultados reales, sin filtro.</p>
                 <div class="ec-ghost-num">08</div>
             </div>
 
-            <div class="ec ec-third ec-dim cr dl2">
-                <span class="ec-tag tag-pronto">Blog · Próximo</span>
-                <div class="ec-title">Cómo medir el rendimiento de tu equipo sin microgerenciar</div>
+            <div class="ec ec-third ec-dim cr">
+                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
+                <div class="ec-title">La llamada diagnóstico perfecta: mi framework de 20 minutos</div>
+                <p class="ec-desc">Cómo diagnostico el problema real y posiciono el valor antes de hablar de precio.</p>
                 <div class="ec-ghost-num">09</div>
             </div>
 
@@ -1085,11 +1084,22 @@
         const els = document.querySelectorAll('.cr');
         function showAll() { els.forEach(el => el.classList.add('on')); }
         if (!('IntersectionObserver' in window)) { showAll(); return; }
+
         const io = new IntersectionObserver(entries => {
             entries.forEach(e => {
-                if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+                if (!e.isIntersecting) return;
+                // Stagger by horizontal position so left col fires first, then center, then right
+                const rect = e.target.getBoundingClientRect();
+                const vw = window.innerWidth;
+                const col = rect.left < vw * 0.35 ? 0 : rect.left < vw * 0.65 ? 1 : 2;
+                setTimeout(() => e.target.classList.add('on'), col * 110);
+                io.unobserve(e.target);
             });
-        }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -6% 0px'   // card must be 6% inside viewport before triggering
+        });
+
         els.forEach(el => io.observe(el));
     })();
 
