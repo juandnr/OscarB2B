@@ -67,7 +67,15 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
   font-family:var(--fh);font-size:.86rem;font-weight:700;border-radius:8px;border:none;}
 
 /* HEADER */
-#header{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:2.5rem;border-bottom:1px solid var(--glass-b);}
+#header{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:2.5rem;border-bottom:1px solid var(--glass-b);position:relative;overflow:hidden;}
+#bills-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bill{position:absolute;top:-90px;will-change:transform,opacity;animation:bill-fall linear infinite;}
+@keyframes bill-fall{
+  0%  {opacity:0;   transform:translateY(0)           rotate(var(--r));}
+  8%  {opacity:var(--op);}
+  88% {opacity:var(--op);}
+  100%{opacity:0;   transform:translateY(var(--dist))  rotate(calc(var(--r) + var(--spin)));}
+}
 .header-tag{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
   color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
 .header-tag::before{content:'';width:18px;height:1px;background:var(--gold);}
@@ -252,7 +260,8 @@ textarea{resize:vertical;min-height:90px;}
 
 <!-- HEADER -->
 <div id="header">
-  <div class="wrap">
+  <div id="bills-bg" aria-hidden="true"></div>
+  <div class="wrap" style="position:relative;z-index:1;">
     <div class="header-tag">Oscar B2B · Programa presencial</div>
     <h1 class="header-title">Sprint de Modelado<br>de Negocios<br>para Adolescentes</h1>
     <p class="header-sub">Bootcamp presencial de 5 días en Caracas para adolescentes de 17 a 21 años. Modelado de negocios, IA aplicada, publicidad digital, ventas y matemática empresarial con casos reales.</p>
@@ -714,6 +723,40 @@ textarea{resize:vertical;min-height:90px;}
 </footer>
 
 <script>
+(function(){
+  const bg = document.getElementById('bills-bg');
+  if(!bg) return;
+  const billSVG = (w,h,col) => {
+    const r = Math.round; const hw=r(w/2); const hh=r(h/2);
+    return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="${w-2}" height="${h-2}" rx="4" fill="${col}" fill-opacity=".9" stroke="${col}" stroke-opacity=".3" stroke-width="1"/>
+      <rect x="5" y="5" width="${w-10}" height="${h-10}" rx="2" fill="none" stroke="${col}" stroke-opacity=".35" stroke-width=".8"/>
+      <circle cx="${hw}" cy="${hh}" r="${r(hh*.7)}" fill="none" stroke="${col}" stroke-opacity=".2" stroke-width=".8"/>
+      <text x="${hw}" y="${hh+r(hh*.38)}" text-anchor="middle" font-family="Georgia,serif" font-size="${r(hh*.9)}" fill="${col}" fill-opacity=".55" font-weight="bold">$</text>
+      <text x="9" y="${hh+4}" text-anchor="start" font-family="Georgia,serif" font-size="${r(hh*.42)}" fill="${col}" fill-opacity=".35">100</text>
+      <text x="${w-9}" y="${hh+4}" text-anchor="end" font-family="Georgia,serif" font-size="${r(hh*.42)}" fill="${col}" fill-opacity=".35">100</text>
+    </svg>`;
+  };
+  const colors = ['#3d7a52','#2e6644','#F5A623','#c8882a'];
+  for(let i=0;i<22;i++){
+    const el = document.createElement('div');
+    el.className = 'bill';
+    const w = 54 + Math.random()*36;
+    const h = Math.round(w * 0.44);
+    const col = colors[Math.floor(Math.random()*colors.length)];
+    const left = Math.random()*108 - 4;
+    const delay = -(Math.random()*9);
+    const dur = 6 + Math.random()*6;
+    const rot = -30 + Math.random()*60;
+    const spin = -90 + Math.random()*180;
+    const op = 0.13 + Math.random()*0.17;
+    const dist = Math.round(350 + Math.random()*250) + 'px';
+    el.style.cssText = `left:${left}%;width:${Math.round(w)}px;height:${h}px;--r:${rot}deg;--spin:${spin}deg;--op:${op};--dist:${dist};animation-delay:${delay}s;animation-duration:${dur}s;`;
+    el.innerHTML = billSVG(Math.round(w), h, col);
+    bg.appendChild(el);
+  }
+})();
+
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), {passive:true});
 
