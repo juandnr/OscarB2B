@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sprint de Aceleración — Oscar B2B</title>
-<meta name="description" content="Bootcamp presencial de 5 días en Caracas para jóvenes de 15–19 años. Automatización, CRM y matemática de negocios. 25 cupos · $700 · Admisión por entrevista.">
-<meta property="og:title" content="Sprint de Aceleración — Oscar B2B">
-<meta property="og:description" content="5 días presenciales en Caracas. Automatización (n8n, Airtable), CRM y matemática de negocios. 25 cupos · $700 · Admisión por entrevista.">
+<title>Sprint de Modelado de Negocios para Adolescentes — Oscar B2B</title>
+<meta name="description" content="Bootcamp presencial de 5 días en Caracas para adolescentes de 17 a 21 años. Modelado de negocios, IA aplicada, CRM, publicidad y matemática empresarial. 25 cupos · $700.">
+<meta property="og:title" content="Sprint de Modelado de Negocios para Adolescentes — Oscar B2B">
+<meta property="og:description" content="5 días presenciales en Caracas. Modelado de negocios, IA, ventas y publicidad digital. 25 cupos · $700.">
 <meta property="og:type" content="website">
 <!-- TODO: Agregar og:image (1200×630 px) para preview de WhatsApp -->
 
@@ -36,7 +36,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 
 .wrap{width:100%;max-width:1100px;margin-inline:auto;padding-inline:clamp(1.25rem,5vw,2.5rem);}
 
-/* ── NAV ─────────────────────────────────── */
+/* NAV */
 #nav{position:fixed;inset:0 0 auto 0;z-index:200;height:var(--nav-h);
   display:flex;align-items:center;border-bottom:1px solid transparent;
   transition:background 300ms,border-color 300ms;}
@@ -45,16 +45,15 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 .nav-row{display:flex;align-items:center;justify-content:space-between;width:100%;gap:1rem;}
 .nav-logo{font-family:var(--fh);font-size:1.3rem;font-weight:700;letter-spacing:-.02em;}
 .nav-logo span{color:var(--gold);}
-.nav-back{display:flex;align-items:center;gap:.45rem;font-size:.8rem;
-  color:var(--g2);transition:color 200ms;}
+.nav-back{display:flex;align-items:center;gap:.45rem;font-size:.8rem;color:var(--g2);transition:color 200ms;}
 .nav-back:hover{color:var(--gold);}
-.nav-cta{padding:.55rem 1.15rem;background:var(--gold);color:#0a0a0a;
-  font-family:var(--fh);font-size:.8rem;font-weight:700;border-radius:8px;
-  border:none;white-space:nowrap;transition:box-shadow 200ms,transform 200ms;}
+.nav-cta{padding:.55rem 1.15rem;background:var(--gold);color:#0a0a0a;font-family:var(--fh);
+  font-size:.8rem;font-weight:700;border-radius:8px;border:none;white-space:nowrap;
+  transition:box-shadow 200ms,transform 200ms;}
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--gold-strong);}
 @media(max-width:520px){.nav-cta{display:none;}.nav-back span{display:none;}}
 
-/* ── STICKY MOBILE CTA ───────────────────── */
+/* STICKY MOBILE CTA */
 #mob-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:190;
   padding:.8rem clamp(1.25rem,5vw,2.5rem);background:rgba(10,10,10,.97);
   border-top:1px solid var(--glass-b);backdrop-filter:blur(16px);
@@ -65,13 +64,10 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 .mob-txt{font-size:.78rem;color:var(--g2);}
 .mob-txt strong{display:block;font-size:.86rem;color:var(--white);}
 .mob-btn{flex-shrink:0;padding:.7rem 1.3rem;background:var(--gold);color:#0a0a0a;
-  font-family:var(--fh);font-size:.86rem;font-weight:700;border-radius:8px;border:none;
-  transition:box-shadow 150ms;}
-.mob-btn:hover{box-shadow:0 6px 20px var(--gold-strong);}
+  font-family:var(--fh);font-size:.86rem;font-weight:700;border-radius:8px;border:none;}
 
-/* ── HEADER ──────────────────────────────── */
-#header{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:2.5rem;
-  border-bottom:1px solid var(--glass-b);}
+/* HEADER */
+#header{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:2.5rem;border-bottom:1px solid var(--glass-b);}
 .header-tag{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
   color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
 .header-tag::before{content:'';width:18px;height:1px;background:var(--gold);}
@@ -79,14 +75,13 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
   line-height:1.1;letter-spacing:-.025em;margin-bottom:.75rem;}
 .header-sub{font-size:1rem;color:var(--g2);max-width:580px;line-height:1.65;}
 
-/* ── STATS STRIP ─────────────────────────── */
+/* STATS STRIP */
 #stats{padding:1.75rem 0;border-bottom:1px solid var(--glass-b);background:var(--bg-1);}
 .stats-row{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
-.stat{flex:1;min-width:130px;padding:.75rem 1.5rem;
-  border-right:1px solid var(--glass-b);display:flex;flex-direction:column;gap:.25rem;}
+.stat{flex:1;min-width:130px;padding:.75rem 1.5rem;border-right:1px solid var(--glass-b);
+  display:flex;flex-direction:column;gap:.25rem;}
 .stat:last-child{border-right:none;}
-.stat-label{font-size:.68rem;font-weight:600;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--g3);}
+.stat-label{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--g3);}
 .stat-val{font-family:var(--fh);font-size:1.05rem;font-weight:700;color:var(--white);}
 .stat-val.gold{color:var(--gold);}
 @media(max-width:700px){
@@ -94,12 +89,12 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
   .stat:nth-child(even){border-right:none;}
 }
 
-/* ── MAIN LAYOUT ─────────────────────────── */
+/* MAIN LAYOUT */
 #main{padding:3rem 0 5rem;}
 .layout{display:grid;grid-template-columns:1fr 320px;gap:3rem;align-items:start;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}}
 
-/* ── CONTENT SECTIONS ────────────────────── */
+/* CONTENT SECTIONS */
 .section{margin-bottom:2.75rem;}
 .section:last-child{margin-bottom:0;}
 .sec-title{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);
@@ -107,11 +102,10 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
   border-bottom:1px solid var(--glass-b);display:flex;align-items:center;gap:.6rem;}
 .sec-title svg{color:var(--gold);flex-shrink:0;}
 
-/* Description */
 .desc-text{font-size:.92rem;color:var(--g2);line-height:1.78;}
 .desc-text p+p{margin-top:.75rem;}
 
-/* Day-by-day table */
+/* Day list */
 .day-list{display:flex;flex-direction:column;gap:.75rem;}
 .day-row{display:grid;grid-template-columns:80px 1fr;gap:1rem;
   padding:.85rem 1rem;background:var(--glass);border:1px solid var(--glass-b);
@@ -119,64 +113,55 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 .day-row:hover{border-color:rgba(245,166,35,.18);}
 .day-n{font-family:var(--fh);font-size:.72rem;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase;color:var(--gold);}
-.day-body{}
-.day-title{font-family:var(--fh);font-size:.92rem;font-weight:600;
-  color:var(--white);margin-bottom:.25rem;}
+.day-title{font-family:var(--fh);font-size:.92rem;font-weight:600;color:var(--white);margin-bottom:.25rem;}
 .day-output{font-size:.78rem;color:var(--g2);}
 .day-output span{color:var(--gold);}
 
 /* Deliverables */
 .dlv-list{display:flex;flex-direction:column;gap:.65rem;}
 .dlv-row{display:flex;align-items:flex-start;gap:.9rem;
-  padding:.9rem 1rem;background:var(--glass);border:1px solid var(--glass-b);
-  border-radius:var(--r-sm);}
+  padding:.9rem 1rem;background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r-sm);}
 .dlv-ico{width:36px;height:36px;border-radius:8px;background:var(--gold-dim);
   border:1px solid rgba(245,166,35,.15);display:flex;align-items:center;
   justify-content:center;color:var(--gold);flex-shrink:0;}
-.dlv-body{}
-.dlv-name{font-family:var(--fh);font-size:.9rem;font-weight:600;
-  color:var(--white);margin-bottom:.2rem;}
+.dlv-name{font-family:var(--fh);font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.2rem;}
 .dlv-desc{font-size:.82rem;color:var(--g2);line-height:1.6;}
 
 /* Simple list */
 .info-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
-.info-list li{display:flex;align-items:flex-start;gap:.65rem;
-  font-size:.9rem;color:var(--g2);line-height:1.55;}
+.info-list li{display:flex;align-items:flex-start;gap:.65rem;font-size:.9rem;color:var(--g2);line-height:1.55;}
 .info-list li::before{content:'';width:5px;height:5px;border-radius:50%;
   background:var(--gold);flex-shrink:0;margin-top:.45rem;}
 
-/* Process steps */
+/* Steps */
 .steps{display:flex;flex-direction:column;gap:.65rem;}
 .step-row{display:grid;grid-template-columns:32px 1fr;gap:.85rem;align-items:start;}
 .step-n{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);
-  border:1px solid rgba(245,166,35,.3);display:flex;align-items:center;
-  justify-content:center;font-family:var(--fh);font-size:.82rem;font-weight:700;
-  color:var(--gold);flex-shrink:0;}
-.step-body{}
-.step-title{font-family:var(--fh);font-size:.9rem;font-weight:600;
-  color:var(--white);margin-bottom:.15rem;}
+  border:1px solid rgba(245,166,35,.3);display:flex;align-items:center;justify-content:center;
+  font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--gold);flex-shrink:0;}
+.step-title{font-family:var(--fh);font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.15rem;}
 .step-desc{font-size:.82rem;color:var(--g2);line-height:1.6;}
 
-/* ── SIDEBAR ─────────────────────────────── */
+/* SIDEBAR */
 .sidebar{display:flex;flex-direction:column;gap:1.25rem;}
-
-.side-card{background:var(--bg-1);border:1px solid var(--glass-b);
-  border-radius:var(--r);overflow:hidden;}
+.side-card{background:var(--bg-1);border:1px solid var(--glass-b);border-radius:var(--r);overflow:hidden;}
 .side-card-head{padding:.9rem 1.25rem;border-bottom:1px solid var(--glass-b);
   font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--g2);
   letter-spacing:.06em;text-transform:uppercase;}
 .side-rows{display:flex;flex-direction:column;}
-.side-row{display:flex;align-items:center;justify-content:space-between;gap.75rem;
+.side-row{display:flex;align-items:center;justify-content:space-between;
   padding:.75rem 1.25rem;border-bottom:1px solid var(--glass-b);font-size:.88rem;}
 .side-row:last-child{border-bottom:none;}
 .side-row-label{color:var(--g2);font-size:.82rem;}
 .side-row-val{font-family:var(--fh);font-weight:600;color:var(--white);text-align:right;}
 .side-row-val.gold{color:var(--gold);}
-
+.side-row-indent{padding-left:1.5rem;background:rgba(255,255,255,.015);}
+.side-row-indent .side-row-label{font-size:.78rem;color:var(--g3);}
+.side-row-indent .side-row-val{font-size:.82rem;color:var(--g1);}
 .side-cta{padding:1.25rem;}
 .btn-apply{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;
-  padding:.95rem 1.5rem;background:var(--gold);color:#0a0a0a;
-  font-family:var(--fh);font-size:.95rem;font-weight:700;border-radius:10px;border:none;
+  padding:.95rem 1.5rem;background:var(--gold);color:#0a0a0a;font-family:var(--fh);
+  font-size:.95rem;font-weight:700;border-radius:10px;border:none;
   transition:transform 200ms,box-shadow 200ms;}
 .btn-apply:hover{transform:translateY(-2px);box-shadow:0 12px 36px var(--gold-strong);}
 .side-note{margin-top:.75rem;font-size:.75rem;color:var(--g3);text-align:center;line-height:1.5;}
@@ -190,49 +175,46 @@ summary.fq{display:flex;align-items:center;justify-content:space-between;gap:.75
   cursor:pointer;list-style:none;transition:color 200ms;}
 summary.fq::-webkit-details-marker{display:none;}
 summary.fq:hover{color:var(--gold);}
-summary.fq::after{content:'+';font-size:1.1rem;color:var(--gold);
-  flex-shrink:0;transition:transform 200ms;}
+summary.fq::after{content:'+';font-size:1.1rem;color:var(--gold);flex-shrink:0;transition:transform 200ms;}
 details[open] summary.fq::after{transform:rotate(45deg);}
 .fa{padding:0 0 .85rem;font-size:.84rem;color:var(--g2);line-height:1.7;}
 .todo{color:var(--g3);font-style:italic;}
 
-/* ── FORM ────────────────────────────────── */
-#form-section{padding:3rem 0 5rem;background:var(--bg-1);
-  border-top:1px solid var(--glass-b);}
-.form-inner{max-width:640px;}
-.form-title{font-family:var(--fh);font-size:1.5rem;font-weight:700;
-  margin-bottom:.5rem;letter-spacing:-.02em;}
+/* FORM */
+#form-section{padding:3rem 0 5rem;background:var(--bg-1);border-top:1px solid var(--glass-b);}
+.form-inner{max-width:760px;}
+.form-title{font-family:var(--fh);font-size:1.5rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-.02em;}
 .form-sub{font-size:.88rem;color:var(--g2);margin-bottom:2rem;line-height:1.65;}
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
 .full{grid-column:1/-1;}
 .field{display:flex;flex-direction:column;gap:.35rem;}
+.field-group-title{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--g1);
+  letter-spacing:.05em;text-transform:uppercase;grid-column:1/-1;
+  padding-top:1rem;border-top:1px solid var(--glass-b);margin-top:.25rem;}
+.field-group-title:first-child{border-top:none;padding-top:0;margin-top:0;}
 label{font-size:.76rem;font-weight:600;color:var(--g1);letter-spacing:.02em;}
 input,select,textarea{background:var(--glass);border:1px solid var(--glass-b);
   border-radius:var(--r-sm);color:var(--white);font-family:var(--fb);font-size:.88rem;
-  padding:.78rem .95rem;width:100%;transition:border-color 200ms,box-shadow 200ms;
-  -webkit-appearance:none;}
+  padding:.78rem .95rem;width:100%;transition:border-color 200ms,box-shadow 200ms;-webkit-appearance:none;}
 input::placeholder,textarea::placeholder{color:var(--g3);}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(245,166,35,.1);}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,166,35,.1);}
 select option{background:#1a1a1a;}
-textarea{resize:vertical;min-height:110px;}
-.btn-submit{margin-top:1.25rem;width:100%;padding:1rem 2rem;
-  background:var(--gold);color:#0a0a0a;font-family:var(--fh);
-  font-size:.95rem;font-weight:700;border-radius:10px;border:none;
+textarea{resize:vertical;min-height:90px;}
+.btn-submit{margin-top:1.5rem;width:100%;padding:1rem 2rem;background:var(--gold);color:#0a0a0a;
+  font-family:var(--fh);font-size:.95rem;font-weight:700;border-radius:10px;border:none;
   display:flex;align-items:center;justify-content:center;gap:.5rem;
   transition:transform 200ms,box-shadow 200ms;}
 .btn-submit:hover{transform:translateY(-2px);box-shadow:0 12px 36px var(--gold-strong);}
+.form-note{margin-top:.85rem;font-size:.76rem;color:var(--g3);text-align:center;}
 .form-ok{display:none;padding:2.5rem;background:var(--gold-dim);
   border:1px solid rgba(245,166,35,.25);border-radius:var(--r);}
 .form-ok.on{display:block;}
-.form-ok h3{font-family:var(--fh);font-size:1.2rem;font-weight:700;
-  color:var(--gold);margin-bottom:.5rem;}
+.form-ok h3{font-family:var(--fh);font-size:1.2rem;font-weight:700;color:var(--gold);margin-bottom:.5rem;}
 .form-ok p{font-size:.88rem;color:var(--g2);line-height:1.7;}
 
-/* ── FOOTER ──────────────────────────────── */
+/* FOOTER */
 #footer{padding:1.75rem 0;border-top:1px solid var(--glass-b);}
-.foot-row{display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:.75rem;}
+.foot-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
 .foot-logo{font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:-.02em;}
 .foot-logo span{color:var(--gold);}
 .foot-copy{font-size:.74rem;color:var(--g3);}
@@ -252,19 +234,19 @@ textarea{resize:vertical;min-height:110px;}
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M11 6.5H2M5 3L2 6.5 5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span>Inicio</span>
       </a>
-      <a href="#form-section" class="nav-cta">Aplicar al Sprint →</a>
+      <a href="#form-section" class="nav-cta">Inscribirse →</a>
     </div>
   </div>
 </header>
 
-<!-- MOBILE STICKY CTA -->
+<!-- STICKY MOBILE CTA -->
 <div id="mob-cta">
   <div class="mob-inner">
     <div class="mob-txt">
-      <strong>Sprint de Aceleración</strong>
+      <strong>Sprint de Modelado de Negocios</strong>
       $700 · 25 cupos · Caracas
     </div>
-    <a href="#form-section" class="mob-btn">Aplicar →</a>
+    <a href="#form-section" class="mob-btn">Inscribirse →</a>
   </div>
 </div>
 
@@ -272,8 +254,8 @@ textarea{resize:vertical;min-height:110px;}
 <div id="header">
   <div class="wrap">
     <div class="header-tag">Oscar B2B · Programa presencial</div>
-    <h1 class="header-title">Sprint de Aceleración:<br>Operaciones y Negocios Digitales<br>para Adolescentes</h1>
-    <p class="header-sub">Bootcamp intensivo de 5 días en Caracas para jóvenes de 15 a 19 años. Automatización, CRM y matemática de negocios usando casos reales.</p>
+    <h1 class="header-title">Sprint de Modelado<br>de Negocios<br>para Adolescentes</h1>
+    <p class="header-sub">Bootcamp presencial de 5 días en Caracas para adolescentes de 17 a 21 años. Modelado de negocios, IA aplicada, publicidad digital, ventas y matemática empresarial con casos reales.</p>
   </div>
 </div>
 
@@ -281,10 +263,6 @@ textarea{resize:vertical;min-height:110px;}
 <div id="stats">
   <div class="wrap">
     <div class="stats-row">
-      <div class="stat">
-        <span class="stat-label">Precio</span>
-        <span class="stat-val gold">$700</span>
-      </div>
       <div class="stat">
         <span class="stat-label">Duración</span>
         <span class="stat-val">5 días</span>
@@ -295,11 +273,11 @@ textarea{resize:vertical;min-height:110px;}
       </div>
       <div class="stat">
         <span class="stat-label">Cupos</span>
-        <span class="stat-val">25 · entrevista</span>
+        <span class="stat-val">25 máx.</span>
       </div>
       <div class="stat">
         <span class="stat-label">Edad</span>
-        <span class="stat-val">15 – 19 años</span>
+        <span class="stat-val">17 – 21 años</span>
       </div>
       <div class="stat">
         <span class="stat-label">Horario</span>
@@ -319,7 +297,7 @@ textarea{resize:vertical;min-height:110px;}
   <div class="wrap">
     <div class="layout">
 
-      <!-- ── LEFT COLUMN ── -->
+      <!-- LEFT COLUMN -->
       <div>
 
         <!-- Descripción -->
@@ -329,9 +307,8 @@ textarea{resize:vertical;min-height:110px;}
             Descripción
           </div>
           <div class="desc-text">
-            <p>Un programa intensivo de 5 días diseñado para jóvenes que quieren entender cómo operan los negocios reales antes de llegar a la universidad. No es teoría — cada día termina con un entregable concreto construido con datos reales de Merch Caracas.</p>
-            <p>Los participantes trabajan con las mismas herramientas que usan equipos profesionales: <strong>n8n</strong> para automatización, <strong>Airtable</strong> para gestión de datos y <strong>CRM estructurado</strong> para seguimiento de ventas. El programa cierra con un Demo Day donde cada participante presenta su proyecto ante padres y empresarios.</p>
-            <p>Ratio máximo de 5 estudiantes por mentor. Admisión por entrevista — no por orden de llegada.</p>
+            <p>Un programa intensivo de 5 días diseñado para jóvenes que quieren entender cómo operan los negocios reales. No es teoría. Cada día termina con un entregable concreto.</p>
+            <p>Los participantes trabajan con herramientas profesionales de automatización, CRM y gestión de operaciones. El programa incluye un módulo completo de publicidad digital y cierra con un Demo Day donde cada participante presenta su MVP ante padres y empresarios.</p>
           </div>
         </div>
 
@@ -339,7 +316,7 @@ textarea{resize:vertical;min-height:110px;}
         <div class="section">
           <div class="sec-title">
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="12" height="11" rx="1.5"/><path d="M5 1.5v2M10 1.5v2M1.5 6.5h12"/></svg>
-            Programa — 5 días
+            Programa 5 días
           </div>
           <div class="day-list">
             <div class="day-row">
@@ -352,35 +329,35 @@ textarea{resize:vertical;min-height:110px;}
             <div class="day-row">
               <div class="day-n">Día 2</div>
               <div class="day-body">
-                <div class="day-title">IA y Eficiencia Operativa</div>
-                <div class="day-output">Entregable: <span>flujo de automatización funcional en n8n</span></div>
+                <div class="day-title">IA Aplicada a Negocios</div>
+                <div class="day-output">Entregable: <span>plan de implementación de IA en tu proyecto: agentes, herramientas y cómo integrarlos en procesos reales</span></div>
               </div>
             </div>
             <div class="day-row">
               <div class="day-n">Día 3</div>
               <div class="day-body">
-                <div class="day-title">Matemáticas del Marketing — CAC, LTV, Embudos</div>
-                <div class="day-output">Entregable: <span>estrategia de adquisición con métricas proyectadas</span></div>
+                <div class="day-title">Publicidad Digital y Matemáticas del Marketing</div>
+                <div class="day-output">Entregable: <span>estrategia de ads con métricas proyectadas: CAC, ROAS, embudos y presupuesto</span></div>
               </div>
             </div>
             <div class="day-row">
               <div class="day-n">Día 4</div>
               <div class="day-body">
-                <div class="day-title">Ingeniería de Ventas y CRM</div>
-                <div class="day-output">Entregable: <span>CRM estructurado con pipeline y caso real de Merch Caracas</span></div>
+                <div class="day-title">Ventas, CRM y Seguimiento de Resultados</div>
+                <div class="day-output">Entregable: <span>CRM configurado con pipeline, seguimiento y métricas de cierre</span></div>
               </div>
             </div>
             <div class="day-row">
               <div class="day-n">Día 5</div>
               <div class="day-body">
-                <div class="day-title">Operaciones, Escalamiento y Demo Day</div>
-                <div class="day-output">Entregable: <span>dashboard de métricas + presentación en vivo ante audiencia</span></div>
+                <div class="day-title">MVP, Plan de Negocios y Demo Day</div>
+                <div class="day-output">Entregable: <span>MVP documentado + pitch en vivo ante padres y empresarios invitados</span></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Qué te llevas -->
+        <!-- Qué se llevan -->
         <div class="section">
           <div class="sec-title">
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 1.5l1.2 3.3H12L9.4 6.9l.9 3.1-2.8-1.8-2.8 1.8.9-3.1L3 4.8h3.3L7.5 1.5Z"/></svg>
@@ -389,38 +366,65 @@ textarea{resize:vertical;min-height:110px;}
           <div class="dlv-list">
             <div class="dlv-row">
               <div class="dlv-ico">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="5" height="5" rx=".8"/><rect x="9" y="2" width="5" height="5" rx=".8"/><rect x="2" y="9" width="5" height="5" rx=".8"/><rect x="9" y="9" width="5" height="5" rx=".8"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="2"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5"/></svg>
               </div>
-              <div class="dlv-body">
-                <div class="dlv-name">Dashboard de Operaciones</div>
-                <div class="dlv-desc">Sistema de gestión en Airtable construido con datos reales, listo para usar en cualquier negocio.</div>
-              </div>
-            </div>
-            <div class="dlv-row">
-              <div class="dlv-ico">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="8" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="12" cy="12" r="2"/><path d="M6 7.3l4-2.6M6 8.7l4 2.6"/></svg>
-              </div>
-              <div class="dlv-body">
-                <div class="dlv-name">Flujo de Automatización</div>
-                <div class="dlv-desc">Bot funcional en n8n que resuelve un problema operativo real. Conecta herramientas y elimina trabajo manual.</div>
+              <div>
+                <div class="dlv-name">Creación de Agentes y Automatización con IA</div>
+                <div class="dlv-desc">Aprenderá a diseñar agentes de IA y automatizar procesos operativos usando herramientas no-code aplicadas directamente a su proyecto.</div>
               </div>
             </div>
             <div class="dlv-row">
               <div class="dlv-ico">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12V4h12v8H2Z"/><path d="M5 8h6M5 6h4"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="12" height="9" rx="1.5"/><path d="M5 14h6M8 12v2"/></svg>
               </div>
-              <div class="dlv-body">
-                <div class="dlv-name">Auditoría de Negocio</div>
-                <div class="dlv-desc">Análisis con los números reales de Merch Caracas: LTV, CAC, unit economics y margen.</div>
+              <div>
+                <div class="dlv-name">Publicidad y Ads</div>
+                <div class="dlv-desc">Estrategia de publicidad digital con métricas reales: cómo crear, medir y optimizar campañas con presupuesto limitado.</div>
               </div>
             </div>
             <div class="dlv-row">
               <div class="dlv-ico">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 12V6h10v6H3ZM5 6V4a3 3 0 0 1 6 0v2"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12V5l6-3 6 3v7"/><path d="M6 12V8h4v4"/></svg>
               </div>
-              <div class="dlv-body">
-                <div class="dlv-name">Pitch Técnico — Demo Day</div>
-                <div class="dlv-desc">Presentación en vivo ante padres y empresarios. Primer pitch real con números propios.</div>
+              <div>
+                <div class="dlv-name">Ventas y CRM</div>
+                <div class="dlv-desc">CRM configurado con pipeline completo, etapas de venta y métricas de seguimiento listas para operar.</div>
+              </div>
+            </div>
+            <div class="dlv-row">
+              <div class="dlv-ico">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12V6h3v6M6.5 12V4H10v8M11 12V8h3v4"/></svg>
+              </div>
+              <div>
+                <div class="dlv-name">Medición y Análisis de Resultados</div>
+                <div class="dlv-desc">Cómo leer métricas clave, interpretar dashboards y tomar decisiones con datos, sin necesidad de ser analista.</div>
+              </div>
+            </div>
+            <div class="dlv-row">
+              <div class="dlv-ico">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8l2 2 4-4"/></svg>
+              </div>
+              <div>
+                <div class="dlv-name">MVP y Plan de Negocios</div>
+                <div class="dlv-desc">Al terminar el sprint, cada participante tiene un MVP documentado y un plan de negocios con proyecciones reales, presentado en el Demo Day.</div>
+              </div>
+            </div>
+            <div class="dlv-row">
+              <div class="dlv-ico">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 2l1.5 3.5H13l-2.75 2 1 3.5L8 9.5l-3.25 1.5 1-3.5L3 5.5h3.5L8 2Z"/></svg>
+              </div>
+              <div>
+                <div class="dlv-name">Certificado de Cumplimiento</div>
+                <div class="dlv-desc">Certificado emitido por Oscar B2B que acredita la finalización del Sprint de Modelado de Negocios con los entregables completados.</div>
+              </div>
+            </div>
+            <div class="dlv-row" style="border-color:rgba(245,166,35,.25);background:linear-gradient(135deg,rgba(245,166,35,.07),rgba(245,166,35,.03));">
+              <div class="dlv-ico" style="background:rgba(245,166,35,.18);border-color:rgba(245,166,35,.3);">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="8" cy="4" r="2"/><path d="M2 13c0-2 .9-3 2-3h8c1.1 0 2 1 2 3"/></svg>
+              </div>
+              <div>
+                <div class="dlv-name" style="color:var(--gold);">Comunidad Oscar B2B</div>
+                <div class="dlv-desc">Al finalizar el sprint, los participantes se integran a la red de ex-alumnos de Oscar B2B: acceso a sesiones de seguimiento, recursos exclusivos y una comunidad de jóvenes construyendo negocios reales.</div>
               </div>
             </div>
           </div>
@@ -433,46 +437,39 @@ textarea{resize:vertical;min-height:110px;}
             A quién va dirigido
           </div>
           <ul class="info-list">
-            <li>Jóvenes de 15 a 19 años con curiosidad por entender cómo funcionan los negocios.</li>
+            <li>Jóvenes de 17 a 21 años con curiosidad por entender cómo funcionan los negocios reales.</li>
             <li>No se requiere experiencia previa en tecnología ni programación.</li>
             <li>Se requiere disponibilidad completa durante los 5 días (lunes a viernes, 9 am – 3 pm).</li>
             <li>Actitud de trabajo activo — no es un programa de observación.</li>
           </ul>
         </div>
 
-        <!-- Proceso de selección -->
+        <!-- Proceso de inscripción -->
         <div class="section">
           <div class="sec-title">
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 1.5v12M3 5l4.5-3.5L12 5"/></svg>
-            Proceso de selección
+            Proceso de inscripción
           </div>
           <div class="steps">
             <div class="step-row">
               <div class="step-n">1</div>
               <div class="step-body">
-                <div class="step-title">Postulación</div>
-                <div class="step-desc">Formulario con datos básicos y respuesta corta a "¿por qué quieres entrar?"</div>
+                <div class="step-title">Completa el formulario</div>
+                <div class="step-desc">Llena el formulario de inscripción con tus datos. Las preguntas nos ayudan a conocerte y preparar tu experiencia en el sprint.</div>
               </div>
             </div>
             <div class="step-row">
               <div class="step-n">2</div>
               <div class="step-body">
-                <div class="step-title">Evaluación de perfil</div>
-                <div class="step-desc">Revisión interna en 48 horas. Se evalúa actitud y disposición, no experiencia previa.</div>
+                <div class="step-title">Pago y reserva de cupo</div>
+                <div class="step-desc">Una vez recibido el formulario, te enviamos los datos de pago. El cupo queda reservado al confirmar el pago.</div>
               </div>
             </div>
             <div class="step-row">
               <div class="step-n">3</div>
               <div class="step-body">
-                <div class="step-title">Entrevista (15 min)</div>
-                <div class="step-desc">Videollamada para conocer al participante y confirmar que el programa es lo que busca.</div>
-              </div>
-            </div>
-            <div class="step-row">
-              <div class="step-n">4</div>
-              <div class="step-body">
-                <div class="step-title">Confirmación de cupo</div>
-                <div class="step-desc">Asignación a Sprint Team y envío de información de pago y logística.</div>
+                <div class="step-title">Llamada de bienvenida</div>
+                <div class="step-desc">Antes del sprint agendamos una videollamada corta para presentarnos, resolver tus dudas y darte la logística completa.</div>
               </div>
             </div>
           </div>
@@ -485,53 +482,48 @@ textarea{resize:vertical;min-height:110px;}
             Para padres y representantes
           </div>
           <div class="faq">
+            <details class="fi" open>
+              <summary class="fq">¿Por qué es la mejor inversión para mi hijo?</summary>
+              <p class="fa">Tu hijo sale de los 5 días con algo que ningún adolescente en Caracas tiene: la capacidad de modelar un negocio, ejecutar una estrategia de ventas y presentar un MVP con proyecciones reales ante personas reales. Eso se traduce en dos posibilidades concretas. Sale con una habilidad que puede generar dinero de inmediato, o evita los miles de dólares que cuestan los errores de quien entra a emprender sin bases. Los $700 no son un gasto de educación. Son la diferencia entre un hijo con ventaja competitiva real y uno que aprende de golpes.</p>
+            </details>
             <details class="fi">
-              <summary class="fq">¿Qué incluye el precio de $700?</summary>
-              <p class="fa">5 días de formación presencial (9 am – 3 pm), materiales, licencias de software durante el sprint, mentoría con ratio máximo de 5 estudiantes por mentor, acceso al Demo Day y 1 mes de soporte en canal privado post-sprint. <!-- TODO: Confirmar política de alimentación (almuerzo, refrigerio o no incluido) --></p>
+              <summary class="fq">¿Qué incluye la inversión de $700?</summary>
+              <p class="fa">5 días de formación presencial (9 am a 3 pm), materiales del programa, licencias de software profesional, alimentación completa (desayuno, refrigerio y almuerzo), acceso al Demo Day, certificado de cumplimiento y 1 mes de soporte en canal privado post-sprint.</p>
             </details>
             <details class="fi">
               <summary class="fq">¿Necesita saber programar?</summary>
-              <p class="fa">No. Se trabaja con herramientas no-code (n8n, Airtable). Se requiere curiosidad matemática y disposición a trabajar con datos — no conocimiento de código.</p>
+              <p class="fa">No. Se trabaja con herramientas profesionales de uso empresarial real. Se requiere curiosidad y disposición a aprender, sin conocimiento técnico previo.</p>
             </details>
             <details class="fi">
               <summary class="fq">¿Necesita laptop propia?</summary>
-              <!-- TODO: Confirmar política de equipos -->
-              <p class="fa todo">Por confirmar — pendiente definir si los participantes deben traer equipo propio o se proveen en el venue.</p>
+              <p class="fa">Sí. El participante debe traer su propia laptop. Es el equipo de trabajo que usará durante los 5 días del sprint.</p>
             </details>
             <details class="fi">
               <summary class="fq">¿Dónde se realiza el programa?</summary>
               <!-- TODO: Confirmar dirección del venue -->
-              <p class="fa todo">Ubicación en Caracas por confirmar. Se notifica al correo del postulante al momento de confirmar el cupo.</p>
-            </details>
-            <details class="fi">
-              <summary class="fq">¿Qué pasa si no clasifica?</summary>
-              <p class="fa">El postulante queda en lista de espera para la siguiente edición. La postulación no tiene costo.</p>
+              <p class="fa todo">Ubicación en Caracas por confirmar. Se notifica al representante al confirmar el cupo.</p>
             </details>
             <details class="fi">
               <summary class="fq">¿Cuáles son las formas de pago?</summary>
               <!-- TODO: Confirmar métodos de pago -->
-              <p class="fa todo">Por confirmar — Oscar detalla las opciones (transferencia, Zelle, cuotas, etc.) durante la entrevista de selección.</p>
+              <p class="fa todo">Por confirmar. Las opciones de pago se detallan al momento de confirmar el cupo.</p>
             </details>
             <details class="fi">
               <summary class="fq">¿Cuándo es la próxima edición?</summary>
               <!-- TODO: Confirmar fechas -->
-              <p class="fa todo">Fechas por confirmar. Se notifican al postulante una vez confirmado el cupo.</p>
+              <p class="fa todo">Fechas por confirmar. Se notifican al representante al confirmar el cupo.</p>
             </details>
           </div>
         </div>
 
       </div><!-- end left column -->
 
-      <!-- ── SIDEBAR ── -->
+      <!-- SIDEBAR -->
       <aside class="sidebar">
 
         <div class="side-card">
           <div class="side-card-head">Resumen del curso</div>
           <div class="side-rows">
-            <div class="side-row">
-              <span class="side-row-label">Precio</span>
-              <span class="side-row-val gold">$700</span>
-            </div>
             <div class="side-row">
               <span class="side-row-label">Duración</span>
               <span class="side-row-val">5 días</span>
@@ -553,46 +545,35 @@ textarea{resize:vertical;min-height:110px;}
               <span class="side-row-val">25 máx.</span>
             </div>
             <div class="side-row">
-              <span class="side-row-label">Admisión</span>
-              <span class="side-row-val">Por entrevista</span>
-            </div>
-            <div class="side-row">
               <span class="side-row-label">Edad</span>
-              <span class="side-row-val">15 – 19 años</span>
+              <span class="side-row-val">17 – 21 años</span>
             </div>
             <div class="side-row">
-              <span class="side-row-label">Ratio mentor</span>
-              <span class="side-row-val">Máx. 5:1</span>
+              <span class="side-row-label">Inversión</span>
+              <span class="side-row-val gold">$700</span>
             </div>
           </div>
           <div class="side-cta">
             <a href="#form-section" class="btn-apply">
-              Aplicar al proceso de selección
+              Inscribirse al Sprint
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <p class="side-note">Postular es gratis. Respondemos en 48 horas.</p>
-          </div>
-        </div>
-
-        <div class="side-card">
-          <div class="side-card-head">Herramientas del programa</div>
-          <div class="side-rows">
-            <div class="side-row"><span class="side-row-label">Automatización</span><span class="side-row-val">n8n</span></div>
-            <div class="side-row"><span class="side-row-label">Base de datos</span><span class="side-row-val">Airtable</span></div>
-            <div class="side-row"><span class="side-row-label">Gestión de ventas</span><span class="side-row-val">CRM estructurado</span></div>
-            <div class="side-row"><span class="side-row-label">Caso de estudio</span><span class="side-row-val">Merch Caracas</span></div>
+            <p class="side-note">Cupos limitados. El cupo se confirma con el pago.</p>
           </div>
         </div>
 
         <div class="side-card">
           <div class="side-card-head">Incluye</div>
           <div class="side-rows">
-            <div class="side-row"><span class="side-row-label">Materiales</span><span class="side-row-val">✓</span></div>
+            <div class="side-row"><span class="side-row-label">Materiales del programa</span><span class="side-row-val">✓</span></div>
             <div class="side-row"><span class="side-row-label">Licencias de software</span><span class="side-row-val">✓</span></div>
             <div class="side-row"><span class="side-row-label">Demo Day</span><span class="side-row-val">✓</span></div>
+            <div class="side-row"><span class="side-row-label">Certificado</span><span class="side-row-val">✓</span></div>
             <div class="side-row"><span class="side-row-label">Soporte post-sprint</span><span class="side-row-val">1 mes</span></div>
-            <!-- TODO: Confirmar si incluye alimentación -->
-            <div class="side-row"><span class="side-row-label">Alimentación</span><span class="side-row-val todo">Por confirmar</span></div>
+            <div class="side-row"><span class="side-row-label">Alimentación</span><span class="side-row-val">✓</span></div>
+            <div class="side-row side-row-indent"><span class="side-row-label">Desayuno</span><span class="side-row-val">✓</span></div>
+            <div class="side-row side-row-indent"><span class="side-row-label">Refrigerio</span><span class="side-row-val">✓</span></div>
+            <div class="side-row side-row-indent"><span class="side-row-label">Almuerzo</span><span class="side-row-val">✓</span></div>
           </div>
         </div>
 
@@ -602,32 +583,47 @@ textarea{resize:vertical;min-height:110px;}
   </div>
 </div>
 
-<!-- FORMULARIO -->
+<!-- FORMULARIO DE INSCRIPCIÓN -->
 <div id="form-section">
   <div class="wrap">
     <div class="form-inner">
-      <h2 class="form-title">Formulario de aplicación</h2>
-      <p class="form-sub">Completá el formulario y te contactamos en 48 horas para los próximos pasos. Postular es gratis.</p>
+      <h2 class="form-title">Formulario de inscripción</h2>
+      <p class="form-sub">Completa todos los campos. Las preguntas nos ayudan a conocerte y preparar tu experiencia en el sprint.</p>
 
       <!--
-        TODO: Integrar con backend de formularios.
+        TODO: Integrar con servicio de formularios.
         Recomendado para GitHub Pages: Formspree (formspree.io)
-        Cambiar action="#" por action="https://formspree.io/f/YOUR_FORM_ID"
+        Cambiar el handler JS por: action="https://formspree.io/f/YOUR_ID"
       -->
+      <!-- PASO 1: Datos personales -->
       <form id="sprint-form" novalidate>
         <div class="fgrid">
+
+          <div class="field-group-title">Datos del estudiante</div>
+
           <div class="field">
-            <label for="nombre">Nombre del estudiante *</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required>
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
           </div>
           <div class="field">
             <label for="edad">Edad *</label>
             <select id="edad" name="edad" required>
               <option value="" disabled selected>Seleccionar</option>
-              <option>15 años</option><option>16 años</option>
-              <option>17 años</option><option>18 años</option><option>19 años</option>
+              <option>17 años</option><option>18 años</option>
+              <option>19 años</option><option>20 años</option><option>21 años</option>
             </select>
           </div>
+          <div class="field">
+            <label for="email">Correo electrónico *</label>
+            <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
+          </div>
+          <div class="field">
+            <label for="ciudad">Ciudad de residencia *</label>
+            <input type="text" id="ciudad" name="ciudad" placeholder="Ej. Caracas" required>
+          </div>
+
+          <div class="field-group-title">Datos del representante</div>
+
           <div class="field">
             <label for="rep">Nombre del representante *</label>
             <input type="text" id="rep" name="representante" placeholder="Papá, mamá o tutor" required>
@@ -636,23 +632,71 @@ textarea{resize:vertical;min-height:110px;}
             <label for="wa">WhatsApp del representante *</label>
             <input type="tel" id="wa" name="whatsapp" placeholder="+58 412 000 0000" required>
           </div>
+
           <div class="field full">
-            <label for="email">Correo electrónico *</label>
-            <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
+            <label for="disponibilidad">Confirma que tienes disponibilidad completa los 5 días (lunes a viernes, 9 am – 3 pm) *</label>
+            <select id="disponibilidad" name="disponibilidad" required>
+              <option value="" disabled selected>Seleccionar</option>
+              <option value="si">Sí, tengo disponibilidad completa</option>
+              <option value="parcial">Tengo conflicto en algún día (especificar en comentarios)</option>
+              <option value="no">No tengo disponibilidad en esas fechas</option>
+            </select>
           </div>
-          <div class="field full">
-            <label for="motivo">¿Por qué quieres entrar al Sprint? *</label>
-            <textarea id="motivo" name="motivo" placeholder="En tus propias palabras — sin fórmulas." required></textarea>
-          </div>
+
         </div>
-        <button type="submit" class="btn-submit">
-          Enviar aplicación →
+
+        <button type="button" id="btn-paso1" class="btn-submit">
+          Reservar cupo →
         </button>
+        <p class="form-note">Te contactamos por WhatsApp o correo con los datos de pago para reservar tu cupo.</p>
       </form>
 
+      <!-- PASO 2: Confirmación de pago + preguntas de conocimiento -->
+      <div id="paso2" style="display:none;">
+        <div style="margin-bottom:2rem;padding:1.25rem 1.5rem;background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);border-radius:var(--r);">
+          <p style="font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--gold);margin-bottom:.4rem;">Cupo reservado. Realiza el pago para confirmar tu lugar.</p>
+          <!-- TODO: Agregar instrucciones de pago (Zelle, transferencia, etc.) -->
+          <p style="font-size:.84rem;color:var(--g2);line-height:1.65;">Te enviamos los datos de pago al WhatsApp y correo indicados. Una vez confirmado el pago, completa las preguntas de conocimiento a continuación.</p>
+        </div>
+
+        <form id="sprint-form2" novalidate>
+          <div class="fgrid">
+
+            <div class="field-group-title" style="border-top:none;padding-top:0;margin-top:0;">Preguntas de conocimiento</div>
+
+            <div class="field full">
+              <label for="negocio">¿Tienes algún proyecto o idea de negocio actualmente? Descríbelo brevemente.</label>
+              <textarea id="negocio" name="negocio" placeholder="Si no tienes uno todavía, cuéntanos qué tipo de negocio te interesa o en qué área quisieras trabajar." style="min-height:80px;"></textarea>
+            </div>
+            <div class="field full">
+              <label for="ia">¿Has usado alguna herramienta de inteligencia artificial? ¿Cuál y para qué?</label>
+              <textarea id="ia" name="ia" placeholder="Ej. ChatGPT para hacer tareas, Canva AI para diseño, etc. Si no has usado ninguna, escribe 'ninguna'." style="min-height:80px;"></textarea>
+            </div>
+            <div class="field full">
+              <label for="ventas">¿Qué entiendes por vender? ¿Has vendido algo alguna vez?</label>
+              <textarea id="ventas" name="ventas" placeholder="Cuéntanos tu experiencia o cómo lo entiendes." style="min-height:80px;"></textarea>
+            </div>
+            <div class="field full">
+              <label for="motivo">¿Por qué quieres entrar al Sprint? *</label>
+              <textarea id="motivo" name="motivo" placeholder="En tus propias palabras: qué esperas llevarte y por qué este programa te llama la atención." required style="min-height:100px;"></textarea>
+            </div>
+            <div class="field full">
+              <label for="comentarios">Comentarios adicionales</label>
+              <textarea id="comentarios" name="comentarios" placeholder="Cualquier información adicional que quieras compartir." style="min-height:70px;"></textarea>
+            </div>
+
+          </div>
+
+          <button type="submit" class="btn-submit">
+            Enviar respuestas →
+          </button>
+          <p class="form-note">Tus respuestas nos ayudan a preparar tu experiencia en el sprint.</p>
+        </form>
+      </div>
+
       <div class="form-ok" id="form-ok">
-        <h3>Aplicación recibida ✓</h3>
-        <p>Gracias. Revisamos tu postulación y te contactamos en las próximas 48 horas por WhatsApp o correo con los próximos pasos.</p>
+        <h3>Todo listo ✓</h3>
+        <p>Recibimos tus respuestas. Nos vemos en el sprint.</p>
       </div>
     </div>
   </div>
@@ -673,7 +717,6 @@ textarea{resize:vertical;min-height:110px;}
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), {passive:true});
 
-// Sticky mobile CTA: ocultar cuando el form es visible
 const mobCta = document.getElementById('mob-cta');
 const formSec = document.getElementById('form-section');
 if (mobCta && formSec) {
@@ -681,17 +724,28 @@ if (mobCta && formSec) {
     .observe(formSec);
 }
 
-// Form
-document.getElementById('sprint-form').addEventListener('submit', function(e) {
-  e.preventDefault();
+function validateFields(form) {
   let ok = true;
-  this.querySelectorAll('[required]').forEach(f => {
+  form.querySelectorAll('[required]').forEach(f => {
     const empty = !f.value.trim();
     f.style.borderColor = empty ? 'rgba(245,100,100,.6)' : '';
     if (empty) ok = false;
   });
-  if (!ok) return;
-  this.style.display = 'none';
+  return ok;
+}
+
+document.getElementById('btn-paso1').addEventListener('click', function() {
+  const form = document.getElementById('sprint-form');
+  if (!validateFields(form)) return;
+  form.style.display = 'none';
+  document.getElementById('paso2').style.display = 'block';
+  document.getElementById('paso2').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+document.getElementById('sprint-form2').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (!validateFields(this)) return;
+  this.closest('#paso2').style.display = 'none';
   document.getElementById('form-ok').classList.add('on');
   // TODO: Reemplazar con envío real a Formspree u otro servicio
 });
