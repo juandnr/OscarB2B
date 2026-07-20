@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Configurar Notion — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#07904E;--ink:#0f0f0e;--mute:#777;--bg:#f3f4f1;--card:#fff;--line:#e8e8e5;--gs:#edf8f2;}
+html,body{background:var(--bg);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100%;}
+
+nav{background:var(--card);border-bottom:1px solid var(--line);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:baseline;gap:7px;line-height:1;text-decoration:none;color:var(--ink);}
+.lo{font-family:'Anton',sans-serif;font-size:16pt;text-transform:uppercase;}
+.lb{font-family:'Playfair Display',serif;font-style:italic;font-size:13pt;color:var(--mute);}
+.back{font-size:8pt;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);text-decoration:none;}
+.back:hover{color:var(--g);}
+
+.hero{background:var(--g);padding:40px;color:#fff;}
+.hero-ey{font-size:8pt;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px;}
+.hero-h{font-family:'Anton',sans-serif;font-size:46pt;text-transform:uppercase;line-height:.9;}
+.hero-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:17pt;color:rgba(255,255,255,.72);margin-top:10px;line-height:1.4;}
+
+.body{max-width:860px;margin:0 auto;padding:40px;}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px;}
+.why-card{background:var(--card);border-radius:10px;padding:20px 22px;}
+.why-n{font-family:'Anton',sans-serif;font-size:28pt;color:var(--g);line-height:.9;margin-bottom:6px;}
+.why-t{font-size:10.5pt;font-weight:700;margin-bottom:3px;}
+.why-d{font-size:9.5pt;line-height:1.6;color:var(--mute);}
+
+/* Steps */
+.step{background:var(--card);border-radius:10px;padding:28px;margin-bottom:16px;}
+.step-head{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.step-n{font-family:'Anton',sans-serif;font-size:36pt;color:var(--g);line-height:.88;flex-shrink:0;}
+.step-info h3{font-family:'Anton',sans-serif;font-size:18pt;text-transform:uppercase;line-height:.93;}
+.step-info p{font-size:10pt;color:var(--mute);margin-top:3px;}
+.step-body{font-size:11pt;line-height:1.7;color:#333;}
+.step-body p{margin-bottom:6px;}
+.step-body a{color:var(--g);font-weight:700;text-decoration:none;}
+.step-body a:hover{text-decoration:underline;}
+.step-body ul{padding-left:5mm;margin:6px 0;}
+.step-body li{margin-bottom:4px;color:#444;}
+.step-body strong{color:var(--ink);}
+
+/* Code block */
+.code-wrap{position:relative;margin:14px 0;}
+.code-block{background:#0f1410;color:#a8e6c3;border-radius:8px;padding:20px 22px;font-family:'Courier New',Courier,monospace;font-size:9.5pt;line-height:1.65;overflow-x:auto;white-space:pre;}
+.copy-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:5px 11px;font-size:8pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .15s;}
+.copy-btn:hover{background:rgba(255,255,255,.22);}
+.copy-btn.copied{background:rgba(7,144,78,.5);border-color:rgba(7,144,78,.6);}
+
+/* Table */
+.schema-table{width:100%;border-collapse:collapse;margin:10px 0;}
+.schema-table th{background:#f5f5f2;padding:8px 12px;text-align:left;font-size:8.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);}
+.schema-table td{padding:9px 12px;font-size:10.5pt;border:1px solid var(--line);color:#333;}
+.schema-table tr:nth-child(even) td{background:#fafaf8;}
+.td-type{font-family:'Courier New',monospace;font-size:9.5pt;color:var(--g);background:var(--gs);padding:2px 7px;border-radius:4px;}
+
+/* Notice */
+.notice{background:var(--gs);border-left:3px solid var(--g);border-radius:0 8px 8px 0;padding:14px 16px;margin:14px 0;font-size:10.5pt;line-height:1.65;color:#2a3a2f;}
+.notice strong{color:var(--g);}
+
+footer{border-top:1px solid var(--line);padding:16px 40px;display:flex;justify-content:space-between;font-size:8pt;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+
+@media(max-width:700px){.why-grid{grid-template-columns:1fr;}.hero-h{font-size:34pt;}nav,.hero,.body,footer{padding-left:20px;padding-right:20px;}}
+</style>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><rect width="120" height="80" fill="#07904E"/><text x="60" y="40" font-family="sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">NOTION</text><text x="60" y="58" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,.7)" text-anchor="middle">SETUP</text></svg></template>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo"><span class="lo">OSCAR</span><span class="lb">B2B</span></a>
+  <a href="index.html" class="back">← Centro de Operaciones</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-ey">Integración</div>
+  <h1 class="hero-h">CONECTA<br>CON NOTION</h1>
+  <p class="hero-sub">Sincroniza tu CRM y Dashboard directamente<br>con tus bases de datos en Notion.</p>
+</div>
+
+<div class="body">
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-n">01</div>
+      <div class="why-t">Acceso desde cualquier lugar</div>
+      <div class="why-d">Tus datos en Notion, no solo en tu navegador.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-n">02</div>
+      <div class="why-t">Edita en Notion también</div>
+      <div class="why-d">Agrega comentarios, filtros y vistas en Notion.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-n">03</div>
+      <div class="why-t">Un clic para sincronizar</div>
+      <div class="why-d">Pulsa el botón Notion en cada herramienta.</div>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">01</span>
+      <div class="step-info">
+        <h3>Crear el Worker en Cloudflare</h3>
+        <p>Gratis · ~5 minutos · No necesitas tarjeta de crédito</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <p><strong>1.</strong> Ve a <a href="https://dash.cloudflare.com" target="_blank">dash.cloudflare.com</a> y crea una cuenta gratuita.</p>
+      <p><strong>2.</strong> En el menú lateral, ve a <strong>Workers &amp; Pages → Create</strong>.</p>
+      <p><strong>3.</strong> Selecciona <strong>"Create Worker"</strong>, dale cualquier nombre (ej: <code>oscar-notion-proxy</code>).</p>
+      <p><strong>4.</strong> Borra todo el código que aparece y pega el código de abajo:</p>
+      <div class="code-wrap">
+        <pre class="code-block" id="worker-code">// Oscar B2B — Notion CORS Proxy Worker
+// Cloudflare Workers (gratis, dash.cloudflare.com)
+
+export default {
+  async fetch(request, env) {
+    const cors = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, Notion-Version',
+    };
+
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { headers: cors });
+    }
+
+    const url = new URL(request.url);
+    const target = 'https://api.notion.com' + url.pathname + url.search;
+    const hasBody = ['POST', 'PATCH', 'PUT'].includes(request.method);
+
+    const response = await fetch(target, {
+      method: request.method,
+      headers: {
+        'Authorization': request.headers.get('Authorization') || '',
+        'Notion-Version': '2022-06-28',
+        'Content-Type': 'application/json',
+      },
+      body: hasBody ? request.body : null,
+    });
+
+    const data = await response.text();
+
+    return new Response(data, {
+      status: response.status,
+      headers: { ...cors, 'Content-Type': 'application/json' },
+    });
+  }
+};</pre>
+        <button class="copy-btn" id="copy-btn" onclick="copyWorker()">Copiar</button>
+      </div>
+      <p><strong>5.</strong> Haz clic en <strong>"Deploy"</strong>. Copia la URL del Worker que aparece (ej: <code>https://oscar-notion-proxy.tusubdominio.workers.dev</code>). La necesitarás después.</p>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">02</span>
+      <div class="step-info">
+        <h3>Crear la Integración en Notion</h3>
+        <p>Genera el token que conecta las herramientas con tu workspace</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <p><strong>1.</strong> Ve a <a href="https://www.notion.so/my-integrations" target="_blank">notion.so/my-integrations</a>.</p>
+      <p><strong>2.</strong> Haz clic en <strong>"+ New integration"</strong>.</p>
+      <p><strong>3.</strong> Nómbrala <strong>"Oscar B2B Tools"</strong>, selecciona tu workspace y haz clic en Submit.</p>
+      <p><strong>4.</strong> Copia el <strong>Internal Integration Token</strong> (comienza con <code>secret_</code>). Guárdalo en un lugar seguro.</p>
+      <div class="notice"><strong>Importante:</strong> Este token es como una contraseña. No lo compartas públicamente.</div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">03</span>
+      <div class="step-info">
+        <h3>Crear las Bases de Datos en Notion</h3>
+        <p>Dos databases con propiedades exactas</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Crea <strong>dos bases de datos nuevas</strong> en Notion. Puedes crearlas en cualquier página de tu workspace.</p>
+      <p style="margin-top:10px;"><strong>Base de datos 1: "Oscar B2B — CRM"</strong></p>
+      <table class="schema-table">
+        <tr><th>Propiedad</th><th>Tipo en Notion</th></tr>
+        <tr><td>Empresa</td><td><span class="td-type">Title (predeterminado)</span></td></tr>
+        <tr><td>Contacto</td><td><span class="td-type">Text</span></td></tr>
+        <tr><td>Email</td><td><span class="td-type">Email</span></td></tr>
+        <tr><td>Teléfono</td><td><span class="td-type">Phone</span></td></tr>
+        <tr><td>Fase</td><td><span class="td-type">Select</span> (opciones: Lead, Diagnóstico, Propuesta, Onboarding, Activo, Cierre)</td></tr>
+        <tr><td>Valor USD</td><td><span class="td-type">Number</span> (formato: Dollar)</td></tr>
+        <tr><td>Próxima Acción</td><td><span class="td-type">Text</span></td></tr>
+        <tr><td>Notas</td><td><span class="td-type">Text</span></td></tr>
+        <tr><td>Fecha de Ingreso</td><td><span class="td-type">Date</span></td></tr>
+      </table>
+      <p style="margin-top:16px;"><strong>Base de datos 2: "Oscar B2B — KPIs"</strong></p>
+      <table class="schema-table">
+        <tr><th>Propiedad</th><th>Tipo en Notion</th></tr>
+        <tr><td>Período</td><td><span class="td-type">Title (predeterminado)</span> (formato: YYYY-MM)</td></tr>
+        <tr><td>Leads Generados</td><td><span class="td-type">Number</span></td></tr>
+        <tr><td>Tasa de Cierre %</td><td><span class="td-type">Number</span></td></tr>
+        <tr><td>Revenue Mensual $</td><td><span class="td-type">Number</span> (Dollar)</td></tr>
+        <tr><td>Velocidad Atención (días)</td><td><span class="td-type">Number</span></td></tr>
+        <tr><td>Empresas Llamadas</td><td><span class="td-type">Number</span></td></tr>
+        <tr><td>Contactos Efectivos</td><td><span class="td-type">Number</span></td></tr>
+        <tr><td>Registros Proveedor</td><td><span class="td-type">Number</span></td></tr>
+        <tr><td>Reuniones Agendadas</td><td><span class="td-type">Number</span></td></tr>
+        <tr><td>Notas</td><td><span class="td-type">Text</span></td></tr>
+      </table>
+      <p style="margin-top:14px;"><strong>Conectar las databases a la integración:</strong> abre cada database, ve a los <strong>3 puntos (···) → Add connections → Oscar B2B Tools</strong>.</p>
+      <p style="margin-top:10px;"><strong>Obtener el ID de cada database:</strong> el ID está en la URL de la database. Ejemplo: <code>notion.so/workspace/<strong>abc123def456...</strong>?v=...</code> — los primeros 32 caracteres después del último <code>/</code> y antes del <code>?</code>.</p>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">04</span>
+      <div class="step-info">
+        <h3>Configurar en el CRM y Dashboard</h3>
+        <p>Último paso — menos de 1 minuto</p>
+      </div>
+    </div>
+    <div class="step-body">
+      <p><strong>1.</strong> Abre el <a href="CRM.html">CRM</a> o el <a href="Dashboard.html">Dashboard</a>.</p>
+      <p><strong>2.</strong> Haz clic en el ícono <strong>⚙</strong> (arriba a la derecha).</p>
+      <p><strong>3.</strong> Ingresa:</p>
+      <ul>
+        <li><strong>Worker URL</strong> — la URL del Worker que copiaste en el paso 1</li>
+        <li><strong>Token de Integración</strong> — el <code>secret_...</code> del paso 2</li>
+        <li><strong>ID Base Datos CRM</strong> — el ID de la database CRM del paso 3</li>
+        <li><strong>ID Base Datos KPIs</strong> — el ID de la database KPIs del paso 3</li>
+      </ul>
+      <p><strong>4.</strong> Haz clic en <strong>"Probar conexión"</strong> — deberías ver "✓ Conexión exitosa".</p>
+      <p><strong>5.</strong> Guarda y ya está. Desde ahora, el botón <strong>"Notion"</strong> en la barra superior sincronizará tus datos.</p>
+      <div class="notice"><strong>Nota:</strong> La configuración se guarda en tu navegador. Si accedes desde otro computador, repite el paso 4 allí también.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Oscar B2B · Guía de Integración</span>
+  <a href="index.html" style="color:var(--mute);text-decoration:none;">← Centro de Operaciones</a>
+</footer>
+
+<script>
+function copyWorker(){
+  const code=document.getElementById('worker-code').textContent;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.getElementById('copy-btn');
+    btn.textContent='¡Copiado!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copiar';btn.classList.remove('copied');},2000);
+  });
+}
+</script>
+</body>
+</html>

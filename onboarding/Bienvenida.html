@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bienvenida — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#07904E;--ink:#111;--mute:#666;--line:#e5e5e2;--pad:18mm;}
+body{background:#b8b8b8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+.doc{width:210mm;margin:32px auto;display:flex;flex-direction:column;gap:20px;}
+.page{width:210mm;min-height:297mm;background:#fff;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.ph{color:var(--g);font-weight:700;background:#edf8f2;padding:1px 5px;border-radius:3px;}
+.back{display:block;width:210mm;margin:0 auto 12px;font-size:8.5pt;color:var(--mute);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;}
+.back:hover{color:var(--g);}
+
+/* PAGE 1: COVER */
+.cov{flex-direction:row;display:flex;}
+.cov-l{width:50%;padding:var(--pad);display:flex;flex-direction:column;justify-content:space-between;}
+.cov-r{width:50%;background:var(--g);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.logo-o{font-family:'Anton',sans-serif;font-size:22pt;text-transform:uppercase;letter-spacing:-.01em;}
+.logo-b{font-family:'Playfair Display',serif;font-style:italic;font-size:16pt;color:var(--mute);}
+.cov-ey{font-size:7.5pt;letter-spacing:.32em;text-transform:uppercase;color:var(--mute);margin-bottom:5mm;}
+.cov-h{font-family:'Anton',sans-serif;font-size:52pt;line-height:.88;text-transform:uppercase;color:var(--ink);}
+.cov-es{font-family:'Playfair Display',serif;font-style:italic;font-size:16pt;color:var(--mute);margin-top:6mm;line-height:1.5;}
+.cov-rule{height:.5px;background:var(--line);margin:6mm 0;}
+.cov-tag{font-size:7.5pt;letter-spacing:.24em;text-transform:uppercase;color:var(--mute);}
+
+/* PAGE 2+: BODY */
+.pg{padding:var(--pad);flex:1;display:flex;flex-direction:column;}
+.pg-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9mm;padding-bottom:6mm;border-bottom:1.5px solid var(--ink);}
+.pg-logo-o{font-family:'Anton',sans-serif;font-size:15pt;text-transform:uppercase;letter-spacing:-.01em;}
+.pg-logo-b{font-family:'Playfair Display',serif;font-style:italic;font-size:12pt;color:var(--mute);}
+.pg-ref{font-size:7.5pt;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);text-align:right;line-height:1.8;}
+
+.sec-ey{font-size:7.5pt;letter-spacing:.32em;text-transform:uppercase;color:var(--g);margin-bottom:2.5mm;display:flex;align-items:center;gap:9px;}
+.sec-ey::before{content:"";display:block;width:16px;height:1.5px;background:var(--g);}
+.sec-h{font-family:'Anton',sans-serif;font-size:26pt;text-transform:uppercase;line-height:.91;color:var(--ink);margin-bottom:5mm;}
+.body{font-size:11pt;line-height:1.78;color:#2a2a2a;text-wrap:pretty;}
+.body p{margin-bottom:3.5mm;}
+
+/* process steps */
+.proc{display:flex;flex-direction:column;gap:0;margin-top:6mm;}
+.proc-row{display:grid;grid-template-columns:9mm 1fr;gap:0 6mm;padding:5.5mm 0;border-bottom:.5px solid var(--line);}
+.proc-row:first-child{border-top:.5px solid var(--line);}
+.proc-n{font-family:'Anton',sans-serif;font-size:19pt;color:var(--g);line-height:.88;}
+.proc-t{font-size:11pt;font-weight:700;color:var(--ink);margin-bottom:1mm;}
+.proc-d{font-size:10pt;line-height:1.6;color:#555;}
+
+/* expectations */
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-top:6mm;}
+.exp-card{padding:6mm 7mm;border:1px solid var(--line);border-radius:4px;}
+.exp-card h4{font-family:'Anton',sans-serif;font-size:13pt;text-transform:uppercase;color:var(--ink);margin-bottom:3mm;line-height:.95;}
+.exp-card ul{list-style:none;display:flex;flex-direction:column;gap:2mm;}
+.exp-card li{font-size:10pt;line-height:1.6;color:#444;padding-left:4mm;position:relative;}
+.exp-card li::before{content:"→";position:absolute;left:0;color:var(--g);font-size:10pt;}
+.exp-card.green{background:var(--g);border-color:var(--g);}
+.exp-card.green h4{color:#fff;}
+.exp-card.green li{color:rgba(255,255,255,.85);}
+.exp-card.green li::before{color:#fff;}
+
+/* next steps */
+.steps{display:flex;flex-direction:column;gap:0;margin-top:6mm;}
+.step{display:grid;grid-template-columns:12mm 1fr;gap:0 6mm;padding:6mm 0;border-bottom:.5px solid var(--line);}
+.step:first-child{border-top:.5px solid var(--line);}
+.step-n{font-family:'Anton',sans-serif;font-size:22pt;color:var(--g);line-height:.85;}
+.step-t{font-size:11.5pt;font-weight:700;color:var(--ink);margin-bottom:1.5mm;}
+.step-d{font-size:10pt;line-height:1.6;color:#555;}
+
+/* contact footer */
+.contact-bar{margin-top:auto;padding-top:7mm;border-top:1.5px solid var(--ink);display:flex;justify-content:space-between;align-items:flex-end;}
+.contact-left .logo-o{font-size:18pt;}
+.contact-right{text-align:right;font-size:8.5pt;line-height:1.9;color:var(--mute);letter-spacing:.06em;}
+.contact-right a{color:var(--g);text-decoration:none;}
+
+/* print */
+@media print{
+  body{background:#fff;}.doc{margin:0;gap:0;}.page{break-after:page;}
+  .back{display:none;}*{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><rect width="120" height="80" fill="#07904E"/><text x="60" y="46" font-family="sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">BIENVENIDA</text></svg></template>
+</head>
+<body>
+
+<a href="index.html" class="back">← Centro de Operaciones</a>
+
+<div class="doc">
+
+<!-- ═══ PAGE 1 · PORTADA ═══ -->
+<div class="page cov">
+  <div class="cov-l">
+    <div>
+      <div class="logo-o">OSCAR</div>
+      <div class="logo-b">B2B</div>
+    </div>
+    <div>
+      <div class="cov-ey">Documento de Onboarding</div>
+      <h1 class="cov-h">BIENVE<br>NIDOS</h1>
+      <p class="cov-es">Empieza aquí.<br>Esto es lo que<br>viene.</p>
+    </div>
+    <div>
+      <div class="cov-rule"></div>
+      <div class="cov-tag">Preparado para: <span class="ph">[NOMBRE DEL CLIENTE]</span></div>
+    </div>
+  </div>
+  <div class="cov-r">
+    <svg viewBox="0 0 200 360" width="120" fill="none">
+      <path d="M28,28 L172,28 Q190,28 190,58 L190,74 Q190,104 172,104 L28,104 Q10,104 10,134 L10,150 Q10,180 28,180 L172,180 Q190,180 190,210 L190,226 Q190,256 172,256 L28,256 Q10,256 10,286 L10,302 Q10,332 28,332" stroke="rgba(255,255,255,.22)" stroke-width="38" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 2 · BIENVENIDA + PROCESO ═══ -->
+<div class="page">
+<div class="pg">
+  <div class="pg-header">
+    <div><div class="pg-logo-o">OSCAR</div><div class="pg-logo-b">B2B</div></div>
+    <div class="pg-ref">Bienvenida · Onboarding Package<br>Preparado para: <span class="ph">[NOMBRE]</span></div>
+  </div>
+
+  <div class="sec-ey">Mensaje Personal</div>
+  <div class="sec-h">EMPEZAMOS.</div>
+  <div class="body">
+    <p>Hola, <span class="ph">[Nombre]</span>. Me alegra que hayas tomado esta decisión. Lo que estás a punto de vivir no es una capacitación más — es un proceso estructurado para transformar la manera en que tu equipo vende.</p>
+    <p>Mi trabajo es darte claridad, estructura y las herramientas para que dejes de improvisar y empieces a crecer con un sistema. Tu trabajo es comprometerte con el proceso.</p>
+    <p>Este documento tiene todo lo que necesitas saber para arrancar con el pie derecho. Léelo completo y guárdalo.</p>
+  </div>
+
+  <div style="margin-top:8mm;">
+    <div class="sec-ey">Nuestro Proceso</div>
+    <div class="sec-h">LAS 6 FASES</div>
+  </div>
+
+  <div class="proc">
+    <div class="proc-row">
+      <span class="proc-n">01</span>
+      <div><div class="proc-t">Llamada de Diagnóstico</div><div class="proc-d">Entendemos el estado actual de tu equipo, tus procesos de venta y los cuellos de botella más urgentes.</div></div>
+    </div>
+    <div class="proc-row">
+      <span class="proc-n">02</span>
+      <div><div class="proc-t">Propuesta Personalizada</div><div class="proc-d">Diseñamos el plan de trabajo específico para tu empresa: servicios, tiempos y entregables claros.</div></div>
+    </div>
+    <div class="proc-row">
+      <span class="proc-n">03</span>
+      <div><div class="proc-t">Onboarding</div><div class="proc-d">Preparamos todo para arrancar: accesos, calendario de sesiones, materiales y alineación del equipo.</div></div>
+    </div>
+    <div class="proc-row">
+      <span class="proc-n">04</span>
+      <div><div class="proc-t">Fase Activa</div><div class="proc-d">Ejecutamos el plan: mentorías, capacitaciones, implementaciones y seguimiento semanal de métricas.</div></div>
+    </div>
+    <div class="proc-row">
+      <span class="proc-n">05</span>
+      <div><div class="proc-t">Revisión de Resultados</div><div class="proc-d">Medimos el impacto real, ajustamos la estrategia y documentamos lo aprendido.</div></div>
+    </div>
+    <div class="proc-row">
+      <span class="proc-n">06</span>
+      <div><div class="proc-t">Cierre o Continuidad</div><div class="proc-d">Definimos si renovamos, expandimos el alcance o te damos el playbook final para que ejecutes solo.</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- ═══ PAGE 3 · EXPECTATIVAS + PRÓXIMOS PASOS ═══ -->
+<div class="page">
+<div class="pg">
+  <div class="pg-header">
+    <div><div class="pg-logo-o">OSCAR</div><div class="pg-logo-b">B2B</div></div>
+    <div class="pg-ref">Bienvenida · Pág. 3</div>
+  </div>
+
+  <div class="sec-ey">Expectativas Mutuas</div>
+  <div class="sec-h">REGLAS DEL JUEGO</div>
+
+  <div class="exp-grid">
+    <div class="exp-card">
+      <h4>Lo que espero de ti</h4>
+      <ul>
+        <li>Asistir puntual a todas las sesiones</li>
+        <li>Completar las tareas entre sesiones</li>
+        <li>Comunicar bloqueos a tiempo, no al final</li>
+        <li>Involucrar activamente a tu equipo</li>
+        <li>Dar feedback honesto en cada etapa</li>
+      </ul>
+    </div>
+    <div class="exp-card green">
+      <h4>Lo que obtienes de mí</h4>
+      <ul>
+        <li>Puntualidad y preparación en cada sesión</li>
+        <li>Respuesta en menos de 24h en días hábiles</li>
+        <li>Materiales y recursos en tiempo real</li>
+        <li>Ajuste del plan si los resultados lo exigen</li>
+        <li>Acceso directo a mi red y herramientas</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:8mm;">
+    <div class="sec-ey">Comunicación</div>
+    <div class="sec-h">CÓMO NOS COMUNICAMOS</div>
+    <div class="body">
+      <p><strong>Canal principal:</strong> <span class="ph">[WhatsApp / Slack / Email]</span> — para consultas, archivos y actualizaciones rápidas.<br>
+      <strong>Sesiones:</strong> <span class="ph">[Zoom / Google Meet]</span> — link fijo que te envío antes de cada reunión.<br>
+      <strong>Horario de respuesta:</strong> Lunes a viernes, <span class="ph">[9am–6pm hora Venezuela]</span>. Mensajes fuera de horario son respondidos el siguiente día hábil.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:8mm;">
+    <div class="sec-ey">Acción Inmediata</div>
+    <div class="sec-h">PRÓXIMOS PASOS</div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step-n">01</span>
+      <div><div class="step-t">Firma el contrato</div><div class="step-d">Si aún no lo has hecho, firma el contrato de servicios para activar formalmente el proceso.</div></div>
+    </div>
+    <div class="step">
+      <span class="step-n">02</span>
+      <div><div class="step-t">Realiza el pago inicial</div><div class="step-d">Confirma el anticipo según las condiciones acordadas. Una vez recibido, activamos todo.</div></div>
+    </div>
+    <div class="step">
+      <span class="step-n">03</span>
+      <div><div class="step-t">Agenda la primera sesión</div><div class="step-d">Usa el link que te envío para agendar tu llamada de onboarding en las próximas <span class="ph">[48]</span> horas.</div></div>
+    </div>
+    <div class="step">
+      <span class="step-n">04</span>
+      <div><div class="step-t">Prepara tu equipo</div><div class="step-d">Informa a los miembros involucrados. Necesito que lleguen a la primera sesión con apertura para cambiar.</div></div>
+    </div>
+  </div>
+
+  <div class="contact-bar">
+    <div class="contact-left">
+      <div class="logo-o">OSCAR</div>
+      <div class="logo-b">B2B</div>
+    </div>
+    <div class="contact-right">
+      <span class="ph">[oscar@oscarb2b.com]</span><br>
+      <span class="ph">[+58 XXX XXX XXXX]</span><br>
+      oscarb2b.com
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>

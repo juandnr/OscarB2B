@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contrato de Servicios — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--g:#07904E;--ink:#111;--mute:#777;--line:#ddd;--pad:18mm;}
+body{background:#b8b8b8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+.doc{width:210mm;margin:32px auto;display:flex;flex-direction:column;gap:20px;}
+.page{width:210mm;min-height:297mm;background:#fff;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+
+/* back link */
+.back{display:block;width:210mm;margin:0 auto 12px;font-size:8.5pt;color:var(--mute);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;}
+.back:hover{color:var(--g);}
+
+/* placeholders */
+.ph{color:var(--g);font-weight:700;background:#edf8f2;padding:1px 5px;border-radius:3px;font-style:normal;}
+
+/* cover page */
+.cov{flex-direction:row;}
+.cov-l{width:48%;padding:var(--pad);display:flex;flex-direction:column;justify-content:space-between;}
+.cov-r{width:52%;background:var(--g);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.logo-a{font-family:'Anton',sans-serif;font-size:22pt;text-transform:uppercase;letter-spacing:-.01em;line-height:1;}
+.logo-b{font-family:'Playfair Display',serif;font-style:italic;font-size:17pt;color:var(--mute);}
+.cov-label{font-size:7.5pt;letter-spacing:.32em;text-transform:uppercase;color:var(--mute);margin-bottom:5mm;}
+.cov-h{font-family:'Anton',sans-serif;font-size:46pt;line-height:.88;text-transform:uppercase;color:var(--ink);}
+.cov-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:15pt;color:var(--mute);margin-top:6mm;line-height:1.45;}
+.cov-meta{border-top:1px solid var(--line);padding-top:5mm;display:flex;flex-direction:column;gap:3mm;}
+.cov-meta span{font-size:8.5pt;color:var(--mute);letter-spacing:.1em;}
+.cov-meta strong{color:var(--ink);}
+
+/* contract body page */
+.cbody{padding:var(--pad);}
+.c-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:7mm;border-bottom:1.5px solid var(--ink);}
+.c-header .logo-a{font-size:16pt;}
+.c-header .logo-b{font-size:13pt;}
+.c-ref{font-size:7.5pt;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);text-align:right;line-height:1.7;}
+
+.cl-title{font-family:'Anton',sans-serif;font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:var(--g);margin:7mm 0 3mm;display:flex;align-items:center;gap:8px;}
+.cl-title::before{content:"";display:block;width:16px;height:1.5px;background:var(--g);}
+.cl-body{font-size:10.5pt;line-height:1.75;color:#2a2a2a;text-wrap:pretty;}
+.cl-body p{margin-bottom:3mm;}
+.cl-body ul{padding-left:5mm;margin:2mm 0;}
+.cl-body li{margin-bottom:1.5mm;}
+
+.disclaimer{margin-top:8mm;padding:5mm 6mm;border:1px solid #e0e0e0;border-left:3px solid var(--g);border-radius:0 4px 4px 0;background:#f9faf8;}
+.disclaimer p{font-size:9pt;line-height:1.65;color:var(--mute);}
+.disclaimer strong{color:var(--ink);}
+
+/* signatures */
+.sigs{margin-top:10mm;display:grid;grid-template-columns:1fr 1fr;gap:12mm;}
+.sig{display:flex;flex-direction:column;gap:3mm;}
+.sig-line{height:.5px;background:var(--ink);margin-bottom:2mm;}
+.sig-label{font-size:8.5pt;font-weight:700;color:var(--ink);letter-spacing:.06em;text-transform:uppercase;}
+.sig-sub{font-size:8pt;color:var(--mute);line-height:1.5;}
+
+/* print button */
+.print-btn{position:fixed;bottom:24px;right:24px;background:var(--g);color:#fff;border:none;border-radius:6px;padding:12px 20px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9pt;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(7,144,78,.3);}
+.print-btn:hover{background:#058240;}
+
+@media print{
+  body{background:#fff;}
+  .doc{margin:0;gap:0;}
+  .page{break-after:page;}
+  .back,.print-btn{display:none;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><rect width="120" height="80" fill="#07904E"/><rect x="35" y="15" width="50" height="50" rx="3" fill="white" opacity=".9"/><text x="60" y="47" font-family="sans-serif" font-size="11" font-weight="bold" fill="#07904E" text-anchor="middle">CONTRATO</text></svg></template>
+</head>
+<body>
+
+<a href="index.html" class="back">← Centro de Operaciones</a>
+
+<div class="doc">
+
+<!-- ═══ PAGE 1 · PORTADA ═══ -->
+<div class="page cov" style="display:flex;">
+
+  <div class="cov-l">
+    <div>
+      <div class="logo-a">OSCAR</div>
+      <div class="logo-b">B2B</div>
+    </div>
+    <div>
+      <div class="cov-label">Documento Legal</div>
+      <h1 class="cov-h">CONTRATO<br>DE SERVI<br>CIOS</h1>
+      <p class="cov-sub">Prestación de Servicios<br>Profesionales B2B</p>
+    </div>
+    <div class="cov-meta">
+      <span>Versión: <strong>1.0</strong></span>
+      <span>Jurisdicción: <strong>República Bolivariana de Venezuela</strong></span>
+      <span>Fecha: <strong class="ph">[DD/MM/AAAA]</strong></span>
+    </div>
+  </div>
+
+  <div class="cov-r">
+    <svg viewBox="0 0 200 360" width="120" fill="none">
+      <path d="M28,28 L172,28 Q190,28 190,58 L190,74 Q190,104 172,104 L28,104 Q10,104 10,134 L10,150 Q10,180 28,180 L172,180 Q190,180 190,210 L190,226 Q190,256 172,256 L28,256 Q10,256 10,286 L10,302 Q10,332 28,332" stroke="rgba(255,255,255,.25)" stroke-width="38" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 2 · CUERPO DEL CONTRATO ═══ -->
+<div class="page cbody">
+
+  <div class="c-header">
+    <div>
+      <div class="logo-a">OSCAR</div>
+      <div class="logo-b" style="font-size:12pt;color:#777;">B2B</div>
+    </div>
+    <div class="c-ref">
+      Contrato de Prestación de Servicios<br>
+      Ref: <span class="ph">[CONT-001]</span> · <span class="ph">[DD/MM/AAAA]</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="cl-body">
+    <p>Por medio del presente instrumento, celebrado en la ciudad de <span class="ph">[CIUDAD]</span>, en fecha <span class="ph">[DD/MM/AAAA]</span>, comparecen de una parte <strong><span class="ph">[NOMBRE COMPLETO O RAZÓN SOCIAL DEL CLIENTE]</span></strong>, titular/RIF N° <span class="ph">[CI/RIF]</span>, representada por <span class="ph">[NOMBRE DEL REPRESENTANTE]</span>, en su carácter de <span class="ph">[CARGO]</span> (en adelante "El Cliente"); y de la otra parte, <strong>Oscar <span class="ph">[APELLIDO]</span></strong>, titular de la C.I. N° <span class="ph">[NÚMERO]</span>, que actúa bajo la marca comercial <strong>Oscar B2B</strong> (en adelante "El Consultor"). Ambas partes acuerdan suscribir el presente Contrato de Prestación de Servicios Profesionales, bajo los siguientes términos y condiciones:</p>
+  </div>
+
+  <!-- CLÁUSULA I -->
+  <div class="cl-title">Cláusula I · Objeto del Contrato</div>
+  <div class="cl-body">
+    <p>El Consultor se compromete a prestar al Cliente los siguientes servicios profesionales de consultoría y capacitación en ventas B2B: <span class="ph">[DESCRIPCIÓN DETALLADA DE LOS SERVICIOS: mentoría de equipo de ventas / implementación de CRM / capacitación 1:1 con vendedores / implementación de herramientas de IA / otro]</span>.</p>
+  </div>
+
+  <!-- CLÁUSULA II -->
+  <div class="cl-title">Cláusula II · Alcance y Entregables</div>
+  <div class="cl-body">
+    <p>Los servicios acordados incluyen:</p>
+    <ul>
+      <li><span class="ph">[ENTREGABLE 1: Ej. 4 sesiones de mentoría grupales mensuales]</span></li>
+      <li><span class="ph">[ENTREGABLE 2: Ej. Diagnóstico inicial del equipo de ventas]</span></li>
+      <li><span class="ph">[ENTREGABLE 3: Ej. Implementación y configuración del CRM]</span></li>
+    </ul>
+    <p style="margin-top:3mm;"><strong>No están incluidos</strong> en el alcance de este contrato: revisiones adicionales fuera del alcance acordado, soporte técnico no relacionado directamente con los servicios contratados, ni servicios de implementación de terceros no especificados.</p>
+  </div>
+
+  <!-- CLÁUSULA III -->
+  <div class="cl-title">Cláusula III · Duración y Plazos</div>
+  <div class="cl-body">
+    <p>El presente contrato tendrá una vigencia de <span class="ph">[X meses/semanas]</span>, comenzando el <span class="ph">[FECHA DE INICIO]</span> y finalizando el <span class="ph">[FECHA DE FIN]</span>. Podrá renovarse mediante acuerdo escrito entre las partes con al menos <span class="ph">[15]</span> días de anticipación a su vencimiento.</p>
+  </div>
+
+  <!-- CLÁUSULA IV -->
+  <div class="cl-title">Cláusula IV · Honorarios y Condiciones de Pago</div>
+  <div class="cl-body">
+    <p>El Cliente pagará al Consultor un total de <span class="ph">[MONTO]</span> <span class="ph">[USD / Bs.]</span>, estructurado de la siguiente manera:</p>
+    <ul>
+      <li><strong>Anticipo:</strong> <span class="ph">[X%]</span> al momento de la firma del contrato.</li>
+      <li><strong>Balance:</strong> <span class="ph">[X%]</span> pagadero <span class="ph">[al inicio de cada mes / al finalizar el servicio / en cuotas quincenales]</span>.</li>
+    </ul>
+    <p style="margin-top:2mm;">Los pagos se realizarán mediante <span class="ph">[transferencia bancaria / Zelle / Pago Móvil / otro]</span> a los datos indicados por El Consultor. El incumplimiento de un pago por más de <span class="ph">[5]</span> días hábiles faculta al Consultor a suspender los servicios hasta regularización.</p>
+  </div>
+
+  <!-- CLÁUSULA V -->
+  <div class="cl-title">Cláusula V · Propiedad Intelectual</div>
+  <div class="cl-body">
+    <p>Todo el contenido, metodologías, frameworks, materiales, presentaciones y sistemas desarrollados por El Consultor son de su <strong>exclusiva propiedad intelectual</strong>, protegidos por la Ley sobre el Derecho de Autor de la República Bolivariana de Venezuela. El Cliente recibe una licencia de uso no exclusiva, intransferible y limitada al alcance de este contrato. Queda <strong>expresamente prohibido</strong> reproducir, distribuir, vender, sublicenciar o hacer uso comercial de dichos materiales sin autorización escrita del Consultor.</p>
+  </div>
+
+  <!-- CLÁUSULA VI -->
+  <div class="cl-title">Cláusula VI · Confidencialidad</div>
+  <div class="cl-body">
+    <p>Ambas partes se comprometen a mantener estricta confidencialidad sobre toda información sensible, estratégica, comercial o de cualquier naturaleza que intercambien durante la vigencia de este contrato y durante un período de <strong>2 (dos) años</strong> posteriores a su terminación. Esta obligación incluye datos de clientes, estrategias comerciales, procesos internos y resultados obtenidos.</p>
+  </div>
+
+  <!-- CLÁUSULA VII -->
+  <div class="cl-title">Cláusula VII · Cancelación y Terminación Anticipada</div>
+  <div class="cl-body">
+    <p>Cualquiera de las partes podrá dar por terminado este contrato mediante notificación escrita con <span class="ph">[15]</span> días de anticipación. En caso de cancelación anticipada por parte del Cliente: <span class="ph">[los montos ya pagados no serán reembolsables / se facturará el trabajo proporcional ejecutado]</span>. En caso de cancelación por parte del Consultor por causas no imputables al Cliente, se reembolsará la parte proporcional correspondiente al trabajo no realizado.</p>
+  </div>
+
+  <!-- CLÁUSULA VIII -->
+  <div class="cl-title">Cláusula VIII · Limitación de Responsabilidad</div>
+  <div class="cl-body">
+    <p>El Consultor no garantiza resultados comerciales específicos, ya que estos dependen de factores externos al alcance de los servicios y de la implementación efectiva por parte del equipo del Cliente. La responsabilidad del Consultor se limita al valor total del contrato en caso de incumplimiento comprobable de sus obligaciones.</p>
+  </div>
+
+  <!-- CLÁUSULA IX -->
+  <div class="cl-title">Cláusula IX · Jurisdicción y Resolución de Conflictos</div>
+  <div class="cl-body">
+    <p>El presente contrato se rige por las leyes de la <strong>República Bolivariana de Venezuela</strong>. Para cualquier controversia que no pueda resolverse de mutuo acuerdo, las partes se someten a la jurisdicción de los tribunales competentes de la ciudad de <span class="ph">[CIUDAD]</span>.</p>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <p><strong>Nota:</strong> Esta es una plantilla orientativa. Se recomienda que El Consultor la revise y ajuste con un abogado venezolano antes de usarla en contratos formales. Los términos marcados con color verde deben ser completados antes de firmar.</p>
+  </div>
+
+  <!-- FIRMAS -->
+  <div class="sigs">
+    <div class="sig">
+      <div class="sig-line"></div>
+      <div class="sig-label">El Cliente</div>
+      <div class="sig-sub">
+        Nombre: <span class="ph">[NOMBRE]</span><br>
+        Cargo: <span class="ph">[CARGO]</span><br>
+        C.I. / RIF: <span class="ph">[NÚMERO]</span><br>
+        Fecha: <span class="ph">[DD/MM/AAAA]</span>
+      </div>
+    </div>
+    <div class="sig">
+      <div class="sig-line"></div>
+      <div class="sig-label">El Consultor — Oscar B2B</div>
+      <div class="sig-sub">
+        Nombre: Oscar <span class="ph">[APELLIDO]</span><br>
+        C.I.: <span class="ph">[NÚMERO]</span><br>
+        Marca: Oscar B2B<br>
+        Fecha: <span class="ph">[DD/MM/AAAA]</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /doc -->
+
+<button class="print-btn" id="print-btn">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="9" rx="1.5" stroke="#fff" stroke-width="1.5"/><path d="M5 5V3h6v2M5 11h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+  Imprimir / PDF
+</button>
+<script>document.getElementById('print-btn').addEventListener('click',function(){window.print();});</script>
+
+</body>
+</html>
