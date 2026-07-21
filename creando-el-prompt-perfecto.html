@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="La fórmula R-C-O-F para crear prompts que generan resultados reales. Del prompt novato al prompt profesional en segundos.">
+<title>Creando el prompt perfecto — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a0a0a;--bg-1:#0e0e0e;
+  --glass:rgba(255,255,255,0.04);--glass-b:rgba(255,255,255,0.08);
+  --gold:#F5A623;--white:#F5F5F5;--g1:#CCCCCC;--g2:#888888;--g3:#444444;
+  --red-dim:rgba(255,80,80,0.06);--red-bdr:rgba(255,80,80,0.15);
+  --fh:'Space Grotesk',sans-serif;--fb:'Inter',sans-serif;--nav-h:64px;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:var(--fb);line-height:1.65;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+.wrap{width:100%;max-width:1200px;margin-inline:auto;padding-inline:clamp(1.25rem,5vw,2.5rem);}
+.art-nav{height:var(--nav-h);display:flex;align-items:center;border-bottom:1px solid var(--glass-b);background:rgba(10,10,10,0.95);backdrop-filter:blur(24px);position:sticky;top:0;z-index:50;}
+.art-nav .wrap{display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--fh);font-size:1.2rem;font-weight:700;}
+.nav-logo span{color:var(--gold);}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--g2);transition:color 200ms;}
+.back-link:hover{color:var(--gold);}
+.art-hero{padding:3.5rem 0 2.5rem;}
+.art-tag{display:inline-flex;align-items:center;font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:4px 12px;border-radius:100px;background:rgba(245,166,35,0.1);color:var(--gold);border:1px solid rgba(245,166,35,0.2);margin-bottom:1.25rem;}
+.art-title{font-family:var(--fh);font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-0.025em;max-width:820px;margin-bottom:1rem;}
+.art-sub{font-size:1.05rem;color:var(--g2);max-width:640px;line-height:1.65;margin-bottom:1.5rem;}
+.art-meta{display:flex;align-items:center;gap:0.75rem;font-size:0.8rem;color:var(--g3);}
+.art-meta span{color:var(--g2);}
+.art-divider{height:1px;background:var(--glass-b);margin:2.5rem 0;}
+.art-body{max-width:700px;padding-bottom:5rem;}
+.art-body p{font-size:1rem;line-height:1.82;color:var(--g1);margin-bottom:1.25rem;}
+.art-body h2{font-family:var(--fh);font-size:1.3rem;font-weight:700;color:var(--white);margin:2.5rem 0 0.85rem;line-height:1.25;}
+.art-body h2::before{content:'';display:block;width:22px;height:2px;background:var(--gold);margin-bottom:0.5rem;}
+.art-body h3{font-family:var(--fh);font-size:1.05rem;font-weight:700;color:var(--white);margin:1.75rem 0 0.5rem;}
+.art-body ul{margin:0.75rem 0 1.25rem;padding:0;list-style:none;display:flex;flex-direction:column;gap:0.65rem;}
+.art-body li{font-size:0.97rem;color:var(--g1);line-height:1.72;padding-left:1.25rem;position:relative;}
+.art-body li::before{content:'—';position:absolute;left:0;color:var(--gold);font-weight:700;}
+.art-body strong{color:var(--white);font-weight:600;}
+.highlight{background:var(--glass);border-left:2px solid var(--gold);border-radius:0 8px 8px 0;padding:1.1rem 1.25rem;margin:1.5rem 0;}
+.highlight p{margin:0;font-size:0.95rem;color:var(--g1);}
+/* Good / Bad comparison */
+.ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin:1rem 0 1.5rem;}
+.ex-box{border-radius:10px;padding:1rem 1.25rem;}
+.ex-bad{background:var(--red-dim);border:1px solid var(--red-bdr);}
+.ex-good{background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.2);}
+.ex-label{font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem;}
+.ex-bad .ex-label{color:rgba(255,120,120,0.85);}
+.ex-good .ex-label{color:var(--gold);}
+.ex-box p{font-size:0.88rem;color:var(--g1);line-height:1.6;margin:0;}
+/* Prompt block */
+.prompt-block{background:var(--glass);border:1px solid var(--glass-b);border-radius:10px;padding:1.1rem 1.25rem;margin:1rem 0;font-size:0.9rem;color:var(--g1);line-height:1.7;font-style:italic;}
+.prompt-label{font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;font-style:normal;}
+/* Formula pills */
+.formula{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin:1rem 0 1.5rem;}
+.formula-pill{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);border-radius:100px;padding:0.35rem 0.9rem;font-size:0.82rem;font-weight:700;color:var(--gold);font-family:var(--fh);}
+.formula-sep{color:var(--g3);font-weight:700;}
+.sprint-cta{background:var(--bg-1);border-top:1px solid var(--glass-b);border-bottom:1px solid var(--glass-b);padding:4rem 0;text-align:center;}
+.sprint-cta h3{font-family:var(--fh);font-size:1.65rem;font-weight:700;margin-bottom:0.7rem;}
+.sprint-cta h3 span{color:var(--gold);}
+.sprint-cta p{font-size:0.93rem;color:var(--g2);max-width:400px;margin:0 auto 1.75rem;line-height:1.65;}
+.btn-cta{display:inline-flex;align-items:center;gap:0.5rem;padding:0.9rem 2rem;background:var(--gold);color:#0a0a0a;font-size:0.93rem;font-weight:700;border-radius:10px;font-family:var(--fh);transition:transform 200ms,box-shadow 200ms;}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(245,166,35,0.3);}
+.art-footer{padding:1.75rem 0;border-top:1px solid var(--glass-b);}
+.art-footer .wrap{display:flex;justify-content:space-between;align-items:center;}
+.foot-logo{font-family:var(--fh);font-size:1.05rem;font-weight:700;}
+.foot-logo span{color:var(--gold);}
+.foot-copy{font-size:0.78rem;color:var(--g3);}
+@media(max-width:768px){.ex-grid{grid-template-columns:1fr;}.art-footer .wrap{flex-direction:column;gap:0.5rem;text-align:center;}}
+</style>
+</head>
+<body>
+
+<header class="art-nav">
+  <div class="wrap">
+    <a href="../index.html" class="nav-logo">Oscar<span>b2b</span></a>
+    <a href="../blog.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Blog
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="art-hero">
+      <div class="art-tag">Blog · Inteligencia Artificial</div>
+      <h1 class="art-title">Creando el prompt perfecto</h1>
+      <p class="art-sub">La fórmula para evitar respuestas mediocres. Del prompt novato al prompt profesional: cómo instruir a la IA como un consultor de alto nivel.</p>
+      <div class="art-meta">
+        <span>Oscar Paez</span>
+        <span>·</span>
+        <span>5 min de lectura</span>
+      </div>
+    </div>
+    <div class="art-divider"></div>
+    <div class="art-body">
+
+      <p>La mayoría de los fundadores y líderes de equipo usan Inteligencia Artificial como si fuera un buscador de Google glorificado. Entran a Claude, ChatGPT o Gemini, escriben <em>"hazme un guion para ventas"</em> o <em>"redáctame un correo para prospectar"</em>, y se sorprenden cuando la herramienta les devuelve un texto genérico, aburrido y totalmente desconectado de su negocio.</p>
+
+      <p>Ahí es donde cometen el gran error: <strong>la IA no es adivina, es un empleado ultraeficiente que solo ejecuta tan bien como tú le instruyas.</strong> Si le das un input mediocre, vas a recibir un output inservible.</p>
+
+      <p>Aprender a redactar la instrucción correcta —lo que en tecnología llamamos prompting— no es una habilidad "técnica" o de programadores; es una competencia de liderazgo y claridad estratégica.</p>
+
+      <h2>La anatomía del Prompt Perfecto: La fórmula R-C-O-F</h2>
+
+      <p>Para que una IA piense y redacte como un consultor o vendedor de alto nivel, tu prompt debe contener 4 bloques clave:</p>
+
+      <div class="formula">
+        <span class="formula-pill">Rol</span>
+        <span class="formula-sep">+</span>
+        <span class="formula-pill">Contexto y Objetivo</span>
+        <span class="formula-sep">+</span>
+        <span class="formula-pill">Formato</span>
+        <span class="formula-sep">+</span>
+        <span class="formula-pill">Filtros / Límites</span>
+      </div>
+
+      <h3>1. El Rol — quién es la IA</h3>
+      <p>No le pidas a la IA que redacte simplemente un texto. Asígnale una personalidad, una profesión y un nivel de experiencia.</p>
+      <div class="ex-grid">
+        <div class="ex-box ex-bad"><div class="ex-label">Mal</div><p>"Escribe un correo de ventas."</p></div>
+        <div class="ex-box ex-good"><div class="ex-label">Bien</div><p>"Actúa como un Director de Ventas B2B con 15 años de experiencia en servicios de alto ticket."</p></div>
+      </div>
+
+      <h3>2. El Contexto y Objetivo — qué queremos lograr y para quién</h3>
+      <p>Explícale a la IA el escenario real. ¿A quién le estamos hablando? ¿Cuál es el Perfil de Cliente Ideal? ¿Qué dolor queremos atacar?</p>
+      <div class="ex-grid">
+        <div class="ex-box ex-bad"><div class="ex-label">Mal</div><p>"Ofrece mi servicio de consultoría."</p></div>
+        <div class="ex-box ex-good"><div class="ex-label">Bien</div><p>"Le vas a escribir a un Director de Operaciones de una empresa de logística. Su dolor principal es que pierde tiempo gestionando datos en Excel. El objetivo es que agende una llamada de 15 minutos."</p></div>
+      </div>
+
+      <h3>3. El Formato de Salida — cómo debe entregarlo</h3>
+      <p>Dile exactamente cómo quieres la respuesta para no perder tiempo editando.</p>
+      <div class="ex-grid">
+        <div class="ex-box ex-bad"><div class="ex-label">Mal</div><p>"Dame algunas ideas."</p></div>
+        <div class="ex-box ex-good"><div class="ex-label">Bien</div><p>"Entrégame 3 opciones de correos fríos. Cada opción: Asunto corto (máx 5 palabras), Gancho, Propuesta de valor en 2 oraciones, y un CTA directo."</p></div>
+      </div>
+
+      <h3>4. Filtros y Límites — lo que NO debe hacer</h3>
+      <p>Aquí es donde eliminas el "relleno" típico de la IA. Tiende a ser cursi, usar lenguaje corporativo trillado o extenderse innecesariamente.</p>
+      <div class="ex-grid">
+        <div class="ex-box ex-bad"><div class="ex-label">Mal</div><p>(Sin filtro)</p></div>
+        <div class="ex-box ex-good"><div class="ex-label">Bien</div><p>"Usa un tono directo, profesional y conversacional. Prohibido palabras como 'revolucionario', 'sinergia' o 'paradigma'. Máximo 120 palabras por correo."</p></div>
+      </div>
+
+      <h2>Ejemplo práctico: del prompt novato al prompt profesional</h2>
+
+      <div class="prompt-label">El prompt novato (output: basura inservible)</div>
+      <div class="prompt-block">"Hazme una secuencia de correos para vender mi software de CRM."</div>
+
+      <div class="prompt-label">El prompt profesional (output: listo para ejecutar)</div>
+      <div class="prompt-block">"Actúa como un especialista en Outbound B2B. Necesito diseñar una secuencia de 2 correos fríos para prospectar Dueños de Agencias de Marketing de 10 a 50 empleados. Su problema principal es que no tienen visibilidad de sus prospectos porque su equipo usa hojas de cálculo. Mi solución es una implementación de CRM a medida. Reglas: Tono colegial, directo, al grano y sin rodeos. Límite: menos de 100 palabras por correo. Formato: Asunto, Cuerpo y CTA claro. Evita sonar como un vendedor desesperado o usar frases clichés."</div>
+
+      <h2>La regla de oro: la IA es un proceso de iteración</h2>
+
+      <p>El prompt perfecto rara vez sale a la primera. La magia ocurre en la segunda y tercera interacción. Si la primera respuesta no te convence al 100%, no borres la conversación ni empieces de cero. Corrígela como corregirías a un asistente humano:</p>
+
+      <ul>
+        <li>"El tono está muy formal, hazlo más directo."</li>
+        <li>"Recorta el segundo párrafo a la mitad y enfócate más en el ahorro de tiempo."</li>
+        <li>"Dame 3 alternativas para el asunto."</li>
+      </ul>
+
+      <h2>La claridad en tu mente genera claridad en la IA</h2>
+
+      <p>Redactar buenos prompts no se trata de memorizar palabras mágicas. Se trata de tener <strong>claridad estratégica sobre tu propio negocio.</strong> Si no sabes exactamente a quién le vendes, qué dolor resuelves o qué quieres lograr, ninguna IA del mundo podrá adivinarlo por ti.</p>
+
+      <h2>Bonus: dos técnicas avanzadas</h2>
+
+      <h3>Few-Shot Prompting (enséñale con ejemplos reales)</h3>
+      <p>La IA aprende por patrones. En lugar de explicar durante diez párrafos cómo quieres que escriba, dale de 1 a 3 ejemplos exactos de lo que consideras un trabajo bien hecho. Agrega al prompt: <em>"Analiza la estructura, brevedad y tono de estos ejemplos. Ahora redacta una nueva propuesta siguiendo exactamente este mismo patrón."</em></p>
+
+      <h3>Chain of Thought (pídele que razone antes de responder)</h3>
+      <p>Para problemas complejos (estrategia de precios, detección de fallas, calificación de clientes), agrega al final del prompt: <strong>"Antes de darme la respuesta final, analiza el problema paso a paso en voz alta."</strong> Al forzarla a desglosar el razonamiento, el resultado será infinitamente más profundo, lógico y ejecutable.</p>
+
+      <div class="highlight">
+        <p>Estructura tus ideas, dale el contexto adecuado a la tecnología y convierte la Inteligencia Artificial en la ventaja competitiva más agresiva de tu empresa.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="sprint-cta">
+    <div class="wrap">
+      <h3>Sprint de <span>Inteligencia Empresarial</span></h3>
+      <p>5 días presenciales en Caracas para forjar criterio comercial real. Agosto–Septiembre 2026.</p>
+      <a href="../sprint.html" class="btn-cta">Ver el programa →</a>
+    </div>
+  </section>
+</main>
+
+<footer class="art-footer">
+  <div class="wrap">
+    <div class="foot-logo">Oscar<span>b2b</span></div>
+    <p class="foot-copy">© 2025 Oscarb2b. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+</body>
+</html>

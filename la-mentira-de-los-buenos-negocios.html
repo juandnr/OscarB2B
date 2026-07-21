@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="El 'mejor negocio del mundo' no existe. La clave no está en la industria, sino en la alineación entre el fundador y su empresa.">
+<title>La mentira de los buenos negocios — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a0a0a;--bg-1:#0e0e0e;
+  --glass:rgba(255,255,255,0.04);--glass-b:rgba(255,255,255,0.08);
+  --gold:#F5A623;--gold-dim:rgba(245,166,35,0.10);--gold-glow:rgba(245,166,35,0.22);
+  --white:#F5F5F5;--g1:#CCCCCC;--g2:#888888;--g3:#444444;
+  --fh:'Space Grotesk',sans-serif;--fb:'Inter',sans-serif;
+  --nav-h:64px;--r-sm:12px;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:var(--fb);line-height:1.65;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+.wrap{width:100%;max-width:1200px;margin-inline:auto;padding-inline:clamp(1.25rem,5vw,2.5rem);}
+
+/* NAV */
+.art-nav{height:var(--nav-h);display:flex;align-items:center;border-bottom:1px solid var(--glass-b);background:rgba(10,10,10,0.95);backdrop-filter:blur(24px);position:sticky;top:0;z-index:50;}
+.art-nav .wrap{display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--fh);font-size:1.2rem;font-weight:700;}
+.nav-logo span{color:var(--gold);}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--g2);transition:color 200ms;}
+.back-link:hover{color:var(--gold);}
+.back-link svg{flex-shrink:0;}
+
+/* HERO */
+.art-hero{padding:3.5rem 0 2.5rem;}
+.art-tag{display:inline-flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:4px 12px;border-radius:100px;background:rgba(245,166,35,0.1);color:var(--gold);border:1px solid rgba(245,166,35,0.2);margin-bottom:1.25rem;}
+.art-title{font-family:var(--fh);font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-0.025em;max-width:820px;margin-bottom:1rem;}
+.art-sub{font-size:1.05rem;color:var(--g2);max-width:640px;line-height:1.65;margin-bottom:1.5rem;}
+.art-meta{display:flex;align-items:center;gap:0.75rem;font-size:0.8rem;color:var(--g3);}
+.art-meta span{color:var(--g2);}
+.art-divider{height:1px;background:var(--glass-b);margin:2.5rem 0;}
+
+/* BODY */
+.art-body{max-width:700px;padding-bottom:5rem;}
+.art-body p{font-size:1rem;line-height:1.82;color:var(--g1);margin-bottom:1.25rem;}
+.art-body h2{font-family:var(--fh);font-size:1.3rem;font-weight:700;color:var(--white);margin:2.5rem 0 0.85rem;line-height:1.25;}
+.art-body h2::before{content:'';display:block;width:22px;height:2px;background:var(--gold);margin-bottom:0.5rem;}
+.art-body ul{margin:0.75rem 0 1.25rem;padding:0;list-style:none;display:flex;flex-direction:column;gap:0.65rem;}
+.art-body li{font-size:0.97rem;color:var(--g1);line-height:1.72;padding-left:1.25rem;position:relative;}
+.art-body li::before{content:'—';position:absolute;left:0;color:var(--gold);font-weight:700;}
+.art-body strong{color:var(--white);font-weight:600;}
+.highlight{background:var(--glass);border-left:2px solid var(--gold);border-radius:0 8px 8px 0;padding:1.1rem 1.25rem;margin:1.5rem 0;}
+.highlight p{margin:0;font-size:0.95rem;color:var(--g1);}
+
+/* SPRINT CTA */
+.sprint-cta{background:var(--bg-1);border-top:1px solid var(--glass-b);border-bottom:1px solid var(--glass-b);padding:4rem 0;text-align:center;}
+.sprint-cta h3{font-family:var(--fh);font-size:1.65rem;font-weight:700;margin-bottom:0.7rem;}
+.sprint-cta h3 span{color:var(--gold);}
+.sprint-cta p{font-size:0.93rem;color:var(--g2);max-width:400px;margin:0 auto 1.75rem;line-height:1.65;}
+.btn-cta{display:inline-flex;align-items:center;gap:0.5rem;padding:0.9rem 2rem;background:var(--gold);color:#0a0a0a;font-size:0.93rem;font-weight:700;border-radius:10px;font-family:var(--fh);transition:transform 200ms,box-shadow 200ms;}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(245,166,35,0.3);}
+
+/* FOOTER */
+.art-footer{padding:1.75rem 0;border-top:1px solid var(--glass-b);}
+.art-footer .wrap{display:flex;justify-content:space-between;align-items:center;}
+.foot-logo{font-family:var(--fh);font-size:1.05rem;font-weight:700;}
+.foot-logo span{color:var(--gold);}
+.foot-copy{font-size:0.78rem;color:var(--g3);}
+
+@media(max-width:768px){.art-footer .wrap{flex-direction:column;gap:0.5rem;text-align:center;}}
+</style>
+</head>
+<body>
+
+<header class="art-nav">
+  <div class="wrap">
+    <a href="../index.html" class="nav-logo">Oscar<span>b2b</span></a>
+    <a href="../blog.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Blog
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="art-hero">
+      <div class="art-tag">Blog · Negocios</div>
+      <h1 class="art-title">La mentira de los buenos negocios</h1>
+      <p class="art-sub">El "mejor negocio del mundo" no existe. Por qué la clave no es la industria, sino la alineación entre el fundador y su empresa.</p>
+      <div class="art-meta">
+        <span>Oscar Paez</span>
+        <span>·</span>
+        <span>4 min de lectura</span>
+      </div>
+    </div>
+    <div class="art-divider"></div>
+    <div class="art-body">
+
+      <p>Si abres redes sociales o buscas en internet durante cinco minutos, encontrarás a docenas de "gurús" vendiéndote el negocio perfecto: la agencia de automatizaciones del momento, el modelo SaaS de moda, el e-commerce milagroso o la franquicia de rentabilidad garantizada. Tengo una noticia para ti: el "mejor negocio del mundo" simplemente no existe.</p>
+
+      <p>Existe una mentira peligrosa en el mundo empresarial que consiste en evaluar las oportunidades únicamente por su margen teórico, su tendencia de mercado o su volumen de facturación. Se nos olvida la variable más crítica de la ecuación: <strong>quien va a ejecutar el negocio.</strong></p>
+
+      <h2>No hay negocios ideales para todos, hay un negocio ideal para cada quien</h2>
+
+      <p>El error de muchísimos emprendedores es elegir un modelo de negocio basándose en la rentabilidad de alguien más. Ven a un fundador facturar siete cifras en una industria específica y asumen que replicar el modelo les dará el mismo resultado. La realidad del mercado es diferente:</p>
+
+      <ul>
+        <li>Un negocio brillante en manos de alguien que odia el día a día de esa industria está destinado al fracaso o al agotamiento (burnout).</li>
+        <li>Un modelo tradicional o "poco glamuroso", ejecutado por alguien con verdadera tracción, intuición y maestría en el área, puede convertirse en una mina de oro.</li>
+      </ul>
+
+      <p>Para que un negocio funcione de verdad —no solo para arrancar, sino para escalar y sostenerse durante años— tiene que haber una <strong>alineación profunda entre la empresa y su fundador.</strong></p>
+
+      <h2>Los 4 pilares de la alineación Founder-Business</h2>
+
+      <p>Cuando alguien construye una empresa exitosa y sostenible en el tiempo, rara vez lo hace siguiendo solo una moda. Lo hace conectando cuatro elementos personales clave:</p>
+
+      <ul>
+        <li><strong>Intuición e intereses:</strong> ¿Te apasiona resolver el problema que ataca ese negocio? Si el tema no te interesa genuinamente, te quedarás sin gasolina cuando lleguen los meses difíciles (y siempre llegan).</li>
+        <li><strong>Fortalezas y habilidades:</strong> Un negocio B2B de ventas consultivas complejas requiere habilidades radicalmente distintas a las de un negocio B2C masivo de bajo ticket. Tu negocio ideal debe apalancarse en lo que ya eres extraordinariamente bueno.</li>
+        <li><strong>Ambición y estilo de vida:</strong> ¿Buscas levantar capital y construir un unicornio trabajando 80 horas a la semana, o quieres una empresa rentable de alto margen que te dé libertad geográfica y de tiempo? El "mejor negocio" debe servir a tu vida, no al revés.</li>
+        <li><strong>Resistencia al riesgo:</strong> Hay quienes operan con comodidad en industrias de alto riesgo y cambios rápidos; otros necesitan modelos más predictibles y estables.</li>
+      </ul>
+
+      <h2>La ventaja competitiva que nadie puede copiar</h2>
+
+      <p>Cuando construyes un negocio alineado con quien eres, obtienes la ventaja competitiva más difícil de replicar en el mercado: <strong>tu capacidad de iterar sin rendirte.</strong></p>
+
+      <p>Si entras a un negocio solo por dinero, ante el primer obstáculo grave te vas a retirar o vas a ejecutar a medias. Pero cuando estás alineado con tu visión, con tus intereses y con tus capacidades reales, desarrollas una velocidad de ejecución y un nivel de obsesión que la competencia simplemente no puede igualar.</p>
+
+      <div class="highlight">
+        <p>Un negocio no es bueno por su nombre o su categoría. Es bueno porque la persona al mando es la correcta para operarlo.</p>
+      </div>
+
+      <h2>Deja de buscar la "bala de plata"</h2>
+
+      <p>La próxima vez que evalúes una nueva línea de negocio, una inversión o un cambio de rumbo, no te preguntes si la oportunidad es buena en abstracto. Pregúntate:</p>
+
+      <ul>
+        <li>¿Tengo las habilidades, la paciencia y el interés para liderar esto durante los próximos 5 años?</li>
+        <li>¿Este modelo de negocio potencia mis fortalezas o expone constantemente mis debilidades?</li>
+        <li>¿Esto me acerca a la vida y a la empresa que realmente quiero construir?</li>
+      </ul>
+
+      <p>El objetivo no es encontrar el negocio que le funcione a la mayoría; es diseñar y ejecutar el negocio que sea perfecto <strong>para ti.</strong> Ahí es donde ocurre la verdadera tracción.</p>
+
+    </div>
+  </div>
+
+  <section class="sprint-cta">
+    <div class="wrap">
+      <h3>Sprint de <span>Inteligencia Empresarial</span></h3>
+      <p>5 días presenciales en Caracas para forjar criterio comercial real. Agosto–Septiembre 2026.</p>
+      <a href="../sprint.html" class="btn-cta">Ver el programa →</a>
+    </div>
+  </section>
+</main>
+
+<footer class="art-footer">
+  <div class="wrap">
+    <div class="foot-logo">Oscar<span>b2b</span></div>
+    <p class="foot-copy">© 2025 Oscarb2b. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+</body>
+</html>
