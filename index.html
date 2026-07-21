@@ -1,153 +1,978 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Blog de Oscar B2B — Artículos sobre negocios, mentalidad, inteligencia artificial y ventas B2B.">
-<title>Blog — Oscar B2B</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --bg:#0a0a0a;--bg-1:#111;
-  --glass:rgba(255,255,255,0.04);--glass-b:rgba(255,255,255,0.08);
-  --gold:#F5A623;--gold-dim:rgba(245,166,35,.12);--gold-bdr:rgba(245,166,35,.25);
-  --white:#F5F5F5;--g1:#CCCCCC;--g2:#888888;--g3:#444444;
-  --fh:'Space Grotesk',sans-serif;--fb:'Inter',sans-serif;--nav-h:64px;
-}
-html,body{min-height:100%;background:var(--bg);color:var(--white);font-family:var(--fb);-webkit-font-smoothing:antialiased;}
-a{text-decoration:none;color:inherit;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="description" content="Oscar b2b — Sprint de Inteligencia Empresarial en Caracas. 5 días presenciales para desarrollar criterio empresarial real. Agosto–Septiembre 2026.">
+    <title>Oscarb2b — Sprint de Inteligencia Empresarial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset ─────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; }
 
-/* NAV */
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.25rem,5vw,2.5rem);height:var(--nav-h);border-bottom:1px solid var(--glass-b);position:sticky;top:0;background:rgba(10,10,10,.92);backdrop-filter:blur(24px);z-index:50;}
-.logo{font-family:var(--fh);font-size:1.2rem;font-weight:700;}
-.logo span{color:var(--gold);}
-.back-link{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--g2);transition:color 200ms;}
-.back-link:hover{color:var(--gold);}
+        /* ── Tokens ────────────────────────────────────── */
+        :root {
+            --bg:           #0a0a0a;
+            --bg-1:         #0e0e0e;
+            --bg-2:         #141414;
+            --glass:        rgba(255,255,255,0.04);
+            --glass-b:      rgba(255,255,255,0.08);
+            --gold:         #F5A623;
+            --gold-dim:     rgba(245,166,35,0.10);
+            --gold-glow:    rgba(245,166,35,0.22);
+            --gold-strong:  rgba(245,166,35,0.40);
+            --blue:         #4F9EF5;
+            --white:        #F5F5F5;
+            --g1:           #CCCCCC;
+            --g2:           #888888;
+            --g3:           #444444;
+            --fh:           'Space Grotesk', sans-serif;
+            --fb:           'Inter', sans-serif;
+            --nav-h:        72px;
+            --r:            20px;
+            --r-sm:         12px;
+            --ease:         cubic-bezier(0.4,0,0.2,1);
+        }
 
-/* HERO */
-.hero{padding:4rem clamp(1.25rem,5vw,2.5rem) 3rem;max-width:1200px;margin:0 auto;}
-.hero-ey{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
-.hero-ey::before{content:"";display:block;width:20px;height:1.5px;background:var(--gold);}
-.hero h1{font-family:var(--fh);font-size:clamp(2.2rem,6vw,4rem);font-weight:700;line-height:1.1;letter-spacing:-.025em;}
-.hero h1 span{color:var(--gold);}
-.hero-sub{font-size:1rem;color:var(--g2);margin-top:.9rem;line-height:1.65;max-width:480px;}
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: var(--fb);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-/* GRID */
-.gw{padding:0 clamp(1.25rem,5vw,2.5rem) 6rem;max-width:1200px;margin:0 auto;}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+        /* ── Layout ────────────────────────────────────── */
+        .wrap {
+            width: 100%;
+            max-width: 1200px;
+            margin-inline: auto;
+            padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+        }
+        .label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.9rem;
+        }
+        .label::before {
+            content: '';
+            width: 22px; height: 1px;
+            background: var(--gold);
+            flex-shrink: 0;
+        }
+        .stitle {
+            font-family: var(--fh);
+            font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.025em;
+        }
+        .stitle span { color: var(--gold); }
+        .sec-head { text-align: center; margin-bottom: 4rem; }
+        .sec-head .sub {
+            margin-top: 0.9rem;
+            font-size: 1rem;
+            color: var(--g2);
+            max-width: 540px;
+            margin-inline: auto;
+            line-height: 1.7;
+        }
 
-/* CARD */
-.card{
-  display:flex;flex-direction:column;gap:12px;
-  background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;
-  padding:28px;color:var(--white);
-  transition:border-color .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden;
-}
-.card:hover{border-color:var(--gold-bdr);box-shadow:0 0 40px rgba(245,166,35,.07);transform:translateY(-2px);}
-.c-tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border-radius:100px;width:fit-content;}
-.tag-blog{background:rgba(245,166,35,.1);color:var(--gold);border:1px solid rgba(245,166,35,.2);}
-.tag-tool{background:rgba(79,158,245,.1);color:#4F9EF5;border:1px solid rgba(79,158,245,.2);}
-.c-title{font-family:var(--fh);font-size:1.1rem;font-weight:700;line-height:1.2;letter-spacing:-.015em;}
-.c-desc{font-size:.88rem;line-height:1.7;color:var(--g2);flex:1;}
-.c-link{display:flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:4px;}
-.c-link svg{transition:transform .18s;}
-.card:hover .c-link svg{transform:translateX(4px);}
-.c-num{font-family:var(--fh);font-size:72pt;line-height:1;color:rgba(255,255,255,.03);position:absolute;bottom:-10px;right:16px;letter-spacing:-.04em;pointer-events:none;}
+        /* ── Scroll reveal (.rev) ───────────────────────── */
+        .rev {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+        }
+        .rev.d1 { transition-delay: 100ms; }
+        .rev.d2 { transition-delay: 200ms; }
+        .rev.d3 { transition-delay: 300ms; }
+        .rev.on { opacity: 1; transform: none; }
 
-/* FOOTER */
-footer{border-top:1px solid var(--glass-b);padding:1.5rem clamp(1.25rem,5vw,2.5rem);display:flex;justify-content:space-between;align-items:center;}
-.fl{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);}
-.fd{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+        /* ── Card reveal (.cr) — GaryVee slide-up ──────── */
+        .cr {
+            opacity: 0;
+            transform: translateY(80px);
+            transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+                        transform 0.75s cubic-bezier(0.16,1,0.3,1);
+        }
+        .cr.on { opacity: 1; transform: none; }
 
-@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:600px){.grid{grid-template-columns:1fr;}}
-</style>
+        @media (prefers-reduced-motion: reduce) {
+            .rev, .cr { opacity: 1; transform: none; transition: none; }
+        }
+
+        /* ══════════════════════════════════════════════════
+           NAVBAR
+        ══════════════════════════════════════════════════ */
+        #nav {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 200;
+            height: var(--nav-h);
+            display: flex;
+            align-items: center;
+            transition: background 300ms, border-color 300ms, backdrop-filter 300ms;
+            border-bottom: 1px solid transparent;
+        }
+        #nav.scrolled {
+            background: rgba(10,10,10,0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-color: var(--glass-b);
+        }
+        .nav-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .nav-logo {
+            font-family: var(--fh);
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .nav-logo span { color: var(--gold); }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.25rem;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--g1);
+            position: relative;
+            transition: color 200ms;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
+            transition: width 200ms var(--ease);
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a:hover::after { width: 100%; }
+        .ham {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .ham span {
+            display: block;
+            width: 24px; height: 2px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: transform 300ms, opacity 300ms;
+        }
+        .ham.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .ham.open span:nth-child(2) { opacity: 0; }
+        .ham.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        #mob-nav {
+            display: none;
+            position: fixed;
+            top: var(--nav-h); left: 0; right: 0;
+            z-index: 199;
+            background: rgba(10,10,10,0.97);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--glass-b);
+            padding: 1.25rem 0 1.75rem;
+        }
+        #mob-nav.open { display: block; }
+        #mob-nav li { list-style: none; }
+        #mob-nav li a {
+            display: block;
+            padding: 0.8rem clamp(1.25rem,5vw,2.5rem);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--g1);
+            transition: color 200ms;
+        }
+        #mob-nav li a:hover { color: var(--gold); }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .ham { display: flex; }
+        }
+
+        /* ══════════════════════════════════════════════════
+           SOBRE MÍ — First section, no animation
+        ══════════════════════════════════════════════════ */
+        #sobre {
+            padding-top: calc(var(--nav-h) + 3rem);
+            padding-bottom: 3rem;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 3.5rem;
+            align-items: start;
+        }
+        .about-card {
+            width: 100%;
+            height: min(520px, 68vh);
+            border: 1px solid var(--glass-b);
+            border-radius: var(--r);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .about-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 10%;
+        }
+        .about-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.15) 55%, transparent 100%);
+            z-index: 1;
+        }
+        .about-quote {
+            position: relative;
+            z-index: 2;
+            font-family: var(--fh);
+            font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--white);
+        }
+        .about-quote::before {
+            content: '\201C';
+            font-size: 3.5rem;
+            line-height: 0;
+            vertical-align: -1.4rem;
+            color: var(--gold);
+            font-family: var(--fh);
+            margin-right: 0.1em;
+        }
+        .about-story {
+            color: var(--g1);
+            font-size: 0.96rem;
+            line-height: 1.78;
+        }
+        .about-story p + p { margin-top: 0.85rem; }
+        .values {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.6rem;
+            margin-top: 1.5rem;
+        }
+        .val {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0.85rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-b);
+            border-radius: var(--r-sm);
+            font-size: 0.83rem;
+            font-weight: 500;
+            color: var(--g1);
+        }
+        .val svg { color: var(--gold); flex-shrink: 0; }
+        .about-cta-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 880px) {
+            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .about-card { height: min(400px, 55vw); }
+        }
+
+        /* ══════════════════════════════════════════════════
+           CREDIBILITY BAR
+        ══════════════════════════════════════════════════ */
+        #cred {
+            padding: 2.75rem 0;
+            background: var(--bg-1);
+            border-top: 1px solid var(--glass-b);
+            border-bottom: 1px solid var(--glass-b);
+        }
+        .cred-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            text-align: center;
+        }
+        .cred-num {
+            font-family: var(--fh);
+            font-size: clamp(1.65rem, 3vw, 2.4rem);
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 0.35rem;
+            letter-spacing: -0.02em;
+        }
+        .cred-lbl { font-size: 0.82rem; color: var(--g2); }
+        @media (max-width: 600px) {
+            .cred-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ══════════════════════════════════════════════════
+           EDITORIAL CONTENT HUB
+        ══════════════════════════════════════════════════ */
+        #contenido {
+            padding: 7rem 0 5rem;
+        }
+
+        /* 12-column editorial grid */
+        .ed-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px;
+            margin-top: 3.5rem;
+        }
+
+        /* card base */
+        .ec {
+            background: var(--glass);
+            border: 1px solid var(--glass-b);
+            border-radius: 14px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            color: var(--white);
+            text-decoration: none;
+            transition: border-color .22s, transform .22s, box-shadow .22s;
+        }
+        .ec:not(.ec-dim):hover {
+            border-color: rgba(245,166,35,.3);
+            box-shadow: 0 0 52px rgba(245,166,35,.07);
+            transform: translateY(-3px);
+        }
+
+        /* card sizes */
+        .ec-feat  { grid-column: span 7; }
+        .ec-tall  { grid-column: span 5; grid-row: span 2; }
+        .ec-med   { grid-column: span 4; }
+        .ec-wide  { grid-column: span 8; }
+        .ec-sm    { grid-column: span 4; }
+        .ec-third { grid-column: span 4; }
+
+        /* accent bar on featured */
+        .ec-feat::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--gold), transparent);
+        }
+
+        /* card elements */
+        .ec-tag {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 9px; font-weight: 700; letter-spacing: .18em;
+            text-transform: uppercase; padding: 4px 10px;
+            border-radius: 100px; width: fit-content;
+        }
+        .tag-blog   { background: rgba(245,166,35,.1); color: var(--gold); border: 1px solid rgba(245,166,35,.2); }
+        .tag-pronto { background: rgba(255,255,255,.05); color: var(--g2); border: 1px solid var(--glass-b); }
+        .tag-tool   { background: rgba(79,158,245,.1); color: var(--blue); border: 1px solid rgba(79,158,245,.2); }
+
+        .ec-ghost-num {
+            font-family: var(--fh); font-size: 72pt; font-weight: 700;
+            line-height: 1; color: rgba(255,255,255,.03);
+            position: absolute; bottom: -12px; right: 14px;
+            letter-spacing: -.04em; pointer-events: none; user-select: none;
+        }
+        .ec-title {
+            font-family: var(--fh);
+            font-size: clamp(14pt, 2vw, 21pt);
+            font-weight: 700; line-height: 1.08; letter-spacing: -.015em;
+        }
+        .ec-feat .ec-title  { font-size: clamp(18pt, 2.8vw, 30pt); }
+        .ec-tall .ec-title  { font-size: clamp(16pt, 2.3vw, 25pt); }
+        .ec-desc { font-size: 13px; line-height: 1.7; color: var(--g2); flex: 1; }
+        .ec-link {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 10px; font-weight: 700; letter-spacing: .16em;
+            text-transform: uppercase; color: var(--gold); margin-top: 4px;
+        }
+        .ec-link svg { transition: transform .18s; }
+        .ec:hover .ec-link svg { transform: translateX(4px); }
+
+        /* coming-soon dim state */
+        .ec-dim { opacity: .44; cursor: default; }
+        .ec-dim:hover { transform: none !important; box-shadow: none !important; border-color: var(--glass-b) !important; }
+
+        /* grid divider */
+        .ed-divider { grid-column: 1/-1; height: 1px; background: var(--glass-b); margin: 8px 0; }
+
+        @media (max-width: 1024px) {
+            .ec-feat  { grid-column: span 12; }
+            .ec-tall  { grid-column: span 6; grid-row: span 1; }
+            .ec-med   { grid-column: span 6; }
+            .ec-wide  { grid-column: span 12; }
+            .ec-sm    { grid-column: span 6; }
+            .ec-third { grid-column: span 6; }
+        }
+        @media (max-width: 560px) {
+            .ec-feat, .ec-tall, .ec-med, .ec-wide, .ec-sm, .ec-third { grid-column: span 12; }
+        }
+
+        /* ══════════════════════════════════════════════════
+           SERVICIOS
+        ══════════════════════════════════════════════════ */
+        #servicios {
+            padding: 7rem 0;
+            background: var(--bg-1);
+        }
+        .svc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .svc-card {
+            padding: 2.5rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-b);
+            border-radius: var(--r);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: transform 300ms var(--ease), border-color 300ms, box-shadow 300ms;
+        }
+        .svc-card::after {
+            content: '';
+            position: absolute; inset: 0;
+            opacity: 0;
+            transition: opacity 300ms;
+            background: radial-gradient(circle at top left, rgba(245,166,35,0.06) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .svc-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(245,166,35,0.28);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 6px 40px var(--gold-glow);
+        }
+        .svc-card:hover::after { opacity: 1; }
+        .svc-ico {
+            width: 54px; height: 54px;
+            border-radius: 13px;
+            background: var(--gold-dim);
+            border: 1px solid rgba(245,166,35,0.18);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            position: relative; z-index: 1;
+        }
+        .svc-title {
+            font-family: var(--fh);
+            font-size: 1.15rem; font-weight: 600;
+            color: var(--white); margin-bottom: 0.7rem;
+            position: relative; z-index: 1;
+        }
+        .svc-desc {
+            font-size: 0.9rem; color: var(--g2); line-height: 1.72;
+            flex: 1; margin-bottom: 1.75rem;
+            position: relative; z-index: 1;
+        }
+        @media (max-width: 880px) {
+            .svc-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
+        }
+        @media (min-width: 580px) and (max-width: 880px) {
+            .svc-grid { grid-template-columns: repeat(2,1fr); max-width: none; }
+            .svc-grid .svc-card:last-child { grid-column: 1/-1; max-width: 480px; margin-inline: auto; width: 100%; }
+        }
+
+        /* ══════════════════════════════════════════════════
+           EL PROBLEMA
+        ══════════════════════════════════════════════════ */
+        #problema { padding: 7rem 0; }
+        .prob-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .prob-card {
+            padding: 2.25rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-b);
+            border-radius: var(--r);
+            transition: border-color 300ms, background 300ms;
+        }
+        .prob-card:hover {
+            border-color: rgba(245,166,35,0.2);
+            background: rgba(245,166,35,0.025);
+        }
+        .prob-ico {
+            width: 46px; height: 46px;
+            border-radius: 11px;
+            background: var(--gold-dim);
+            border: 1px solid rgba(245,166,35,0.18);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold); margin-bottom: 1.25rem;
+        }
+        .prob-n {
+            font-family: var(--fh); font-size: 3rem; font-weight: 700;
+            color: var(--gold); opacity: 0.13; line-height: 1; margin-bottom: 0.9rem;
+        }
+        .prob-title {
+            font-family: var(--fh); font-size: 1.1rem; font-weight: 600;
+            color: var(--white); margin-bottom: 0.65rem;
+        }
+        .prob-desc { font-size: 0.92rem; color: var(--g2); line-height: 1.72; }
+        @media (max-width: 880px) {
+            .prob-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
+        }
+        @media (min-width: 580px) and (max-width: 880px) {
+            .prob-grid { grid-template-columns: repeat(2,1fr); max-width: none; }
+        }
+
+        /* ══════════════════════════════════════════════════
+           CÓMO FUNCIONA
+        ══════════════════════════════════════════════════ */
+        #como {
+            padding: 7rem 0;
+            background: var(--bg-1);
+        }
+        .steps-wrap { position: relative; }
+        .steps-line {
+            position: absolute;
+            top: 32px;
+            left: calc(16.67% + 1.5rem);
+            right: calc(16.67% + 1.5rem);
+            height: 1px;
+            background: linear-gradient(to right, var(--gold), rgba(245,166,35,0.25), transparent);
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 3rem;
+            position: relative; z-index: 1;
+        }
+        .step { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .step-n {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: var(--gold-dim);
+            border: 1.5px solid var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--fh); font-size: 1.2rem; font-weight: 700;
+            color: var(--gold); margin-bottom: 1.5rem; position: relative;
+        }
+        .step-n::after {
+            content: ''; position: absolute; inset: -5px;
+            border-radius: 50%;
+            border: 1px solid var(--gold-glow);
+        }
+        .step-title {
+            font-family: var(--fh); font-size: 1.05rem; font-weight: 600;
+            color: var(--white); margin-bottom: 0.55rem;
+        }
+        .step-desc { font-size: 0.88rem; color: var(--g2); line-height: 1.68; }
+        @media (max-width: 768px) {
+            .steps-line { display: none; }
+            .steps-grid { grid-template-columns: 1fr; gap: 2.5rem; max-width: 380px; margin-inline: auto; }
+        }
+
+        /* ══════════════════════════════════════════════════
+           CTA / CONTACTO
+        ══════════════════════════════════════════════════ */
+        #contacto {
+            padding: 8rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        #contacto::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(245,166,35,0.07) 0%, transparent 70%);
+        }
+        #contacto::after {
+            content: '';
+            position: absolute; top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 1px;
+            background: linear-gradient(to right, transparent, var(--glass-b), transparent);
+        }
+        .cta-inner { position: relative; z-index: 1; }
+        .cta-h2 {
+            font-family: var(--fh);
+            font-size: clamp(2.1rem, 5vw, 3.8rem);
+            font-weight: 700; line-height: 1.1; letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+        .cta-h2 span { color: var(--gold); }
+        .cta-sub {
+            font-size: 1.05rem; color: var(--g2);
+            max-width: 460px; margin-inline: auto; line-height: 1.7; margin-bottom: 2.5rem;
+        }
+        .btn-cta {
+            display: inline-flex; align-items: center; gap: 0.55rem;
+            padding: 1.1rem 2.25rem;
+            background: var(--gold); color: #0a0a0a;
+            font-size: 1rem; font-weight: 700;
+            border-radius: 12px; border: none; cursor: pointer;
+            transition: transform 200ms, box-shadow 200ms;
+        }
+        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 18px 50px var(--gold-strong); }
+        .cta-note { margin-top: 1.1rem; font-size: 0.78rem; color: var(--g3); }
+
+        /* ══════════════════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════════════════ */
+        #footer {
+            padding: 4rem 0 2.5rem;
+            background: var(--bg-1);
+            border-top: 1px solid var(--glass-b);
+        }
+        .foot-inner {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1.75rem;
+        }
+        .foot-logo {
+            font-family: var(--fh); font-size: 1.45rem;
+            font-weight: 700; letter-spacing: -0.02em;
+        }
+        .foot-logo span { color: var(--gold); }
+        .foot-tag { font-size: 0.88rem; color: var(--g2); margin-top: -1.1rem; }
+        .socials { display: flex; gap: 0.75rem; }
+        .soc {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            background: var(--glass); border: 1px solid var(--glass-b);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--g2); cursor: pointer;
+            transition: border-color 200ms, color 200ms, background 200ms;
+        }
+        .soc:hover { border-color: rgba(245,166,35,0.3); color: var(--gold); background: var(--gold-dim); }
+        .foot-copy { font-size: 0.78rem; color: var(--g3); text-align: center; }
+    </style>
 </head>
 <body>
 
-<nav>
-  <a href="../" class="logo">Oscar<span>b2b</span></a>
-  <a href="../" class="back-link">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Inicio
-  </a>
+<!-- ════ NAVBAR ══════════════════════════════════════════ -->
+<header id="nav">
+    <div class="wrap">
+        <nav class="nav-row">
+            <a href="#sobre" class="nav-logo">Oscar<span>b2b</span></a>
+            <ul class="nav-links">
+                <li><a href="#sobre">Quién soy</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="sprint.html" style="display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;background:var(--gold);color:#0a0a0a;font-weight:700;border-radius:8px;font-size:.82rem;white-space:nowrap;">Sprint →</a></li>
+            </ul>
+            <button class="ham" id="ham" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </div>
+</header>
+
+<nav id="mob-nav">
+    <ul>
+        <li><a href="#sobre">Quién soy</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="sprint.html" style="color:var(--gold);font-weight:700;">Sprint →</a></li>
+    </ul>
 </nav>
 
-<div class="hero">
-  <div class="hero-ey">Blog</div>
-  <h1>Lo que aprendo, <span>lo comparto</span></h1>
-  <p class="hero-sub">Artículos sobre negocios, mentalidad, inteligencia artificial y ventas B2B. En tiempo real, gratis.</p>
-</div>
+<!-- ════ SOBRE MÍ — Carga inmediata, sin animación ══════ -->
+<section id="sobre">
+    <div class="wrap">
+        <div class="about-grid">
 
-<div class="gw">
-  <div class="grid">
+            <div>
+                <div class="about-card">
+                    <img src="oscar-paez.webp" alt="Oscar Paez — Consultor de Ventas & Business Coach" width="600" height="800" fetchpriority="high">
+                </div>
+            </div>
 
-    <a href="la-mentira-de-los-buenos-negocios.html" class="card">
-      <span class="c-tag tag-blog">Blog · Negocios</span>
-      <div class="c-title">La mentira de los buenos negocios</div>
-      <p class="c-desc">El "mejor negocio del mundo" no existe. La clave no está en la industria, sino en la alineación entre el fundador y su empresa.</p>
-      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="c-num">01</div>
-    </a>
+            <div>
+                <span class="label">Quién soy</span>
+                <h2 class="stitle" style="margin-bottom:1.5rem">Quién soy</h2>
+                <div class="about-story">
+                    <p>Hola! Soy Oscar Paez, empresario venezolano de 35 años y el fundador de Merch Caracas.</p>
+                    <p>En Merch construí un negocio real que ha trabajado por años con grandes marcas como Toyota, Coca-Cola, Santa Teresa y Polar. Pero también cometí todos los errores posibles por no contar con los sistemas adecuados. Como "emprendedor improvisador" no tenía los sistemas, los procesos ni la estructura para escalar de forma inteligente que tengo hoy en día.</p>
+                    <p>A través de tecnología, desarrollo de procesos y entendiendo la Inteligencia Artificial, logré diseñar el mapa que hubiese querido tener mi "yo del pasado" cuando empecé. Hoy, además de Merch; estoy construyendo una comunidad de pequeños emprendedores en Venezuela para ayudarlos a crecer, dotándolos de criterio y habilidades que funcionan en el mundo real y cómo llevar empresas según mis conocimientos y experiencias profesionales.</p>
+                    <p>No soy influencer. Soy un empresario que invirtió 8 años en entender los fundamentos del éxito comercial, y ahora lo enseño a los lideres del futuro.</p>
+                </div>
+                <div class="about-cta-row">
+                    <a href="sprint.html" class="btn-cta" style="font-size:.9rem;padding:.8rem 1.5rem;">
+                        Ver el Sprint →
+                    </a>
+                </div>
+            </div>
 
-    <a href="el-mito-del-interesado.html" class="card">
-      <span class="c-tag tag-blog">Blog · Relaciones</span>
-      <div class="c-title">El mito del "interesado"</div>
-      <p class="c-desc">Por qué el networking real es el activo más rentable de tu carrera. Los 3 mitos desmontados.</p>
-      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="c-num">02</div>
-    </a>
+        </div>
+    </div>
+</section>
 
-    <a href="criterio-propio-vs-ruido-externo.html" class="card">
-      <span class="c-tag tag-blog">Blog · Mentalidad</span>
-      <div class="c-title">Criterio propio vs. Ruido externo</div>
-      <p class="c-desc">La habilidad invisible que salva (o destruye) un negocio en sus inicios.</p>
-      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="c-num">03</div>
-    </a>
+<!-- ════ CREDIBILITY BAR ═════════════════════════════════ -->
+<section id="cred" aria-label="Credenciales">
+    <div class="wrap">
+        <div class="cred-grid">
+            <div class="rev">
+                <div class="cred-num" data-count="10" data-suffix="+">10+</div>
+                <div class="cred-lbl">años como empresario</div>
+            </div>
+            <div class="rev d1">
+                <div class="cred-num" data-count="1">1</div>
+                <div class="cred-lbl">yo</div>
+            </div>
+            <div class="rev d2">
+                <div class="cred-num" data-count="823" data-prefix="$" data-suffix="K">$823K</div>
+                <div class="cred-lbl">en ventas</div>
+            </div>
+            <div class="rev d3">
+                <div class="cred-num" data-count="3">3</div>
+                <div class="cred-lbl">países de experiencia</div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <a href="inteligencia-humana-x-ia.html" class="card">
-      <span class="c-tag tag-blog">Blog · IA</span>
-      <div class="c-title">Inteligencia humana × IA</div>
-      <p class="c-desc">La habilidad que va a separar a los adolescentes extraordinarios del resto. Cómo pensar con la IA, no delegar en ella.</p>
-      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="c-num">04</div>
-    </a>
+<!-- ════ CONTENIDO HUB — GaryVee editorial grid ══════════ -->
+<section id="contenido">
+    <div class="wrap">
+        <div class="sec-head rev">
+            <span class="label" style="justify-content:center">Contenido</span>
+            <h2 class="stitle">Lo que aprendo <span>lo comparto</span></h2>
+            <p class="sub">Artículos, herramientas y recursos sobre ventas B2B, metodología e inteligencia artificial. En tiempo real, gratis.</p>
+        </div>
 
-    <a href="creando-el-prompt-perfecto.html" class="card">
-      <span class="c-tag tag-blog">Blog · IA</span>
-      <div class="c-title">Creando el prompt perfecto</div>
-      <p class="c-desc">La fórmula R-C-O-F para evitar respuestas mediocres. Del prompt novato al prompt profesional.</p>
-      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="c-num">05</div>
-    </a>
+        <div class="ed-grid">
 
-    <a href="ensenar-pickleball-40k-al-mes.html" class="card">
-      <span class="c-tag tag-blog">Blog · Modelos de Negocio</span>
-      <div class="c-title">¿Enseñar Pickleball y ganar $40K al mes?</div>
-      <p class="c-desc">Sí, el "negocio tonto" no existe. Las 3 lecciones de mentalidad B2B detrás de un caso real.</p>
-      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="c-num">06</div>
-    </a>
+            <!-- ROW 1 -->
+            <a href="blog/la-mentira-de-los-buenos-negocios.html" class="ec ec-feat cr">
+                <span class="ec-tag tag-blog">Blog · Negocios</span>
+                <div class="ec-title">La mentira de los buenos negocios</div>
+                <p class="ec-desc">El "mejor negocio del mundo" no existe. La clave no está en la industria, sino en la alineación entre el fundador y su empresa. Los 4 pilares que nadie te enseña.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="ec-ghost-num">01</div>
+            </a>
 
-    <a href="5-herramientas-tecnologicas-premium.html" class="card">
-      <span class="c-tag tag-tool">Herramientas</span>
-      <div class="c-title">Las 5 herramientas que transformaron mi empresa</div>
-      <p class="c-desc">HubSpot, Respond.io, Airtable, Apollo.io y Claude. El stack tecnológico real de una empresa B2B.</p>
-      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="c-num">07</div>
-    </a>
+            <a href="blog/el-mito-del-interesado.html" class="ec ec-tall cr">
+                <span class="ec-tag tag-blog">Blog · Relaciones</span>
+                <div class="ec-title">El mito del "interesado"</div>
+                <p class="ec-desc">Por qué el networking real es el activo más rentable de tu carrera. Los 3 mitos desmontados y los 4 beneficios brutales de estar bien relacionado.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="ec-ghost-num">02</div>
+            </a>
 
-  </div>
-</div>
+            <!-- ROW 2 -->
+            <a href="blog/criterio-propio-vs-ruido-externo.html" class="ec ec-med cr">
+                <span class="ec-tag tag-blog">Blog · Mentalidad</span>
+                <div class="ec-title">Criterio propio vs. Ruido externo</div>
+                <p class="ec-desc">La habilidad invisible que salva (o destruye) un negocio en sus inicios.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="ec-ghost-num">03</div>
+            </a>
 
-<footer>
-  <span class="fl">Oscar B2B · oscarb2b.com</span>
-  <div class="fd"></div>
+            <a href="blog/inteligencia-humana-x-ia.html" class="ec ec-med cr">
+                <span class="ec-tag tag-blog">Blog · IA</span>
+                <div class="ec-title">Inteligencia humana × IA</div>
+                <p class="ec-desc">La habilidad que separará a los extraordinarios del resto. Cómo pensar con la IA, no delegar en ella.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="ec-ghost-num">04</div>
+            </a>
+
+            <div class="ed-divider"></div>
+
+            <!-- ROW 3 -->
+            <a href="blog/creando-el-prompt-perfecto.html" class="ec ec-wide cr">
+                <span class="ec-tag tag-blog">Blog · IA</span>
+                <div class="ec-title">Creando el prompt perfecto</div>
+                <p class="ec-desc">La fórmula R-C-O-F para evitar respuestas mediocres. Del prompt novato al prompt profesional: cómo instruir a la IA como un consultor de alto nivel. Con ejemplos reales.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="ec-ghost-num">05</div>
+            </a>
+
+            <a href="blog/ensenar-pickleball-40k-al-mes.html" class="ec ec-sm cr">
+                <span class="ec-tag tag-blog">Blog · Negocios</span>
+                <div class="ec-title">¿Enseñar Pickleball y ganar $40K al mes?</div>
+                <p class="ec-desc">Sí, el "negocio tonto" no existe. Las 3 lecciones de mentalidad B2B detrás de un caso real.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="ec-ghost-num">06</div>
+            </a>
+
+            <div class="ed-divider"></div>
+
+            <!-- ROW 4 -->
+            <a href="blog/5-herramientas-tecnologicas-premium.html" class="ec ec-feat cr">
+                <span class="ec-tag tag-tool">Herramientas</span>
+                <div class="ec-title">Las 5 herramientas que transformaron mi empresa</div>
+                <p class="ec-desc">HubSpot, Respond.io, Airtable, Apollo.io y Claude. El stack tecnológico real de una empresa B2B y cómo cada pieza se integra para hacer el crecimiento predecible.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="ec-ghost-num">07</div>
+            </a>
+
+            <a href="blog.html" class="ec ec-tall cr" style="justify-content:center;align-items:center;text-align:center;background:transparent;border-style:dashed;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold);margin-bottom:.5rem;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <div class="ec-title" style="font-size:1.1rem;">Ver todo el contenido</div>
+                <p class="ec-desc" style="font-size:.82rem;">Blog, recursos y herramientas en un solo lugar.</p>
+                <div class="ec-link" style="justify-content:center;">Ir al blog <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- ════ CTA / CONTACTO ══════════════════════════════════ -->
+<section id="contacto">
+    <div class="wrap">
+        <div class="cta-inner rev">
+            <h2 class="cta-h2">Sprint de <span>Inteligencia Empresarial</span></h2>
+            <p class="cta-sub">5 días presenciales en Caracas para desarrollar criterio empresarial real. 5 cohortes disponibles en agosto–septiembre 2026. $500.</p>
+            <a href="sprint.html" class="btn-cta">
+                Ver el programa completo →
+            </a>
+            <p class="cta-note">Caracas · Agosto–Septiembre 2026 · 17 a 23 años</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════ FOOTER ══════════════════════════════════════════ -->
+<footer id="footer">
+    <div class="wrap">
+        <div class="foot-inner">
+            <div class="foot-logo">Oscar<span>b2b</span></div>
+            <p class="foot-tag">El contenido que necesitaba cuando empecé.</p>
+            <div class="socials">
+                <a href="#" class="soc" aria-label="Instagram">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="#" class="soc" aria-label="YouTube">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+                </a>
+                <a href="#" class="soc" aria-label="LinkedIn">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="#" class="soc" aria-label="TikTok">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+                </a>
+            </div>
+            <p class="foot-copy">© 2025 Oscarb2b. Todos los derechos reservados.</p>
+        </div>
+    </div>
 </footer>
 
+<script>
+(function () {
+    'use strict';
+
+    /* ── Navbar scroll ─────────────────────────── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 24);
+    }, { passive: true });
+
+    /* ── Mobile menu ───────────────────────────── */
+    const ham = document.getElementById('ham');
+    const mob = document.getElementById('mob-nav');
+    ham.addEventListener('click', () => {
+        const open = mob.classList.toggle('open');
+        ham.classList.toggle('open', open);
+        ham.setAttribute('aria-expanded', open);
+    });
+    mob.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+            mob.classList.remove('open');
+            ham.classList.remove('open');
+        });
+    });
+
+    /* ── Count-up animation ────────────────────── */
+    (function () {
+        const counters = document.querySelectorAll('.cred-num[data-count]');
+        const easeOut = t => 1 - Math.pow(1 - t, 3);
+        const duration = 1400;
+        function animateCounter(el) {
+            const target = +el.dataset.count;
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            const start = performance.now();
+            function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                el.textContent = prefix + Math.round(easeOut(progress) * target) + suffix;
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { animateCounter(e.target); io.unobserve(e.target); }
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(el => io.observe(el));
+    })();
+
+    /* ── Scroll reveal — .rev elements ────────── */
+    (function () {
+        const els = document.querySelectorAll('.rev');
+        function showAll() { els.forEach(el => el.classList.add('on')); }
+        if (!('IntersectionObserver' in window)) { showAll(); return; }
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+        els.forEach(el => io.observe(el));
+        setTimeout(() => { if (!document.querySelector('.rev.on')) showAll(); }, 1500);
+    })();
+
+    /* ── Card reveal — .cr elements (GaryVee style) */
+    (function () {
+        const els = document.querySelectorAll('.cr');
+        function showAll() { els.forEach(el => el.classList.add('on')); }
+        if (!('IntersectionObserver' in window)) { showAll(); return; }
+
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (!e.isIntersecting) return;
+                // Stagger by horizontal position so left col fires first, then center, then right
+                const rect = e.target.getBoundingClientRect();
+                const vw = window.innerWidth;
+                const col = rect.left < vw * 0.35 ? 0 : rect.left < vw * 0.65 ? 1 : 2;
+                setTimeout(() => e.target.classList.add('on'), col * 110);
+                io.unobserve(e.target);
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -6% 0px'   // card must be 6% inside viewport before triggering
+        });
+
+        els.forEach(el => io.observe(el));
+    })();
+
+})();
+</script>
 </body>
 </html>
