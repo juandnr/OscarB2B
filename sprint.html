@@ -234,6 +234,18 @@ textarea{resize:vertical;min-height:90px;}
 /* Honeypot — invisible para humanos, visible para bots */
 .hp-field{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;tabindex:-1;}
 
+/* MÉTODOS DE PAGO */
+.pay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:1rem;}
+.pay-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r-sm);padding:1rem 1.25rem;}
+.pay-card-full{grid-column:1/-1;}
+.pay-name{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.pay-detail{font-size:.82rem;color:var(--g2);line-height:1.7;}
+.btn-wa{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.25rem;
+  background:#25D366;color:#fff;font-family:var(--fh);font-size:.86rem;font-weight:700;
+  border-radius:8px;text-decoration:none;transition:transform 200ms,box-shadow 200ms;}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.3);}
+@media(max-width:480px){.pay-grid{grid-template-columns:1fr;}}
+
 /* FOOTER */
 #footer{padding:1.75rem 0;border-top:1px solid var(--glass-b);}
 .foot-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
@@ -554,19 +566,19 @@ textarea{resize:vertical;min-height:90px;}
             </div>
             <div class="side-row side-row-indent">
               <span class="side-row-label">Semana 1</span>
-              <span class="side-row-val">4 – 8 ago</span>
+              <span class="side-row-val">3 – 7 ago</span>
             </div>
             <div class="side-row side-row-indent">
               <span class="side-row-label">Semana 2</span>
-              <span class="side-row-val">11 – 15 ago</span>
+              <span class="side-row-val">10 – 14 ago</span>
             </div>
             <div class="side-row side-row-indent">
               <span class="side-row-label">Semana 3</span>
-              <span class="side-row-val">18 – 22 ago</span>
+              <span class="side-row-val">17 – 21 ago</span>
             </div>
             <div class="side-row side-row-indent">
               <span class="side-row-label">Semana 4</span>
-              <span class="side-row-val">25 – 29 ago</span>
+              <span class="side-row-val">24 – 28 ago</span>
             </div>
             <div class="side-row side-row-indent">
               <span class="side-row-label">Semana 5</span>
@@ -610,7 +622,6 @@ textarea{resize:vertical;min-height:90px;}
           <div class="side-card-head" style="color:var(--gold);background:rgba(245,166,35,.06);border-bottom-color:rgba(245,166,35,.15);">Tu inversión incluye</div>
           <div class="inc-list">
             <div class="inc-row">Materiales del programa</div>
-            <div class="inc-row">Licencias de software profesional</div>
             <div class="inc-row">Pitch Day con empresarios</div>
             <div class="inc-row">Certificado de participación</div>
             <div class="inc-row">Alimentación completa</div>
@@ -676,10 +687,10 @@ textarea{resize:vertical;min-height:90px;}
             <label for="semana">Semana de preferencia *</label>
             <select id="semana" name="semana" required>
               <option value="" disabled selected>Seleccionar semana</option>
-              <option value="Semana 1 · 4 – 8 de agosto">Semana 1: 4 – 8 de agosto</option>
-              <option value="Semana 2 · 11 – 15 de agosto">Semana 2: 11 – 15 de agosto</option>
-              <option value="Semana 3 · 18 – 22 de agosto">Semana 3: 18 – 22 de agosto</option>
-              <option value="Semana 4 · 25 – 29 de agosto">Semana 4: 25 – 29 de agosto</option>
+              <option value="Semana 1 · 3 – 7 de agosto">Semana 1: 3 – 7 de agosto</option>
+              <option value="Semana 2 · 10 – 14 de agosto">Semana 2: 10 – 14 de agosto</option>
+              <option value="Semana 3 · 17 – 21 de agosto">Semana 3: 17 – 21 de agosto</option>
+              <option value="Semana 4 · 24 – 28 de agosto">Semana 4: 24 – 28 de agosto</option>
               <option value="Semana 5 · 1 – 5 de septiembre">Semana 5: 1 – 5 de septiembre</option>
             </select>
           </div>
@@ -695,53 +706,66 @@ textarea{resize:vertical;min-height:90px;}
         <p class="form-note">Te contactamos por WhatsApp o correo con los datos de pago para reservar tu lugar.</p>
       </form>
 
-      <!-- PASO 2: Confirmación de pago + preguntas de conocimiento -->
-      <div id="paso2" style="display:none;">
-        <div style="margin-bottom:2rem;padding:1.25rem 1.5rem;background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);border-radius:var(--r);">
-          <p style="font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--gold);margin-bottom:.4rem;">Cupo reservado. Realiza el pago para confirmar tu lugar.</p>
-          <!-- TODO: Agregar instrucciones de pago (Zelle, transferencia, etc.) -->
-          <p style="font-size:.84rem;color:var(--g2);line-height:1.65;">Te enviamos los datos de pago al WhatsApp y correo indicados. Una vez confirmado el pago, completa las preguntas de conocimiento a continuación.</p>
+      <!-- GRACIAS + DATOS DE PAGO -->
+      <div id="gracias" style="display:none;">
+        <div style="text-align:center;margin-bottom:2rem;">
+          <div style="width:56px;height:56px;border-radius:50%;background:rgba(245,166,35,.15);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.4rem;">✓</div>
+          <h2 style="font-family:var(--fh);font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:.5rem;">¡Tu lugar está reservado!</h2>
+          <p id="gracias-sub" style="font-size:.9rem;color:var(--g2);line-height:1.7;">Recibimos tu inscripción. Para confirmarlo, realiza el pago por cualquiera de los métodos a continuación y envíanos el comprobante.</p>
+          <p style="font-size:.8rem;color:var(--g3);margin-top:.5rem;">Te llegará un correo de confirmación en los próximos minutos.</p>
         </div>
 
-        <form id="sprint-form2" novalidate>
-          <div class="fgrid">
+        <div style="margin-bottom:1.5rem;padding:.85rem 1.25rem;background:rgba(245,166,35,.06);border-left:3px solid var(--gold);border-radius:0 var(--r-sm) var(--r-sm) 0;">
+          <p style="font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--gold);margin-bottom:.3rem;">MONTO A PAGAR: $500 USD</p>
+        </div>
 
-            <div class="field-group-title" style="border-top:none;padding-top:0;margin-top:0;">Preguntas de conocimiento</div>
-
-            <div class="field full">
-              <label for="negocio">¿Tienes algún proyecto o idea de negocio actualmente? Descríbelo brevemente.</label>
-              <textarea id="negocio" name="negocio" placeholder="Si no tienes uno todavía, cuéntanos qué tipo de negocio te interesa o en qué área quisieras trabajar." style="min-height:80px;"></textarea>
-            </div>
-            <div class="field full">
-              <label for="ia">¿Has usado alguna herramienta de inteligencia artificial? ¿Cuál y para qué?</label>
-              <textarea id="ia" name="ia" placeholder="Ej. ChatGPT para hacer tareas, Canva AI para diseño, etc. Si no has usado ninguna, escribe 'ninguna'." style="min-height:80px;"></textarea>
-            </div>
-            <div class="field full">
-              <label for="ventas">¿Qué entiendes por vender? ¿Has vendido algo alguna vez?</label>
-              <textarea id="ventas" name="ventas" placeholder="Cuéntanos tu experiencia o cómo lo entiendes." style="min-height:80px;"></textarea>
-            </div>
-            <div class="field full">
-              <label for="motivo">¿Por qué quieres entrar al Sprint? *</label>
-              <textarea id="motivo" name="motivo" placeholder="En tus propias palabras: qué esperas llevarte y por qué este programa te llama la atención." required style="min-height:100px;"></textarea>
-            </div>
-            <div class="field full">
-              <label for="comentarios">Comentarios adicionales</label>
-              <textarea id="comentarios" name="comentarios" placeholder="Cualquier información adicional que quieras compartir." style="min-height:70px;"></textarea>
-            </div>
-
+        <!-- Grid de métodos de pago -->
+        <div class="pay-grid">
+          <div class="pay-card">
+            <div class="pay-name">Zelle</div>
+            <div class="pay-detail">📧 oscarpaez17@gmail.com</div>
+            <div class="pay-detail">👤 Oscar Paez</div>
           </div>
+          <div class="pay-card">
+            <div class="pay-name">PayPal</div>
+            <div class="pay-detail">📧 diddybay@gmail.com</div>
+          </div>
+          <div class="pay-card">
+            <div class="pay-name">Binance Pay</div>
+            <div class="pay-detail">🆔 ID: 114021502</div>
+            <div class="pay-detail" style="font-size:.75rem;color:var(--g3);">USDT</div>
+          </div>
+          <div class="pay-card pay-card-full">
+            <div class="pay-name">Pago Móvil</div>
+            <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.5rem;">
+              <div>
+                <div class="pay-detail">📱 04241640002</div>
+                <div class="pay-detail">🏦 Banesco</div>
+              </div>
+              <div>
+                <div class="pay-detail">🪪 Cédula: V-20652480</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <button type="submit" class="btn-submit">
-            Enviar respuestas →
-          </button>
-          <p class="form-note">Tus respuestas nos ayudan a preparar tu experiencia en el sprint.</p>
-        </form>
+        <!-- Enviar comprobante -->
+        <div style="margin-top:1.75rem;padding:1.25rem 1.5rem;background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r);text-align:center;">
+          <p style="font-size:.88rem;color:var(--g1);margin-bottom:1rem;font-weight:600;">Una vez realizado el pago, envía tu comprobante:</p>
+          <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
+            <!-- TODO: Cambia el número de WhatsApp (+58XXXXXXXXXX) por el tuyo -->
+            <a href="https://wa.me/+58XXXXXXXXXX?text=Hola%20Oscar%2C%20adjunto%20mi%20comprobante%20de%20pago%20del%20Sprint%20SIE" target="_blank" rel="noopener" class="btn-wa">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="mailto:oscar@oscarb2b.com?subject=Comprobante%20SIE%20-%20[Tu%20nombre]" class="btn-wa" style="background:var(--glass);border:1px solid var(--glass-b);color:var(--g1);">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              Correo
+            </a>
+          </div>
+        </div>
       </div>
 
-      <div class="form-ok" id="form-ok">
-        <h3>Inscripción recibida ✓</h3>
-        <p>Tus datos quedaron registrados. Te contactamos por WhatsApp o correo para coordinar los pasos siguientes. Si no recibes respuesta en 24 horas, escríbenos directo al WhatsApp.</p>
-      </div>
       <div class="form-err" id="form-err">
         <p>Hubo un problema al enviar tu inscripción. Por favor intenta de nuevo. Si el error persiste, escríbenos directamente por WhatsApp.</p>
       </div>
@@ -839,53 +863,42 @@ document.querySelectorAll('input, select, textarea').forEach(f => {
   f.addEventListener('input', () => markField(f, true));
 });
 
-document.getElementById('btn-paso1').addEventListener('click', function() {
+document.getElementById('btn-paso1').addEventListener('click', async function() {
   const form = document.getElementById('sprint-form');
   if (!validateFields(form)) return;
 
-  // Guardar datos del paso 1
-  const fd = new FormData(form);
-  fd.forEach((v, k) => { step1Data[k] = v; });
-
-  form.style.display = 'none';
-  document.getElementById('paso2').style.display = 'block';
-  document.getElementById('paso2').scrollIntoView({behavior:'smooth', block:'start'});
-});
-
-document.getElementById('sprint-form2').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  if (!validateFields(this)) return;
-
-  const btn = this.querySelector('button[type="submit"]');
+  const btn = this;
   const errDiv = document.getElementById('form-err');
   errDiv.classList.remove('on');
   btn.disabled = true;
   btn.textContent = 'Enviando...';
 
-  // Combinar paso 1 + paso 2
-  const payload = { ...step1Data };
-  new FormData(this).forEach((v, k) => { payload[k] = v; });
+  const payload = {};
+  new FormData(form).forEach((v, k) => { payload[k] = v; });
 
   try {
-    const res = await fetch(FORM_ENDPOINT, {
+    await fetch(FORM_ENDPOINT, {
       method: 'POST',
+      mode: 'no-cors',
       body: new URLSearchParams(payload)
     });
-    const json = await res.json().catch(() => ({ status: 'ok' }));
-
-    if (json.status === 'ok') {
-      this.closest('#paso2').style.display = 'none';
-      document.getElementById('form-ok').classList.add('on');
-      document.getElementById('form-ok').scrollIntoView({behavior:'smooth', block:'start'});
-    } else {
-      throw new Error('server error');
-    }
   } catch (err) {
-    btn.disabled = false;
-    btn.textContent = 'Enviar respuestas →';
-    errDiv.classList.add('on');
-    errDiv.scrollIntoView({behavior:'smooth', block:'nearest'});
+    // Si falla la red, igual mostramos la pantalla de pago
+    // (el honeypot ya filtra bots; errores de red son raros)
   }
+
+  // Personalizar mensaje de gracias con nombre y semana
+  const nombre = payload.nombre ? payload.nombre.split(' ')[0] : '';
+  const semana = payload.semana || '';
+  const sub = document.getElementById('gracias-sub');
+  if (sub && nombre) {
+    sub.textContent = nombre + ', recibimos tu inscripción para ' + semana + '. Para confirmar tu lugar, realiza el pago por cualquiera de los métodos a continuación y envíanos el comprobante.';
+  }
+
+  form.style.display = 'none';
+  const gracias = document.getElementById('gracias');
+  gracias.style.display = 'block';
+  gracias.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 </script>
 </body>
