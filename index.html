@@ -425,6 +425,33 @@
         .ec-link svg { transition: transform .18s; }
         .ec:hover .ec-link svg { transform: translateX(4px); }
 
+        /* article thumbnail strip */
+        .ec-img-strip {
+            width: calc(100% + 56px);
+            margin: -28px -28px 4px -28px;
+            height: 155px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .ec-feat .ec-img-strip { height: 195px; }
+        .ec-tall .ec-img-strip { height: 180px; }
+        .ec-wide .ec-img-strip { height: 165px; }
+        .ec-img-strip img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center top;
+            display: block;
+            transition: transform .55s cubic-bezier(.16,1,.3,1);
+        }
+        .ec:hover .ec-img-strip img { transform: scale(1.06); }
+        .ec-img-strip::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 70px;
+            background: linear-gradient(to top, rgba(10,10,10,.8) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
         /* coming-soon dim state */
         .ec-dim { opacity: .44; cursor: default; }
         .ec-dim:hover { transform: none !important; box-shadow: none !important; border-color: var(--glass-b) !important; }
@@ -720,8 +747,8 @@
                 <span class="label">Quién soy</span>
                 <h2 class="stitle" style="margin-bottom:1.5rem">Quién soy</h2>
                 <div class="about-story">
-                    <p>Hola! Soy Oscar Paez, empresario venezolano de 35 años y el fundador de Merch Caracas.</p>
-                    <p>En Merch construí un negocio real que ha trabajado por años con grandes marcas como Toyota, Coca-Cola, Santa Teresa y Polar. Pero también cometí todos los errores posibles por no contar con los sistemas adecuados. Como "emprendedor improvisador" no tenía los sistemas, los procesos ni la estructura para escalar de forma inteligente que tengo hoy en día.</p>
+                    <p>Soy Oscar Paez, empresario venezolano de 35 años y el fundador de Merch Caracas.</p>
+                    <p>En Merch construí un negocio real que ha trabajado por años con grandes marcas como Toyota, Coca-Cola, Santa Teresa y Polar. Pero también cometí todos los errores posibles por no contar con los sistemas adecuados. Cuando empecé no tenía las herramientas, los sistemas, los procesos ni la estructura para escalar de forma inteligente que tengo hoy en día.</p>
                     <p>A través de tecnología, desarrollo de procesos y entendiendo la Inteligencia Artificial, logré diseñar el mapa que hubiese querido tener mi "yo del pasado" cuando empecé. Hoy, además de Merch; estoy construyendo una comunidad de pequeños emprendedores en Venezuela para ayudarlos a crecer, dotándolos de criterio y habilidades que funcionan en el mundo real y cómo llevar empresas según mis conocimientos y experiencias profesionales.</p>
                     <p>No soy influencer. Soy un empresario que invirtió 8 años en entender los fundamentos del éxito comercial, y ahora lo enseño a los lideres del futuro.</p>
                 </div>
@@ -736,29 +763,6 @@
     </div>
 </section>
 
-<!-- ════ CREDIBILITY BAR ═════════════════════════════════ -->
-<section id="cred" aria-label="Credenciales">
-    <div class="wrap">
-        <div class="cred-grid">
-            <div class="rev">
-                <div class="cred-num" data-count="10" data-suffix="+">10+</div>
-                <div class="cred-lbl">años como empresario</div>
-            </div>
-            <div class="rev d1">
-                <div class="cred-num" data-count="1">1</div>
-                <div class="cred-lbl">yo</div>
-            </div>
-            <div class="rev d2">
-                <div class="cred-num" data-count="823" data-prefix="$" data-suffix="K">$823K</div>
-                <div class="cred-lbl">en ventas</div>
-            </div>
-            <div class="rev d3">
-                <div class="cred-num" data-count="3">3</div>
-                <div class="cred-lbl">países de experiencia</div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- ════ CONTENIDO HUB — GaryVee editorial grid ══════════ -->
 <section id="contenido">
@@ -773,6 +777,7 @@
 
             <!-- ROW 1 -->
             <a href="la-mentira-de-los-buenos-negocios.html" class="ec ec-feat cr">
+                <div class="ec-img-strip"><img src="mentira-negocios.jpg" alt="La mentira de los buenos negocios" loading="lazy"></div>
                 <span class="ec-tag tag-blog">Blog · Negocios</span>
                 <div class="ec-title">La mentira de los buenos negocios</div>
                 <p class="ec-desc">El "mejor negocio del mundo" no existe. La clave no está en la industria, sino en la alineación entre el fundador y su empresa. Los 4 pilares que nadie te enseña.</p>
@@ -781,6 +786,7 @@
             </a>
 
             <a href="el-mito-del-interesado.html" class="ec ec-tall cr">
+                <div class="ec-img-strip"><img src="mito-interesado.jpg" alt="El mito del interesado" loading="lazy"></div>
                 <span class="ec-tag tag-blog">Blog · Relaciones</span>
                 <div class="ec-title">El mito del "interesado"</div>
                 <p class="ec-desc">Por qué el networking real es el activo más rentable de tu carrera. Los 3 mitos desmontados y los 4 beneficios brutales de estar bien relacionado.</p>
@@ -790,6 +796,7 @@
 
             <!-- ROW 2 -->
             <a href="criterio-propio-vs-ruido-externo.html" class="ec ec-med cr">
+                <div class="ec-img-strip"><img src="criterio-propio.jpg" alt="Criterio propio vs ruido externo" loading="lazy"></div>
                 <span class="ec-tag tag-blog">Blog · Mentalidad</span>
                 <div class="ec-title">Criterio propio vs. Ruido externo</div>
                 <p class="ec-desc">La habilidad invisible que salva (o destruye) un negocio en sus inicios.</p>
@@ -798,6 +805,7 @@
             </a>
 
             <a href="inteligencia-humana-x-ia.html" class="ec ec-med cr">
+                <div class="ec-img-strip"><img src="inteligencia-ia.jpg" alt="Inteligencia humana x IA" loading="lazy"></div>
                 <span class="ec-tag tag-blog">Blog · IA</span>
                 <div class="ec-title">Inteligencia humana × IA</div>
                 <p class="ec-desc">La habilidad que separará a los extraordinarios del resto. Cómo pensar con la IA, no delegar en ella.</p>
@@ -809,6 +817,7 @@
 
             <!-- ROW 3 -->
             <a href="creando-el-prompt-perfecto.html" class="ec ec-wide cr">
+                <div class="ec-img-strip"><img src="prompt-perfecto.jpg" alt="Creando el prompt perfecto" loading="lazy"></div>
                 <span class="ec-tag tag-blog">Blog · IA</span>
                 <div class="ec-title">Creando el prompt perfecto</div>
                 <p class="ec-desc">La fórmula R-C-O-F para evitar respuestas mediocres. Del prompt novato al prompt profesional: cómo instruir a la IA como un consultor de alto nivel. Con ejemplos reales.</p>
@@ -817,6 +826,7 @@
             </a>
 
             <a href="ensenar-pickleball-40k-al-mes.html" class="ec ec-sm cr">
+                <div class="ec-img-strip"><img src="pickleball-40k.jpg" alt="Enseñar Pickleball y ganar 40K al mes" loading="lazy"></div>
                 <span class="ec-tag tag-blog">Blog · Negocios</span>
                 <div class="ec-title">¿Enseñar Pickleball y ganar $40K al mes?</div>
                 <p class="ec-desc">Sí, el "negocio tonto" no existe. Las 3 lecciones de mentalidad B2B detrás de un caso real.</p>
@@ -828,6 +838,7 @@
 
             <!-- ROW 4 -->
             <a href="5-herramientas-tecnologicas-premium.html" class="ec ec-feat cr">
+                <div class="ec-img-strip"><img src="herramientas-premium.jpg" alt="5 herramientas tecnológicas premium" loading="lazy"></div>
                 <span class="ec-tag tag-tool">Herramientas</span>
                 <div class="ec-title">Las 5 herramientas que transformaron mi empresa</div>
                 <p class="ec-desc">HubSpot, Respond.io, Airtable, Apollo.io y Claude. El stack tecnológico real de una empresa B2B y cómo cada pieza se integra para hacer el crecimiento predecible.</p>
@@ -851,7 +862,7 @@
     <div class="wrap">
         <div class="cta-inner rev">
             <h2 class="cta-h2">Sprint de <span>Inteligencia Empresarial</span></h2>
-            <p class="cta-sub">5 días presenciales en Caracas para desarrollar criterio empresarial real. 5 cohortes disponibles en agosto–septiembre 2026. $500.</p>
+            <p class="cta-sub">5 días presenciales en Caracas para desarrollar criterio empresarial real. 5 cohortes disponibles en agosto–septiembre 2026.</p>
             <a href="sprint.html" class="btn-cta">
                 Ver el programa completo →
             </a>
