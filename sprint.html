@@ -12,9 +12,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sprint de Inteligencia Empresarial — Oscar B2B</title>
-<meta name="description" content="5 días presenciales en Nest Coworking para jóvenes de 17 a 23 años. Criterio comercial, IA estratégica, psicología del mercado y gestión de riesgos. Agosto–Septiembre 2026 · $500.">
+<meta name="description" content="5 días presenciales en Nest Coworking para jóvenes de 17 a 23 años. Criterio comercial, IA estratégica, psicología del mercado y gestión de riesgos. Agosto–Septiembre 2026.">
 <meta property="og:title" content="Sprint de Inteligencia Empresarial — Oscar B2B">
-<meta property="og:description" content="5 días para desarrollar criterio comercial y aprender a navegar el mundo real. Pensamiento crítico, IA y gestión de riesgos. Nest Coworking · $500.">
+<meta property="og:description" content="5 días para desarrollar criterio comercial y aprender a navegar el mundo real. Pensamiento crítico, IA y gestión de riesgos. Nest Coworking, Caracas.">
 <meta property="og:type" content="website">
 <!-- TODO: Agregar og:image (1200×630 px) para preview de WhatsApp -->
 
@@ -301,7 +301,7 @@ textarea{resize:vertical;min-height:90px;}
   <div class="mob-inner">
     <div class="mob-txt">
       <strong>Sprint de Inteligencia Empresarial</strong>
-      $500 · Nest Coworking · Ago–Sep 2026
+      <span id="mob-cta-sub">Nest Coworking · Ago–Sep 2026</span>
     </div>
     <a href="#form-section" class="mob-btn">Inscribirse →</a>
   </div>
@@ -868,6 +868,21 @@ const formSec = document.getElementById('form-section');
 if (mobCta && formSec) {
   new IntersectionObserver(([e]) => mobCta.classList.toggle('hide', e.isIntersecting), {threshold:.1})
     .observe(formSec);
+}
+
+// Mostrar precio en cintillo solo cuando el usuario ha pasado por la sección de precio
+const priceEl2 = document.querySelector('.side-row-val.gold');
+const mobCtaSub = document.getElementById('mob-cta-sub');
+if (priceEl2 && mobCtaSub) {
+  let priceRevealed = false;
+  window.addEventListener('scroll', function() {
+    if (priceRevealed) return;
+    const rect = priceEl2.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      priceRevealed = true;
+      mobCtaSub.textContent = '$500 · Nest Coworking · Ago–Sep 2026';
+    }
+  }, {passive: true});
 }
 
 // ── TODO: Pega aquí la URL de tu Google Apps Script Web App ──────────────────
