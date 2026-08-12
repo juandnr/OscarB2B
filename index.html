@@ -1,13 +1,38 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q139EMTFK0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q139EMTFK0');
+</script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '605342989639546');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net; img-src 'self' data: https://www.google-analytics.com https://www.facebook.com; connect-src https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta name="description" content="Oscar b2b — Sprint de Inteligencia Comercial en Caracas. 5 días presenciales para desarrollar criterio empresarial real. Agosto 2026.">
-    <title>Oscarb2b — Sprint de Inteligencia Comercial</title>
+    <meta name="description" content="Oscar b2b — Sprint de Inteligencia Empresarial en Caracas. 5 días presenciales para desarrollar criterio empresarial real. Agosto–Septiembre 2026.">
+    <title>Oscarb2b — Sprint de Inteligencia Empresarial</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -300,6 +325,7 @@
             color: var(--g1);
         }
         .val svg { color: var(--gold); flex-shrink: 0; }
+        .about-socials { display: flex; gap: 0.55rem; margin-top: 0.85rem; flex-wrap: wrap; }
         .about-cta-row {
             display: flex;
             align-items: center;
@@ -424,6 +450,33 @@
         }
         .ec-link svg { transition: transform .18s; }
         .ec:hover .ec-link svg { transform: translateX(4px); }
+
+        /* article thumbnail strip */
+        .ec-img-strip {
+            width: calc(100% + 56px);
+            margin: -28px -28px 4px -28px;
+            height: 155px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .ec-feat .ec-img-strip { height: 195px; }
+        .ec-tall .ec-img-strip { height: 180px; }
+        .ec-wide .ec-img-strip { height: 165px; }
+        .ec-img-strip img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center top;
+            display: block;
+            transition: transform .55s cubic-bezier(.16,1,.3,1);
+        }
+        .ec:hover .ec-img-strip img { transform: scale(1.06); }
+        .ec-img-strip::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 70px;
+            background: linear-gradient(to top, rgba(10,10,10,.8) 0%, transparent 100%);
+            pointer-events: none;
+        }
 
         /* coming-soon dim state */
         .ec-dim { opacity: .44; cursor: default; }
@@ -680,11 +733,20 @@
 
 <!-- ════ NAVBAR ══════════════════════════════════════════ -->
 <header id="nav">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q139EMTFK0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q139EMTFK0');
+</script>
     <div class="wrap">
         <nav class="nav-row">
             <a href="#sobre" class="nav-logo">Oscar<span>b2b</span></a>
             <ul class="nav-links">
-                <li><a href="#sobre">Sobre mí</a></li>
+                <li><a href="#sobre">Quién soy</a></li>
+                <li><a href="blog.html">Blog</a></li>
                 <li><a href="#contacto">Contacto</a></li>
                 <li><a href="sprint.html" style="display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;background:var(--gold);color:#0a0a0a;font-weight:700;border-radius:8px;font-size:.82rem;white-space:nowrap;">Sprint →</a></li>
             </ul>
@@ -697,7 +759,8 @@
 
 <nav id="mob-nav">
     <ul>
-        <li><a href="#sobre">Sobre mí</a></li>
+        <li><a href="#sobre">Quién soy</a></li>
+        <li><a href="blog.html">Blog</a></li>
         <li><a href="#contacto">Contacto</a></li>
         <li><a href="sprint.html" style="color:var(--gold);font-weight:700;">Sprint →</a></li>
     </ul>
@@ -712,36 +775,33 @@
                 <div class="about-card">
                     <img src="oscar-paez.webp" alt="Oscar Paez — Consultor de Ventas & Business Coach" width="600" height="800" fetchpriority="high">
                 </div>
+                <div class="about-socials">
+                    <a href="https://www.youtube.com/@oscarb2b" class="soc" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/oscarb2b" class="soc" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </a>
+                    <a href="https://www.threads.net/@oscarb2b" class="soc" aria-label="Threads" target="_blank" rel="noopener noreferrer">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/oscarpaez/" class="soc" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                    <a href="https://www.tiktok.com/@oscarb2b_" class="soc" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+                    </a>
+                </div>
             </div>
 
             <div>
-                <span class="label">Sobre mí</span>
-                <h2 class="stitle" style="margin-bottom:1.5rem">
-                    8 años improvisando: <span>$385K</span><br>
-                    2 con metodología: <span>$438K</span>
-                </h2>
+                <span class="label">Quién soy</span>
+                <h2 class="stitle" style="margin-bottom:1.5rem">Quién soy</h2>
                 <div class="about-story">
-                    <p>Durante años manejé mi empresa a puro instinto. Sin metodología, sin estructura, sin procesos claros. Funcionaba, pero no escalaba. En el 2025 decidí reconstruir todo al deber ser, con los sistemas y capacitaciones que mi empresa necesitó desde el principio.</p>
-                    <p>Hoy comparto en tiempo real lo que aprendo: qué funciona, qué no, y cómo modernizar un equipo de ventas con herramientas tecnológicas y de inteligencia artificial.</p>
-                    <p>No soy influencer. Soy un empresario que trabaja en su negocio y hace tiempo para ayudar a otros a acelerar sus ventas.</p>
-                </div>
-                <div class="values">
-                    <div class="val">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                        Determinación
-                    </div>
-                    <div class="val">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        Volumen
-                    </div>
-                    <div class="val">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        Velocidad
-                    </div>
-                    <div class="val">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        Perseverancia
-                    </div>
+                    <p>Soy Oscar Paez, empresario venezolano de 35 años y el fundador de Merch Caracas.</p>
+                    <p>En Merch construí un negocio real que ha trabajado por años con grandes marcas como Toyota, Coca-Cola, Santa Teresa y Polar. Pero también cometí todos los errores posibles por no contar con los sistemas adecuados. Cuando empecé no tenía las herramientas, los sistemas, los procesos ni la estructura para escalar de forma inteligente que tengo hoy en día.</p>
+                    <p>A través de tecnología, desarrollo de procesos y entendiendo la Inteligencia Artificial, logré diseñar el mapa que necesitaba mi "yo del pasado" cuando empezó. Hoy, además de Merch; estoy construyendo una comunidad de emprendedores en Venezuela para ayudarlos a desarrollar el criterio y las habilidades que funcionan en el mundo real y cómo llevar empresas según mis conocimientos y experiencias profesionales.</p>
+                    <p>No soy influencer. Soy un empresario que invirtió 8 años en entender los fundamentos del éxito comercial, y ahora lo enseño a los lideres del futuro.</p>
                 </div>
                 <div class="about-cta-row">
                     <a href="sprint.html" class="btn-cta" style="font-size:.9rem;padding:.8rem 1.5rem;">
@@ -754,29 +814,6 @@
     </div>
 </section>
 
-<!-- ════ CREDIBILITY BAR ═════════════════════════════════ -->
-<section id="cred" aria-label="Credenciales">
-    <div class="wrap">
-        <div class="cred-grid">
-            <div class="rev">
-                <div class="cred-num" data-count="10" data-suffix="+">10+</div>
-                <div class="cred-lbl">años como empresario</div>
-            </div>
-            <div class="rev d1">
-                <div class="cred-num" data-count="1">1</div>
-                <div class="cred-lbl">yo</div>
-            </div>
-            <div class="rev d2">
-                <div class="cred-num" data-count="823" data-prefix="$" data-suffix="K">$823K</div>
-                <div class="cred-lbl">en ventas</div>
-            </div>
-            <div class="rev d3">
-                <div class="cred-num" data-count="3">3</div>
-                <div class="cred-lbl">países de experiencia</div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- ════ CONTENIDO HUB — GaryVee editorial grid ══════════ -->
 <section id="contenido">
@@ -790,75 +827,82 @@
         <div class="ed-grid">
 
             <!-- ROW 1 -->
-            <div class="ec ec-feat ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">De $385K a $438K: lo que cambió cuando dejé de vender a instinto</div>
-                <p class="ec-desc">El sistema exacto que construí para dejar de depender del talento individual y crear un proceso que mi equipo puede replicar. Metodología, herramientas y los errores que cometí en el camino.</p>
+            <a href="la-mentira-de-los-buenos-negocios.html" class="ec ec-feat cr">
+                <div class="ec-img-strip"><img src="mentira-negocios.jpg.png" alt="La mentira de los buenos negocios" loading="lazy"></div>
+                <span class="ec-tag tag-blog">Blog · Negocios</span>
+                <div class="ec-title">La mentira de los buenos negocios</div>
+                <p class="ec-desc">El "mejor negocio del mundo" no existe. La clave no está en la industria, sino en la alineación entre el fundador y su empresa. Los 4 pilares que nadie te enseña.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="ec-ghost-num">01</div>
-            </div>
+            </a>
 
-            <div class="ec ec-tall ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">Las 5 herramientas de IA que usa mi equipo cada semana</div>
-                <p class="ec-desc">No tendencias. Las que realmente usamos para prospectar, hacer seguimiento y cerrar más rápido. Con ejemplos y prompts reales que puedes copiar hoy.</p>
+            <a href="el-mito-del-interesado.html" class="ec ec-tall cr">
+                <div class="ec-img-strip"><img src="mito-interesado.jpg.png" alt="El mito del interesado" loading="lazy"></div>
+                <span class="ec-tag tag-blog">Blog · Relaciones</span>
+                <div class="ec-title">El mito del "interesado"</div>
+                <p class="ec-desc">Por qué el networking real es el activo más rentable de tu carrera. Los 3 mitos desmontados y los 4 beneficios brutales de estar bien relacionado.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="ec-ghost-num">02</div>
-            </div>
+            </a>
 
             <!-- ROW 2 -->
-            <div class="ec ec-med ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">Por qué tu CRM no funciona (y no es culpa del CRM)</div>
-                <p class="ec-desc">El problema casi siempre es de adopción, no de tecnología. Cómo convertir tu CRM en el centro de tu operación.</p>
+            <a href="criterio-propio-vs-ruido-externo.html" class="ec ec-med cr">
+                <div class="ec-img-strip"><img src="criterio-propio.jpg.png" alt="Criterio propio vs ruido externo" loading="lazy"></div>
+                <span class="ec-tag tag-blog">Blog · Mentalidad</span>
+                <div class="ec-title">Criterio propio vs. Ruido externo</div>
+                <p class="ec-desc">La habilidad invisible que salva (o destruye) un negocio en sus inicios.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="ec-ghost-num">03</div>
-            </div>
+            </a>
 
-            <div class="ec ec-med ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">Cómo hacer un pitch que no parezca un pitch</div>
-                <p class="ec-desc">El framework de 3 pasos que uso para que el cliente sienta que llegó a la conclusión solo.</p>
+            <a href="inteligencia-humana-x-ia.html" class="ec ec-med cr">
+                <div class="ec-img-strip"><img src="inteligencia-ia.jpg.png" alt="Inteligencia humana x IA" loading="lazy"></div>
+                <span class="ec-tag tag-blog">Blog · IA</span>
+                <div class="ec-title">Inteligencia humana × IA</div>
+                <p class="ec-desc">La habilidad que separará a los extraordinarios del resto. Cómo pensar con la IA, no delegar en ella.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="ec-ghost-num">04</div>
-            </div>
+            </a>
 
             <div class="ed-divider"></div>
 
             <!-- ROW 3 -->
-            <div class="ec ec-wide ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">Cómo medir el rendimiento de tu equipo de ventas sin microgerenciar</div>
-                <p class="ec-desc">Los 5 KPIs que realmente importan, cómo automatizar su seguimiento y cómo crear una cultura de accountability sin destruir la motivación del equipo.</p>
+            <a href="creando-el-prompt-perfecto.html" class="ec ec-wide cr">
+                <div class="ec-img-strip"><img src="prompt-perfecto.jpg.png" alt="Creando el prompt perfecto" loading="lazy"></div>
+                <span class="ec-tag tag-blog">Blog · IA</span>
+                <div class="ec-title">Creando el prompt perfecto</div>
+                <p class="ec-desc">La fórmula R-C-O-F para evitar respuestas mediocres. Del prompt novato al prompt profesional: cómo instruir a la IA como un consultor de alto nivel. Con ejemplos reales.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="ec-ghost-num">05</div>
-            </div>
+            </a>
 
-            <div class="ec ec-sm ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">El error más caro en ventas B2B (y cómo evitarlo)</div>
-                <p class="ec-desc">No es el precio ni la propuesta. Es algo que pasa mucho antes.</p>
+            <a href="ensenar-pickleball-40k-al-mes.html" class="ec ec-sm cr">
+                <div class="ec-img-strip"><img src="pickleball-40k.jpg.png" alt="Enseñar Pickleball y ganar 40K al mes" loading="lazy"></div>
+                <span class="ec-tag tag-blog">Blog · Negocios</span>
+                <div class="ec-title">¿Enseñar Pickleball y ganar $40K al mes?</div>
+                <p class="ec-desc">Sí, el "negocio tonto" no existe. Las 3 lecciones de mentalidad B2B detrás de un caso real.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="ec-ghost-num">06</div>
-            </div>
+            </a>
 
             <div class="ed-divider"></div>
 
-            <!-- ROW 4 — tres columnas -->
-            <div class="ec ec-third ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">Cómo prospectar con IA sin sonar a robot</div>
-                <p class="ec-desc">Los prompts exactos que uso para personalizar mensajes en escala sin perder autenticidad.</p>
+            <!-- ROW 4 -->
+            <a href="5-herramientas-tecnologicas-premium.html" class="ec ec-feat cr">
+                <div class="ec-img-strip"><img src="herramientas-premium.jpg.png" alt="5 herramientas tecnológicas premium" loading="lazy"></div>
+                <span class="ec-tag tag-tool">Herramientas</span>
+                <div class="ec-title">Las 5 herramientas que transformaron mi empresa</div>
+                <p class="ec-desc">HubSpot, Respond.io, Airtable, Apollo.io y Claude. El stack tecnológico real de una empresa B2B y cómo cada pieza se integra para hacer el crecimiento predecible.</p>
+                <div class="ec-link">Leer artículo <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="ec-ghost-num">07</div>
-            </div>
+            </a>
 
-            <div class="ec ec-third ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">Metodología vs. instinto: el experimento de 6 meses</div>
-                <p class="ec-desc">Qué pasa cuando obligas a un equipo de ventas a seguir un proceso. Resultados reales, sin filtro.</p>
-                <div class="ec-ghost-num">08</div>
-            </div>
-
-            <div class="ec ec-third ec-dim cr">
-                <span class="ec-tag tag-pronto">Blog · Próximamente</span>
-                <div class="ec-title">La llamada diagnóstico perfecta: mi framework de 20 minutos</div>
-                <p class="ec-desc">Cómo diagnostico el problema real y posiciono el valor antes de hablar de precio.</p>
-                <div class="ec-ghost-num">09</div>
-            </div>
+            <a href="blog.html" class="ec ec-tall cr" style="justify-content:center;align-items:center;text-align:center;background:transparent;border-style:dashed;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold);margin-bottom:.5rem;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <div class="ec-title" style="font-size:1.1rem;">Ver todo el contenido</div>
+                <p class="ec-desc" style="font-size:.82rem;">Blog, recursos y herramientas en un solo lugar.</p>
+                <div class="ec-link" style="justify-content:center;">Ir al blog <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </a>
 
         </div>
     </div>
@@ -868,12 +912,12 @@
 <section id="contacto">
     <div class="wrap">
         <div class="cta-inner rev">
-            <h2 class="cta-h2">Sprint de <span>Inteligencia Comercial</span></h2>
-            <p class="cta-sub">5 días presenciales en Caracas para desarrollar criterio empresarial real. Cuatro ediciones disponibles en agosto 2026. $500.</p>
+            <h2 class="cta-h2">Sprint de <span>Inteligencia Empresarial</span></h2>
+            <p class="cta-sub">5 días presenciales en Caracas para desarrollar criterio empresarial real. 5 cohortes disponibles en agosto–septiembre 2026.</p>
             <a href="sprint.html" class="btn-cta">
                 Ver el programa completo →
             </a>
-            <p class="cta-note">Caracas · Agosto 2026 · 17 a 23 años</p>
+            <p class="cta-note">Caracas · Agosto–Septiembre 2026 · 17 a 23 años</p>
         </div>
     </div>
 </section>
@@ -885,16 +929,19 @@
             <div class="foot-logo">Oscar<span>b2b</span></div>
             <p class="foot-tag">El contenido que necesitaba cuando empecé.</p>
             <div class="socials">
-                <a href="#" class="soc" aria-label="Instagram">
+                <a href="https://www.instagram.com/oscarb2b" class="soc" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                 </a>
-                <a href="#" class="soc" aria-label="YouTube">
+                <a href="https://www.youtube.com/@oscarb2b" class="soc" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
                 </a>
-                <a href="#" class="soc" aria-label="LinkedIn">
+                <a href="https://www.threads.net/@oscarb2b" class="soc" aria-label="Threads" target="_blank" rel="noopener noreferrer">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/oscarpaez/" class="soc" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
                 </a>
-                <a href="#" class="soc" aria-label="TikTok">
+                <a href="https://www.tiktok.com/@oscarb2b_" class="soc" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
                 </a>
             </div>
