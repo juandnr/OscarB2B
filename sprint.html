@@ -45,11 +45,11 @@ a{text-decoration:none;color:inherit;}
 button{font-family:inherit;cursor:pointer;}
 
 :root{
-  --bg:#0a0a0a; --bg-1:#0e0e0e; --bg-2:#141414;
-  --glass:rgba(255,255,255,.04); --glass-b:rgba(255,255,255,.08);
-  --gold:#F5A623; --gold-dim:rgba(245,166,35,.10);
-  --gold-glow:rgba(245,166,35,.22); --gold-strong:rgba(245,166,35,.40);
-  --white:#F5F5F5; --g1:#CCCCCC; --g2:#888888; --g3:#444444;
+  --bg:#F6F3EE; --bg-1:#EDE9E1; --bg-2:#E4DFD5;
+  --glass:#FFFFFF; --glass-b:rgba(0,0,0,.09);
+  --gold:#009944; --gold-dim:rgba(0,153,68,.10);
+  --gold-glow:rgba(0,153,68,.20); --gold-strong:rgba(0,153,68,.35);
+  --white:#111111; --g1:#333333; --g2:#666666; --g3:#999999;
   --fh:'Space Grotesk',sans-serif; --fb:'Inter',sans-serif;
   --nav-h:68px; --r:16px; --r-sm:10px;
   --ease:cubic-bezier(.4,0,.2,1);
@@ -65,7 +65,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 #nav{position:fixed;inset:0 0 auto 0;z-index:200;height:var(--nav-h);
   display:flex;align-items:center;border-bottom:1px solid transparent;
   transition:background 300ms,border-color 300ms;}
-#nav.scrolled{background:rgba(10,10,10,.94);backdrop-filter:blur(20px);
+#nav.scrolled{background:rgba(246,243,238,.96);backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);border-color:var(--glass-b);}
 .nav-row{display:flex;align-items:center;justify-content:space-between;width:100%;gap:1rem;}
 .nav-logo{font-family:var(--fh);font-size:1.3rem;font-weight:700;letter-spacing:-.02em;}
@@ -80,7 +80,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 
 /* STICKY MOBILE CTA */
 #mob-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:190;
-  padding:.8rem clamp(1.25rem,5vw,2.5rem);background:rgba(10,10,10,.97);
+  padding:.8rem clamp(1.25rem,5vw,2.5rem);background:rgba(246,243,238,.97);
   border-top:1px solid var(--glass-b);backdrop-filter:blur(16px);
   transition:transform 300ms var(--ease);}
 #mob-cta.hide{transform:translateY(100%);}
@@ -141,9 +141,9 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 /* Day list */
 .day-list{display:flex;flex-direction:column;gap:.75rem;}
 .day-row{display:grid;grid-template-columns:80px 1fr;gap:1rem;
-  padding:.85rem 1rem;background:var(--glass);border:1px solid var(--glass-b);
-  border-radius:var(--r-sm);align-items:start;}
-.day-row:hover{border-color:rgba(245,166,35,.18);}
+  padding:.85rem 1rem;background:#fff;border:1px solid var(--glass-b);
+  border-radius:var(--r-sm);align-items:start;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.day-row:hover{border-color:rgba(196,125,0,.25);}
 .day-n{font-family:var(--fh);font-size:.72rem;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase;color:var(--gold);}
 .day-title{font-family:var(--fh);font-size:.92rem;font-weight:600;color:var(--white);margin-bottom:.25rem;}
@@ -153,7 +153,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 /* Deliverables */
 .dlv-list{display:flex;flex-direction:column;gap:.65rem;}
 .dlv-row{display:flex;align-items:flex-start;gap:.9rem;
-  padding:.9rem 1rem;background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r-sm);}
+  padding:.9rem 1rem;background:#fff;border:1px solid var(--glass-b);border-radius:var(--r-sm);box-shadow:0 1px 4px rgba(0,0,0,.04);}
 .dlv-ico{width:36px;height:36px;border-radius:8px;background:var(--gold-dim);
   border:1px solid rgba(245,166,35,.15);display:flex;align-items:center;
   justify-content:center;color:var(--gold);flex-shrink:0;}
@@ -177,7 +177,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 
 /* SIDEBAR */
 .sidebar{display:flex;flex-direction:column;gap:1.25rem;}
-.side-card{background:var(--bg-1);border:1px solid var(--glass-b);border-radius:var(--r);overflow:hidden;}
+.side-card{background:#fff;border:1px solid var(--glass-b);border-radius:var(--r);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);}
 .side-card-head{padding:.9rem 1.25rem;border-bottom:1px solid var(--glass-b);
   font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--g2);
   letter-spacing:.06em;text-transform:uppercase;}
@@ -234,12 +234,12 @@ details[open] summary.fq::after{transform:rotate(45deg);}
   padding-top:1rem;border-top:1px solid var(--glass-b);margin-top:.25rem;}
 .field-group-title:first-child{border-top:none;padding-top:0;margin-top:0;}
 label{font-size:.76rem;font-weight:600;color:var(--g1);letter-spacing:.02em;}
-input,select,textarea{background:var(--glass);border:1px solid var(--glass-b);
+input,select,textarea{background:#fff;border:1px solid var(--glass-b);
   border-radius:var(--r-sm);color:var(--white);font-family:var(--fb);font-size:.88rem;
   padding:.78rem .95rem;width:100%;transition:border-color 200ms,box-shadow 200ms;-webkit-appearance:none;}
 input::placeholder,textarea::placeholder{color:var(--g3);}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,166,35,.1);}
-select option{background:#1a1a1a;}
+select option{background:#fff;color:#111;}
 textarea{resize:vertical;min-height:90px;}
 .btn-submit{margin-top:1.5rem;width:100%;padding:1rem 2rem;background:var(--gold);color:#0a0a0a;
   font-family:var(--fh);font-size:.95rem;font-weight:700;border-radius:10px;border:none;
@@ -268,7 +268,7 @@ textarea{resize:vertical;min-height:90px;}
 
 /* MÉTODOS DE PAGO */
 .pay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:1rem;}
-.pay-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r-sm);padding:1rem 1.25rem;}
+.pay-card{background:#fff;border:1px solid var(--glass-b);border-radius:var(--r-sm);padding:1rem 1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.04);}
 .pay-card-full{grid-column:1/-1;}
 .pay-name{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
 .pay-detail{font-size:.82rem;color:var(--g2);line-height:1.7;}
@@ -308,7 +308,7 @@ textarea{resize:vertical;min-height:90px;}
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M11 6.5H2M5 3L2 6.5 5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span>Inicio</span>
       </a>
-      <a href="#form-section" class="nav-cta">Inscribirse →</a>
+      <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" class="nav-cta" target="_blank" rel="noopener" onclick="if(typeof fbq==='function')fbq('track','Lead')">Hablar por WhatsApp →</a>
     </div>
   </div>
 </header>
@@ -320,7 +320,7 @@ textarea{resize:vertical;min-height:90px;}
       <strong>Sprint de Inteligencia Empresarial</strong>
       <span id="mob-cta-sub">Nest Coworking · Ago–Sep 2026</span>
     </div>
-    <a href="#form-section" class="mob-btn">Inscribirse →</a>
+    <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" class="mob-btn" target="_blank" rel="noopener" onclick="if(typeof fbq==='function')fbq('track','Lead')">Hablar por WhatsApp →</a>
   </div>
 </div>
 
@@ -329,9 +329,13 @@ textarea{resize:vertical;min-height:90px;}
   <div id="bills-bg" aria-hidden="true"></div>
   <div class="wrap" style="position:relative;z-index:1;">
     <div class="header-tag">Oscar B2B · Programa presencial</div>
-    <h1 class="header-title">Sprint de<br>Inteligencia<br>Empresarial</h1>
-    <p style="font-size:.95rem;color:var(--gold);font-family:var(--fh);font-weight:500;margin-top:.75rem;margin-bottom:.25rem;">Un programa de desarrollo profesional para jóvenes de 17 a 23 años</p>
-    <p class="header-sub">5 días para desarrollar criterio comercial y aprender a navegar el mundo real sin compota. Agosto–Septiembre 2026 · 5 cohortes disponibles en Caracas.</p>
+    <h1 class="header-title">En 5 días aprendes a construir, validar y vender un negocio real.</h1>
+    <p style="font-size:.95rem;color:var(--gold);font-family:var(--fh);font-weight:500;margin-top:.75rem;margin-bottom:.25rem;">Sprint de Inteligencia Empresarial · Jóvenes de 17 a 23 años · Caracas</p>
+    <p class="header-sub">Un programa presencial intensivo donde sales con un plan de negocio completo, criterio comercial y la red de contactos que necesitas para arrancar. Agosto–Septiembre 2026 · Nest Coworking.</p>
+    <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.55rem;margin-top:1.5rem;padding:.85rem 1.75rem;background:var(--gold);color:#0a0a0a;font-family:var(--fh);font-size:.95rem;font-weight:700;border-radius:10px;text-decoration:none;transition:transform 200ms,box-shadow 200ms;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 36px rgba(245,166,35,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Hablar con Oscar por WhatsApp
+    </a>
   </div>
 </div>
 
@@ -340,8 +344,8 @@ textarea{resize:vertical;min-height:90px;}
   <div class="wrap">
     <div class="stats-row">
       <div class="stat">
-        <span class="stat-label">Ediciones</span>
-        <span class="stat-val">5 cohortes · Ago–Sep 2026</span>
+        <span class="stat-label">Fecha</span>
+        <span class="stat-val">31 ago – 4 sep 2026</span>
       </div>
       <div class="stat">
         <span class="stat-label">Duración</span>
@@ -532,13 +536,6 @@ textarea{resize:vertical;min-height:90px;}
                 <div class="step-desc">Una vez recibido el formulario, te enviamos los datos de pago. El lugar queda confirmado al completar el pago.</div>
               </div>
             </div>
-            <div class="step-row">
-              <div class="step-n">3</div>
-              <div class="step-body">
-                <div class="step-title">Llamada de bienvenida</div>
-                <div class="step-desc">Antes del sprint agendamos una videollamada corta para presentarnos, resolver tus dudas y darte la logística completa.</div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -587,7 +584,7 @@ textarea{resize:vertical;min-height:90px;}
             </details>
             <details class="fi">
               <summary class="fq">¿Cuándo es la próxima edición?</summary>
-              <p class="fa">La primera temporada estará compuesta de 5 semanas a elegir para los participantes entre el 3 de Agosto y el 4 de Septiembre.</p>
+              <p class="fa">La próxima edición es del 31 de agosto al 4 de septiembre en Nest Coworking, Caracas.</p>
             </details>
           </div>
         </div>
@@ -601,27 +598,7 @@ textarea{resize:vertical;min-height:90px;}
           <div class="side-card-head">Sprint de Inteligencia Empresarial</div>
           <div class="side-rows">
             <div class="side-row">
-              <span class="side-row-label">Cohortes</span>
-              <span class="side-row-val">Ago – Sep 2026</span>
-            </div>
-            <div class="side-row side-row-indent">
-              <span class="side-row-label">Semana 1</span>
-              <span class="side-row-val">3 – 7 ago</span>
-            </div>
-            <div class="side-row side-row-indent">
-              <span class="side-row-label">Semana 2</span>
-              <span class="side-row-val">10 – 14 ago</span>
-            </div>
-            <div class="side-row side-row-indent">
-              <span class="side-row-label">Semana 3</span>
-              <span class="side-row-val">17 – 21 ago</span>
-            </div>
-            <div class="side-row side-row-indent">
-              <span class="side-row-label">Semana 4</span>
-              <span class="side-row-val">24 – 28 ago</span>
-            </div>
-            <div class="side-row side-row-indent">
-              <span class="side-row-label">Semana 5</span>
+              <span class="side-row-label">Fecha</span>
               <span class="side-row-val">31 ago – 4 sep</span>
             </div>
             <div class="side-row">
@@ -650,10 +627,11 @@ textarea{resize:vertical;min-height:90px;}
             </div>
           </div>
           <div class="side-cta">
-            <a href="#form-section" class="btn-apply">
-              Inscribirse al Sprint
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" class="btn-apply" target="_blank" rel="noopener" onclick="if(typeof fbq==='function')fbq('track','Lead')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+              Hablar con Oscar
             </a>
+            <a href="#form-section" style="display:block;text-align:center;font-size:.78rem;color:var(--g2);margin-top:.65rem;text-decoration:underline;text-underline-offset:3px;">o llena el formulario</a>
           </div>
         </div>
 
@@ -682,7 +660,20 @@ textarea{resize:vertical;min-height:90px;}
   <div class="wrap">
     <div class="form-inner">
       <h2 class="form-title">Reserva tu lugar</h2>
-      <p class="form-sub">Espacios limitados para garantizar un ambiente de análisis profundo. El primer paso para comenzar a ver los negocios con ojos de estratega.</p>
+      <p class="form-sub">Espacios limitados. Si tienes dudas antes de inscribirte, escríbenos directo por WhatsApp y te respondemos.</p>
+
+      <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.9rem 1.5rem;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);border-radius:10px;color:#25d366;font-family:var(--fh);font-size:.92rem;font-weight:700;text-decoration:none;margin-bottom:1rem;transition:background 200ms;" onmouseover="this.style.background='rgba(37,211,102,.18)'" onmouseout="this.style.background='rgba(37,211,102,.1)'" onclick="if(typeof fbq==='function')fbq('track','Lead')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+        Hablar con Oscar por WhatsApp
+      </a>
+
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;">
+        <div style="flex:1;height:1px;background:var(--glass-b);"></div>
+        <span style="font-size:.75rem;color:var(--g3);white-space:nowrap;">o si ya decidiste, llena el formulario</span>
+        <div style="flex:1;height:1px;background:var(--glass-b);"></div>
+      </div>
+
+      <p style="font-size:.78rem;color:var(--g3);text-align:center;margin-bottom:1.25rem;line-height:1.6;">¿Eres padre o representante? Escríbenos por WhatsApp y resolvemos todas tus dudas antes de inscribirte.</p>
 
       <!--
         TODO: Integrar con servicio de formularios.
@@ -738,12 +729,7 @@ textarea{resize:vertical;min-height:90px;}
           <div class="field full">
             <label for="semana">Semana de preferencia *</label>
             <select id="semana" name="semana" required>
-              <option value="" disabled selected>Seleccionar semana</option>
-              <option value="Semana 1 · 3 – 7 de agosto">Semana 1: 3 – 7 de agosto</option>
-              <option value="Semana 2 · 10 – 14 de agosto">Semana 2: 10 – 14 de agosto</option>
-              <option value="Semana 3 · 17 – 21 de agosto">Semana 3: 17 – 21 de agosto</option>
-              <option value="Semana 4 · 24 – 28 de agosto">Semana 4: 24 – 28 de agosto</option>
-              <option value="Semana 5 · 31 ago – 4 sep">Semana 5: 31 de agosto – 4 de septiembre</option>
+              <option value="Semana 5 · 31 ago – 4 sep" selected>31 de agosto – 4 de septiembre</option>
             </select>
           </div>
 
@@ -1031,22 +1017,16 @@ document.getElementById('btn-paso1').addEventListener('click', async function() 
     // (el honeypot ya filtra bots; errores de red son raros)
   }
 
-  // Personalizar mensaje de gracias con nombre y semana
-  const nombre = payload.nombre ? payload.nombre.split(' ')[0] : '';
-  const semana = payload.semana || '';
-  const sub = document.getElementById('gracias-sub');
-  if (sub && nombre) {
-    sub.textContent = nombre + ', recibimos tu inscripción para ' + semana + '. Para confirmar tu lugar, realiza el pago por cualquiera de los métodos a continuación y envíanos el comprobante.';
-  }
-
   if (typeof fbq === 'function') {
     fbq('track', 'Lead');
   }
 
-  form.style.display = 'none';
-  const gracias = document.getElementById('gracias');
-  gracias.style.display = 'block';
-  gracias.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const nombre  = payload.nombre  || '';
+  const semana  = payload.semana  || '';
+  const email   = payload.email   || '';
+  const whatsapp= payload.whatsapp|| '';
+  const qs = new URLSearchParams({ nombre, semana, email, whatsapp }).toString();
+  window.location.href = 'sprint-gracias.html?' + qs;
 });
 </script>
 </body>

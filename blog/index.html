@@ -1,97 +1,153 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q139EMTFK0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q139EMTFK0');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Blog de Oscar B2B — Artículos sobre negocios, mentalidad, inteligencia artificial y ventas B2B.">
 <title>Blog — Oscar B2B</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--g:#F5A623;--bg:#0a0a0a;--surf:#141414;--bdr:rgba(255,255,255,.07);--mute:rgba(255,255,255,.38);}
-html,body{height:100%;background:var(--bg);color:#fff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
-body{display:flex;flex-direction:column;min-height:100vh;}
+:root{
+  --bg:#F6F3EE;--bg-1:#EDE9E1;
+  --glass:#FFFFFF;--glass-b:rgba(0,0,0,.09);
+  --gold:#009944;--gold-dim:rgba(0,153,68,.12);--gold-bdr:rgba(0,153,68,.25);
+  --white:#111111;--g1:#333333;--g2:#666666;--g3:#999999;
+  --fh:'Space Grotesk',sans-serif;--fb:'Inter',sans-serif;--nav-h:64px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--white);font-family:var(--fb);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
 
 /* NAV */
-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 52px;border-bottom:1px solid var(--bdr);}
-.logo{display:flex;align-items:baseline;gap:7px;line-height:1;text-decoration:none;}
-.lo{font-family:'Anton',sans-serif;font-size:18pt;text-transform:uppercase;letter-spacing:-.01em;color:#fff;}
-.lb{font-family:'Playfair Display',serif;font-style:italic;font-size:15pt;color:var(--g);}
-.back-link{display:inline-flex;align-items:center;gap:7px;font-size:7.5pt;letter-spacing:.28em;text-transform:uppercase;color:var(--mute);text-decoration:none;transition:color .18s;}
-.back-link:hover{color:var(--g);}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.25rem,5vw,2.5rem);height:var(--nav-h);border-bottom:1px solid var(--glass-b);position:sticky;top:0;background:rgba(246,243,238,.96);backdrop-filter:blur(24px);z-index:50;}
+.logo{font-family:var(--fh);font-size:1.2rem;font-weight:700;}
+.logo span{color:var(--gold);}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--g2);transition:color 200ms;}
+.back-link:hover{color:var(--gold);}
 
 /* HERO */
-.hero{padding:56px 52px 40px;max-width:1300px;margin:0 auto;width:100%;}
-.hero-ey{font-size:7.5pt;letter-spacing:.36em;text-transform:uppercase;color:var(--g);margin-bottom:14px;display:flex;align-items:center;gap:11px;}
-.hero-ey::before{content:"";display:block;width:22px;height:1.5px;background:var(--g);}
-.hero h1{font-family:'Anton',sans-serif;font-size:68pt;text-transform:uppercase;line-height:1.05;letter-spacing:-.01em;}
-.hero-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:18pt;color:var(--mute);margin-top:14px;line-height:1.45;}
+.hero{padding:4rem clamp(1.25rem,5vw,2.5rem) 3rem;max-width:1200px;margin:0 auto;}
+.hero-ey{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
+.hero-ey::before{content:"";display:block;width:20px;height:1.5px;background:var(--gold);}
+.hero h1{font-family:var(--fh);font-size:clamp(2.2rem,6vw,4rem);font-weight:700;line-height:1.1;letter-spacing:-.025em;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:1rem;color:var(--g2);margin-top:.9rem;line-height:1.65;max-width:480px;}
 
 /* GRID */
-.gw{flex:1;padding:0 52px 64px;max-width:1300px;margin:0 auto;width:100%;}
+.gw{padding:0 clamp(1.25rem,5vw,2.5rem) 6rem;max-width:1200px;margin:0 auto;}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 
-/* POST CARD */
+/* CARD */
 .card{
   display:flex;flex-direction:column;gap:12px;
-  background:var(--surf);border:1px solid var(--bdr);border-radius:10px;
-  padding:30px;text-decoration:none;color:#fff;
-  transition:border-color .18s,box-shadow .18s;
+  background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;
+  padding:28px;color:var(--white);
+  transition:border-color .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden;
 }
-.card:hover{border-color:rgba(245,166,35,.5);box-shadow:0 0 36px rgba(245,166,35,.07);}
-.c-tag{font-size:7.5pt;letter-spacing:.28em;text-transform:uppercase;color:var(--g);font-weight:600;}
-.c-title{font-family:'Anton',sans-serif;font-size:18pt;text-transform:uppercase;line-height:.96;}
-.c-desc{font-size:10.5pt;line-height:1.65;color:var(--mute);flex:1;}
-.c-link{display:flex;align-items:center;gap:7px;font-size:8.5pt;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--g);margin-top:4px;}
-
-/* EMPTY STATE */
-.empty{
-  grid-column:1/-1;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:16px;padding:72px 32px;
-  background:var(--surf);border:1px dashed var(--bdr);border-radius:10px;
-  text-align:center;
-}
-.empty-ico{width:52px;height:52px;border-radius:12px;background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.18);display:flex;align-items:center;justify-content:center;color:var(--g);}
-.empty h3{font-family:'Anton',sans-serif;font-size:20pt;text-transform:uppercase;}
-.empty p{font-size:10.5pt;color:var(--mute);max-width:380px;line-height:1.65;}
+.card:hover{border-color:var(--gold-bdr);box-shadow:0 0 40px rgba(245,166,35,.07);transform:translateY(-2px);}
+.c-tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border-radius:100px;width:fit-content;}
+.tag-blog{background:rgba(245,166,35,.1);color:var(--gold);border:1px solid rgba(245,166,35,.2);}
+.tag-tool{background:rgba(79,158,245,.1);color:#4F9EF5;border:1px solid rgba(79,158,245,.2);}
+.c-title{font-family:var(--fh);font-size:1.1rem;font-weight:700;line-height:1.2;letter-spacing:-.015em;}
+.c-desc{font-size:.88rem;line-height:1.7;color:var(--g2);flex:1;}
+.c-link{display:flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:4px;}
+.c-link svg{transition:transform .18s;}
+.card:hover .c-link svg{transform:translateX(4px);}
+.c-num{font-family:var(--fh);font-size:72pt;line-height:1;color:rgba(255,255,255,.03);position:absolute;bottom:-10px;right:16px;letter-spacing:-.04em;pointer-events:none;}
 
 /* FOOTER */
-footer{border-top:1px solid var(--bdr);padding:16px 52px;display:flex;justify-content:space-between;align-items:center;}
-.fl{font-size:7.5pt;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);}
-.fd{width:6px;height:6px;border-radius:50%;background:var(--g);}
+footer{border-top:1px solid var(--glass-b);padding:1.5rem clamp(1.25rem,5vw,2.5rem);display:flex;justify-content:space-between;align-items:center;}
+.fl{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);}
+.fd{width:6px;height:6px;border-radius:50%;background:var(--gold);}
 
-@media(max-width:980px){.grid{grid-template-columns:1fr 1fr;}.hero h1{font-size:52pt;}nav,.hero,.gw,footer{padding-left:28px;padding-right:28px;}}
-@media(max-width:600px){.grid{grid-template-columns:1fr;}.hero h1{font-size:38pt;}nav,.hero,.gw,footer{padding-left:18px;padding-right:18px;}}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="../" class="logo"><span class="lo">Oscar</span><span class="lb">B2B</span></a>
+  <a href="../" class="logo">Oscar<span>b2b</span></a>
   <a href="../" class="back-link">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Regresar
+    Inicio
   </a>
 </nav>
 
 <div class="hero">
   <div class="hero-ey">Blog</div>
-  <h1>LO QUE<br>APRENDO</h1>
-  <p class="hero-sub">Ventas, metodología e inteligencia artificial<br>para equipos B2B modernos.</p>
+  <h1>Lo que aprendo, <span>lo comparto</span></h1>
+  <p class="hero-sub">Artículos sobre negocios, mentalidad, inteligencia artificial y ventas B2B. En tiempo real, gratis.</p>
 </div>
 
 <div class="gw">
   <div class="grid">
 
-    <div class="empty">
-      <div class="empty-ico">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-      </div>
-      <h3>Próximamente</h3>
-      <p>Estoy preparando los primeros artículos. Contenido práctico sobre cómo construir equipos de ventas con metodología e inteligencia artificial.</p>
-    </div>
+    <a href="la-mentira-de-los-buenos-negocios.html" class="card">
+      <span class="c-tag tag-blog">Blog · Negocios</span>
+      <div class="c-title">La mentira de los buenos negocios</div>
+      <p class="c-desc">El "mejor negocio del mundo" no existe. La clave no está en la industria, sino en la alineación entre el fundador y su empresa.</p>
+      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="c-num">01</div>
+    </a>
+
+    <a href="el-mito-del-interesado.html" class="card">
+      <span class="c-tag tag-blog">Blog · Relaciones</span>
+      <div class="c-title">El mito del "interesado"</div>
+      <p class="c-desc">Por qué el networking real es el activo más rentable de tu carrera. Los 3 mitos desmontados.</p>
+      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="c-num">02</div>
+    </a>
+
+    <a href="criterio-propio-vs-ruido-externo.html" class="card">
+      <span class="c-tag tag-blog">Blog · Mentalidad</span>
+      <div class="c-title">Criterio propio vs. Ruido externo</div>
+      <p class="c-desc">La habilidad invisible que salva (o destruye) un negocio en sus inicios.</p>
+      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="c-num">03</div>
+    </a>
+
+    <a href="inteligencia-humana-x-ia.html" class="card">
+      <span class="c-tag tag-blog">Blog · IA</span>
+      <div class="c-title">Inteligencia humana × IA</div>
+      <p class="c-desc">La habilidad que va a separar a los adolescentes extraordinarios del resto. Cómo pensar con la IA, no delegar en ella.</p>
+      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="c-num">04</div>
+    </a>
+
+    <a href="creando-el-prompt-perfecto.html" class="card">
+      <span class="c-tag tag-blog">Blog · IA</span>
+      <div class="c-title">Creando el prompt perfecto</div>
+      <p class="c-desc">La fórmula R-C-O-F para evitar respuestas mediocres. Del prompt novato al prompt profesional.</p>
+      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="c-num">05</div>
+    </a>
+
+    <a href="ensenar-pickleball-40k-al-mes.html" class="card">
+      <span class="c-tag tag-blog">Blog · Modelos de Negocio</span>
+      <div class="c-title">¿Enseñar Pickleball y ganar $40K al mes?</div>
+      <p class="c-desc">Sí, el "negocio tonto" no existe. Las 3 lecciones de mentalidad B2B detrás de un caso real.</p>
+      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="c-num">06</div>
+    </a>
+
+    <a href="5-herramientas-tecnologicas-premium.html" class="card">
+      <span class="c-tag tag-tool">Herramientas</span>
+      <div class="c-title">Las 5 herramientas que transformaron mi empresa</div>
+      <p class="c-desc">HubSpot, Respond.io, Airtable, Apollo.io y Claude. El stack tecnológico real de una empresa B2B.</p>
+      <div class="c-link">Leer <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="c-num">07</div>
+    </a>
 
   </div>
 </div>

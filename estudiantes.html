@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Portal de Estudiantes — Oscar B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{
+  position:fixed;inset:0;z-index:999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+}
+.login-card{
+  background:var(--surf);border:1px solid var(--bdr);border-radius:16px;
+  padding:2.5rem 2rem;width:100%;max-width:380px;
+  box-shadow:0 4px 32px rgba(0,0,0,.08);
+}
+.login-logo{font-family:var(--fh);font-size:1.3rem;font-weight:700;letter-spacing:-.02em;margin-bottom:2rem;}
+.login-logo span{color:var(--green);}
+.login-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:var(--green-dim);color:var(--green);
+  border:1px solid var(--green-bdr);
+  font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem .65rem;border-radius:20px;margin-bottom:1.5rem;
+}
+.login-title{font-family:var(--fh);font-size:1.4rem;font-weight:700;line-height:1.2;margin-bottom:.4rem;}
+.login-sub{font-size:.88rem;color:var(--g2);margin-bottom:1.75rem;line-height:1.5;}
+.login-label{font-size:.8rem;font-weight:600;color:var(--g1);margin-bottom:.45rem;display:block;}
+.login-input{
+  width:100%;padding:.75rem 1rem;
+  border:1.5px solid var(--bdr);border-radius:8px;
+  font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:.2em;
+  background:var(--bg);color:var(--text);
+  transition:border-color .2s;outline:none;
+  text-transform:uppercase;
+}
+.login-input:focus{border-color:var(--green);}
+.login-input.error{border-color:#E53E3E;}
+.login-error{font-size:.78rem;color:#E53E3E;margin-top:.4rem;min-height:1rem;}
+.login-btn{
+  width:100%;margin-top:1.25rem;padding:.85rem;
+  background:var(--green);color:#fff;border:none;border-radius:8px;
+  font-family:var(--fh);font-size:.95rem;font-weight:700;letter-spacing:.02em;
+  transition:opacity .2s;
+}
+.login-btn:hover{opacity:.88;}
+.login-hint{font-size:.75rem;color:var(--g3);margin-top:1.25rem;text-align:center;line-height:1.5;}
+
+
+:root{
+  --bg:#F6F3EE;
+  --bg-1:#EDE9E1;
+  --bg-2:#E4DFD5;
+  --surf:#FFFFFF;
+  --bdr:rgba(0,0,0,.09);
+  --green:#009944;
+  --green-dim:rgba(0,153,68,.10);
+  --green-bdr:rgba(0,153,68,.25);
+  --text:#111111;
+  --g1:#333333;
+  --g2:#666666;
+  --g3:#999999;
+  --fh:'Space Grotesk',sans-serif;
+  --fb:'Inter',sans-serif;
+  --nav-h:64px;
+  --sidebar-w:280px;
+  --r:12px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;inset:0 0 auto 0;height:var(--nav-h);
+  display:flex;align-items:center;
+  background:rgba(246,243,238,.96);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bdr);
+  z-index:100;
+}
+.nav-inner{
+  width:100%;max-width:1400px;margin-inline:auto;
+  padding-inline:clamp(1rem,4vw,2rem);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.nav-logo{font-family:var(--fh);font-size:1.2rem;font-weight:700;letter-spacing:-.02em;}
+.nav-logo span{color:var(--green);}
+.nav-badge{
+  background:var(--green-dim);color:var(--green);border:1px solid var(--green-bdr);
+  font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:.3rem .75rem;border-radius:20px;
+}
+.nav-back{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.85rem;font-weight:500;color:var(--g2);
+  transition:color .2s;
+}
+.nav-back:hover{color:var(--green);}
+.nav-back svg{width:16px;height:16px;}
+
+/* ── VIEWS ── */
+#view-catalog{display:block;}
+#view-course{display:none;}
+
+/* ── CATALOG ── */
+.catalog-wrap{
+  max-width:1100px;margin-inline:auto;
+  padding:calc(var(--nav-h) + 2.5rem) clamp(1rem,4vw,2rem) 4rem;
+}
+.catalog-header{margin-bottom:2.5rem;}
+.catalog-label{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--green);margin-bottom:.75rem;
+}
+.catalog-label::before{content:'';width:20px;height:1px;background:var(--green);}
+.catalog-title{font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;line-height:1.2;letter-spacing:-.025em;}
+.catalog-sub{margin-top:.6rem;color:var(--g2);font-size:.95rem;}
+
+.course-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1.25rem;
+}
+.course-card{
+  background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);
+  overflow:hidden;cursor:pointer;
+  transition:border-color .2s,box-shadow .2s,transform .2s;
+}
+.course-card:hover{border-color:var(--green-bdr);box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-2px);}
+.course-thumb{
+  aspect-ratio:16/9;background:var(--bg-1);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.course-thumb-img{width:100%;height:100%;object-fit:cover;}
+.course-thumb-placeholder{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
+  color:var(--g3);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  text-align:center;padding:1rem;
+  background:linear-gradient(135deg,var(--bg-1) 0%,var(--bg-2) 100%);
+  width:100%;height:100%;
+}
+.course-thumb-placeholder strong{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);line-height:1.2;}
+.course-thumb .live-badge{
+  position:absolute;top:.6rem;right:.6rem;
+  background:#E53E3E;color:#fff;
+  font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:4px;
+  display:flex;align-items:center;gap:.3rem;
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.course-info{padding:.9rem 1rem 1rem;}
+.course-tag{font-size:.68rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:.35rem;}
+.course-name{font-family:var(--fh);font-size:.95rem;font-weight:700;line-height:1.3;color:var(--text);}
+.course-meta{font-size:.78rem;color:var(--g3);margin-top:.4rem;}
+
+/* ── LIVE SECTION ── */
+.live-section{margin-bottom:3rem;}
+.section-label{
+  display:flex;align-items:center;gap:.6rem;
+  font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--g2);margin-bottom:1rem;
+}
+.section-label span{flex:1;height:1px;background:var(--bdr);}
+
+/* Live player embebido */
+.live-player-wrap{
+  position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;
+  background:#000;
+}
+.live-player-wrap iframe{position:absolute;inset:0;width:100%;height:100%;}
+.live-active-bar{
+  display:flex;align-items:center;gap:.75rem;
+  margin-bottom:.75rem;
+}
+.live-dot-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:#E53E3E;color:#fff;
+  font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.3rem .7rem;border-radius:20px;
+}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.live-active-title{font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--text);}
+
+/* Próxima clase (cuando no hay live activo) */
+.live-upcoming{
+  background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);
+  padding:1.75rem 1.5rem;
+  display:flex;align-items:center;gap:1.25rem;
+}
+.live-upcoming-icon{
+  width:48px;height:48px;border-radius:10px;flex-shrink:0;
+  background:var(--bg-1);display:flex;align-items:center;justify-content:center;
+}
+.live-upcoming-icon svg{width:22px;height:22px;color:var(--g3);}
+.live-upcoming-info{flex:1;}
+.live-upcoming-title{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);}
+.live-upcoming-desc{font-size:.82rem;color:var(--g2);margin-top:.25rem;}
+
+/* ── COURSE VIEW ── */
+.course-layout{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:calc(100vh - var(--nav-h));
+  margin-top:var(--nav-h);
+}
+
+/* Sidebar */
+.sidebar{
+  background:var(--surf);border-right:1px solid var(--bdr);
+  height:calc(100vh - var(--nav-h));
+  position:sticky;top:var(--nav-h);
+  overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;
+}
+.sidebar-header{padding:1.25rem 1.25rem .75rem;border-bottom:1px solid var(--bdr);}
+.sidebar-course-tag{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:.3rem;}
+.sidebar-course-name{font-family:var(--fh);font-size:.92rem;font-weight:700;line-height:1.3;color:var(--text);}
+
+.module-list{padding:.5rem 0 2rem;}
+.module-item{}
+.module-header{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.65rem 1.25rem;
+  font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--g2);cursor:pointer;
+  background:var(--bg);border-top:1px solid var(--bdr);
+  user-select:none;
+}
+.module-header svg{width:14px;height:14px;margin-left:auto;transition:transform .2s;flex-shrink:0;}
+.module-item.open .module-header svg{transform:rotate(180deg);}
+.lesson-list{display:none;}
+.module-item.open .lesson-list{display:block;}
+.lesson-btn{
+  display:flex;align-items:center;gap:.75rem;width:100%;
+  padding:.65rem 1.25rem .65rem 1.5rem;
+  font-size:.83rem;color:var(--g1);
+  background:none;border:none;text-align:left;
+  transition:background .15s,color .15s;
+  cursor:pointer;
+  border-left:2px solid transparent;
+}
+.lesson-btn:hover{background:var(--bg-1);color:var(--text);}
+.lesson-btn.active{color:var(--green);font-weight:600;border-left-color:var(--green);background:var(--green-dim);}
+.lesson-check{
+  width:18px;height:18px;border-radius:50%;border:1.5px solid var(--bdr);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background .2s,border-color .2s;
+}
+.lesson-check.done{background:var(--green);border-color:var(--green);}
+.lesson-check.done svg{display:block;}
+.lesson-check svg{display:none;width:10px;height:10px;stroke:#fff;stroke-width:2.5;fill:none;}
+.lesson-btn.active .lesson-check{border-color:var(--green);}
+.lesson-label{flex:1;line-height:1.35;}
+
+/* Main content */
+.course-main{padding:2rem clamp(1rem,3vw,2.5rem) 4rem;}
+.lesson-breadcrumb{font-size:.78rem;color:var(--g3);margin-bottom:1rem;}
+.lesson-breadcrumb span{color:var(--green);}
+.lesson-title{font-family:var(--fh);font-size:clamp(1.2rem,2.5vw,1.65rem);font-weight:700;letter-spacing:-.02em;margin-bottom:1.25rem;}
+
+/* Video player */
+.video-wrap{
+  position:relative;background:#000;border-radius:var(--r);overflow:hidden;
+  aspect-ratio:16/9;margin-bottom:1.5rem;
+}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;}
+.video-placeholder{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+  background:linear-gradient(135deg,#0a1a0e 0%,#1a3a22 100%);color:#fff;text-align:center;
+}
+.video-placeholder svg{width:64px;height:64px;opacity:.4;}
+.video-placeholder p{font-size:.9rem;color:rgba(255,255,255,.5);}
+
+/* Resources */
+.resources-section{margin-top:1.75rem;}
+.resources-title{font-family:var(--fh);font-size:1rem;font-weight:700;margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
+.resources-title svg{width:18px;height:18px;color:var(--green);}
+.resource-list{display:flex;flex-direction:column;gap:.5rem;}
+.resource-item{
+  display:flex;align-items:center;gap:.9rem;
+  background:var(--surf);border:1px solid var(--bdr);border-radius:8px;
+  padding:.75rem 1rem;transition:border-color .2s;
+}
+.resource-item:hover{border-color:var(--green-bdr);}
+.resource-icon{
+  width:36px;height:36px;border-radius:8px;
+  background:var(--green-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.resource-icon svg{width:18px;height:18px;color:var(--green);}
+.resource-info{flex:1;}
+.resource-name{font-size:.85rem;font-weight:600;color:var(--text);}
+.resource-type{font-size:.73rem;color:var(--g3);text-transform:uppercase;letter-spacing:.06em;}
+.resource-dl{
+  font-size:.78rem;font-weight:600;color:var(--green);
+  display:flex;align-items:center;gap:.3rem;
+  transition:opacity .2s;
+}
+.resource-dl:hover{opacity:.7;}
+.resource-dl svg{width:14px;height:14px;}
+
+/* Mark done button */
+.mark-done-btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--green);color:#fff;border:none;
+  font-size:.85rem;font-weight:700;
+  padding:.65rem 1.25rem;border-radius:8px;
+  margin-top:1.5rem;
+  transition:opacity .2s;
+}
+.mark-done-btn:hover{opacity:.88;}
+.mark-done-btn.done{background:var(--bg-2);color:var(--g2);}
+.mark-done-btn svg{width:16px;height:16px;}
+
+/* Progress bar */
+.progress-wrap{padding:.9rem 1.25rem;border-bottom:1px solid var(--bdr);}
+.progress-label{font-size:.73rem;color:var(--g2);margin-bottom:.4rem;display:flex;justify-content:space-between;}
+.progress-bar{height:4px;background:var(--bg-1);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .4s var(--ease);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  :root{--sidebar-w:100%;}
+  .course-layout{grid-template-columns:1fr;}
+  .sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--bdr);}
+  .lesson-list{max-height:240px;overflow-y:auto;}
+  .nav-badge{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">Oscar<span>b2b</span></div>
+    <div class="login-badge">Sprint de Inteligencia Empresarial</div>
+    <h1 class="login-title">Portal de<br>Estudiantes</h1>
+    <p class="login-sub">Ingresa tu código de acceso para ver las clases y recursos del Sprint.</p>
+    <label class="login-label" for="code-input">Código de acceso</label>
+    <input class="login-input" id="code-input" type="text" maxlength="10" placeholder="SIE2026" autocomplete="off" autocapitalize="characters" onkeydown="if(event.key==='Enter')checkCode()">
+    <div class="login-error" id="login-error"></div>
+    <button class="login-btn" onclick="checkCode()">Entrar al portal →</button>
+    <p class="login-hint">¿No tienes tu código? Escríbele a Oscar por WhatsApp.</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Oscar<span>b2b</span></a>
+    <span class="nav-badge">Portal Estudiantes</span>
+    <a href="#" class="nav-back" id="back-btn" style="display:none" onclick="showCatalog();return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Todos los cursos
+    </a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     CATALOG VIEW
+════════════════════════════════════════ -->
+<div id="view-catalog">
+  <div class="catalog-wrap">
+    <div class="catalog-header">
+      <div class="catalog-label">Sprint de Inteligencia Empresarial</div>
+      <h1 class="catalog-title">Tu biblioteca de aprendizaje</h1>
+      <p class="catalog-sub">Clases, recursos y herramientas del sprint.</p>
+    </div>
+
+    <!-- LIVE -->
+    <div class="live-section" id="live-section"></div>
+
+    <!-- COURSES -->
+    <div class="section-label">Módulos del Sprint <span></span></div>
+    <div class="course-grid" id="course-grid"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     COURSE VIEW
+════════════════════════════════════════ -->
+<div id="view-course">
+  <div class="course-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-course-tag" id="sb-tag">Módulo</div>
+        <div class="sidebar-course-name" id="sb-name">Nombre del módulo</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Progreso</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-list" id="module-list"></div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="course-main" id="course-main">
+      <div class="lesson-breadcrumb" id="lesson-breadcrumb"></div>
+      <h1 class="lesson-title" id="lesson-title">Selecciona una lección</h1>
+      <div class="video-wrap" id="video-wrap">
+        <div class="video-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+          <p>Selecciona una lección para comenzar</p>
+        </div>
+      </div>
+      <div class="resource-list" id="resource-list"></div>
+      <button class="mark-done-btn" id="mark-done-btn" onclick="markDone()" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Marcar como completada
+      </button>
+    </main>
+
+  </div>
+</div>
+
+<script>
+/* ── DATA ── */
+const COURSES = [
+  {
+    id:'dia1',
+    tag:'Día 1',
+    name:'Idea y validación de negocio',
+    modules:[
+      {
+        id:'m1',name:'Bienvenida',
+        lessons:[
+          {id:'l1',name:'Bienvenida al Sprint',vimeoId:'',resources:[]},
+          {id:'l2',name:'Cómo aprovechar al máximo estos 5 días',vimeoId:'',resources:[]},
+        ]
+      },
+      {
+        id:'m2',name:'Módulo 1 · Idea de negocio',
+        lessons:[
+          {id:'l3',name:'Qué es una idea de negocio real',vimeoId:'',resources:[
+            {name:'Plantilla: Mapa de Idea de Negocio',type:'Google Docs',url:'#'},
+          ]},
+          {id:'l4',name:'Cómo validar sin gastar dinero',vimeoId:'',resources:[
+            {name:'Checklist de validación rápida',type:'PDF',url:'#'},
+          ]},
+          {id:'l5',name:'Entrevista de descubrimiento al cliente',vimeoId:'',resources:[]},
+        ]
+      },
+    ]
+  },
+  {
+    id:'dia2',
+    tag:'Día 2',
+    name:'Propuesta de valor y cliente ideal',
+    modules:[
+      {
+        id:'m3',name:'Módulo 2 · Propuesta de valor',
+        lessons:[
+          {id:'l6',name:'Qué problema resuelves realmente',vimeoId:'',resources:[]},
+          {id:'l7',name:'Canvas de propuesta de valor',vimeoId:'',resources:[
+            {name:'Value Proposition Canvas',type:'Google Slides',url:'#'},
+          ]},
+        ]
+      },
+      {
+        id:'m4',name:'Módulo 3 · Cliente ideal',
+        lessons:[
+          {id:'l8',name:'Perfil del cliente objetivo',vimeoId:'',resources:[
+            {name:'Plantilla: Buyer Persona',type:'Google Docs',url:'#'},
+          ]},
+          {id:'l9',name:'Cómo hablar el idioma de tu cliente',vimeoId:'',resources:[]},
+        ]
+      },
+    ]
+  },
+  {
+    id:'dia3',
+    tag:'Día 3',
+    name:'Modelo de negocio y precios',
+    modules:[
+      {
+        id:'m5',name:'Módulo 4 · Modelo de negocio',
+        lessons:[
+          {id:'l10',name:'Business Model Canvas',vimeoId:'',resources:[
+            {name:'Business Model Canvas',type:'Google Slides',url:'#'},
+          ]},
+          {id:'l11',name:'Fuentes de ingreso y estructura de costos',vimeoId:'',resources:[]},
+        ]
+      },
+      {
+        id:'m6',name:'Módulo 5 · Estrategia de precios',
+        lessons:[
+          {id:'l12',name:'Cómo poner el precio correcto',vimeoId:'',resources:[]},
+          {id:'l13',name:'Psicología del precio',vimeoId:'',resources:[]},
+        ]
+      },
+    ]
+  },
+  {
+    id:'dia4',
+    tag:'Día 4',
+    name:'Ventas y primeros clientes',
+    modules:[
+      {
+        id:'m7',name:'Módulo 6 · Primeras ventas',
+        lessons:[
+          {id:'l14',name:'El proceso de venta simplificado',vimeoId:'',resources:[]},
+          {id:'l15',name:'Cómo hacer una llamada de ventas',vimeoId:'',resources:[
+            {name:'Script de llamada de ventas',type:'Google Docs',url:'#'},
+          ]},
+          {id:'l16',name:'Manejo de objeciones',vimeoId:'',resources:[]},
+        ]
+      },
+    ]
+  },
+  {
+    id:'dia5',
+    tag:'Día 5 · Pitch Day',
+    name:'Pitch y plan de acción',
+    modules:[
+      {
+        id:'m8',name:'Módulo 7 · El Pitch',
+        lessons:[
+          {id:'l17',name:'Estructura del pitch perfecto',vimeoId:'',resources:[
+            {name:'Plantilla de Pitch Deck',type:'Google Slides',url:'#'},
+          ]},
+          {id:'l18',name:'Cómo presentar con confianza',vimeoId:'',resources:[]},
+          {id:'l19',name:'Pitch Day — Grabación completa',vimeoId:'',resources:[]},
+        ]
+      },
+      {
+        id:'m9',name:'Módulo 8 · Próximos pasos',
+        lessons:[
+          {id:'l20',name:'Plan de acción post-sprint',vimeoId:'',resources:[
+            {name:'Hoja de ruta 30 días',type:'PDF',url:'#'},
+          ]},
+          {id:'l21',name:'Red de Sprinters — acceso a la comunidad',vimeoId:'',resources:[]},
+        ]
+      },
+    ]
+  },
+  {
+    id:'recursos',
+    tag:'Recursos',
+    name:'Herramientas y plantillas',
+    modules:[
+      {
+        id:'m10',name:'Todas las plantillas',
+        lessons:[
+          {id:'l22',name:'Pack completo de plantillas del Sprint',vimeoId:'',resources:[
+            {name:'Pack de plantillas completo',type:'Google Drive',url:'#'},
+            {name:'Glosario de términos empresariales',type:'PDF',url:'#'},
+          ]},
+        ]
+      },
+    ]
+  },
+];
+
+// ── VIMEO CONFIG ────────────────────────────────────────────────
+// Cuando haya clase en vivo: pon el Event ID de Vimeo Live aquí
+// Ejemplo: const VIMEO_LIVE_ID = '123456789';
+// Cuando no hay clase: déjalo en null
+const VIMEO_LIVE_ID = null;
+
+// Título y fecha de la próxima clase (se muestra cuando no hay live activo)
+const PROXIMA_CLASE = {
+  titulo: 'Día 1 — Idea y validación de negocio',
+  fecha:  'Domingo 31 de agosto · 9:00 am'
+};
+// ────────────────────────────────────────────────────────────────
+
+/* ── STATE ── */
+let currentCourse = null;
+let currentLesson = null;
+let done = {};
+try{ done = JSON.parse(localStorage.getItem('oscarb2b_done') || '{}'); }catch(e){}
+
+/* ── LIVE RENDER ── */
+function renderLive(){
+  const sec = document.getElementById('live-section');
+  if(VIMEO_LIVE_ID){
+    sec.innerHTML = `
+      <div class="section-label">En vivo ahora <span></span></div>
+      <div class="live-active-bar">
+        <span class="live-dot-badge"><span class="live-dot"></span>EN VIVO</span>
+        <span class="live-active-title">${PROXIMA_CLASE.titulo}</span>
+      </div>
+      <div class="live-player-wrap">
+        <iframe src="https://vimeo.com/event/${VIMEO_LIVE_ID}/embed"
+          frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>`;
+  } else {
+    sec.innerHTML = `
+      <div class="section-label">En vivo <span></span></div>
+      <div class="live-upcoming">
+        <div class="live-upcoming-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="live-upcoming-info">
+          <div class="live-upcoming-title">Próxima clase en vivo</div>
+          <div class="live-upcoming-desc">${PROXIMA_CLASE.titulo} · ${PROXIMA_CLASE.fecha}</div>
+        </div>
+      </div>`;
+  }
+}
+
+/* ── CATALOG ── */
+function renderCatalog(){
+  const grid = document.getElementById('course-grid');
+  grid.innerHTML = '';
+  COURSES.forEach(c => {
+    const total = c.modules.reduce((a,m) => a + m.lessons.length, 0);
+    const completed = c.modules.reduce((a,m) => a + m.lessons.filter(l => done[l.id]).length, 0);
+    const pct = total ? Math.round(completed/total*100) : 0;
+    const card = document.createElement('div');
+    card.className = 'course-card';
+    card.innerHTML = `
+      <div class="course-thumb">
+        <div class="course-thumb-placeholder">
+          <span>${c.tag}</span>
+          <strong>${c.name}</strong>
+        </div>
+        ${pct===100 ? '<div style="position:absolute;top:.6rem;left:.6rem;background:var(--green);color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;letter-spacing:.04em;">✓ Completado</div>' : ''}
+      </div>
+      <div class="course-info">
+        <div class="course-tag">${c.tag}</div>
+        <div class="course-name">${c.name}</div>
+        <div class="course-meta">${total} lecciones · ${pct}% completado</div>
+      </div>`;
+    card.onclick = () => openCourse(c.id);
+    grid.appendChild(card);
+  });
+}
+
+/* ── COURSE ── */
+function openCourse(courseId){
+  currentCourse = COURSES.find(c => c.id === courseId);
+  if(!currentCourse) return;
+
+  document.getElementById('view-catalog').style.display = 'none';
+  document.getElementById('view-course').style.display = 'block';
+  document.getElementById('back-btn').style.display = 'inline-flex';
+
+  document.getElementById('sb-tag').textContent = currentCourse.tag;
+  document.getElementById('sb-name').textContent = currentCourse.name;
+
+  renderSidebar();
+  updateProgress();
+
+  // Open first module and select first lesson
+  const firstLesson = currentCourse.modules[0]?.lessons[0];
+  if(firstLesson) selectLesson(firstLesson.id);
+}
+
+function renderSidebar(){
+  const list = document.getElementById('module-list');
+  list.innerHTML = '';
+  currentCourse.modules.forEach((mod, mi) => {
+    const item = document.createElement('div');
+    item.className = 'module-item' + (mi===0?' open':'');
+    item.innerHTML = `
+      <div class="module-header" onclick="toggleModule(this.parentElement)">
+        ${mod.name}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="lesson-list">${mod.lessons.map(l => `
+        <button class="lesson-btn" id="lb-${l.id}" onclick="selectLesson('${l.id}')">
+          <span class="lesson-check ${done[l.id]?'done':''}" id="chk-${l.id}">
+            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="lesson-label">${l.name}</span>
+        </button>`).join('')}
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+function toggleModule(el){
+  el.classList.toggle('open');
+}
+
+function selectLesson(lessonId){
+  currentLesson = null;
+  for(const mod of currentCourse.modules){
+    const l = mod.lessons.find(l => l.id === lessonId);
+    if(l){ currentLesson = l; break; }
+  }
+  if(!currentLesson) return;
+
+  // Update active state
+  document.querySelectorAll('.lesson-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('lb-'+lessonId);
+  if(btn){
+    btn.classList.add('active');
+    btn.scrollIntoView({block:'nearest'});
+  }
+
+  // Update main content
+  document.getElementById('lesson-title').textContent = currentLesson.name;
+
+  // Video
+  const wrap = document.getElementById('video-wrap');
+  if(currentLesson.vimeoId){
+    const src = `https://player.vimeo.com/video/${currentLesson.vimeoId}?title=0&byline=0&portrait=0&color=009944`;
+    wrap.innerHTML = `<iframe src="${src}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  } else {
+    wrap.innerHTML = `<div class="video-placeholder">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+      <p>Video próximamente</p>
+    </div>`;
+  }
+
+  // Resources
+  const rl = document.getElementById('resource-list');
+  if(currentLesson.resources.length){
+    rl.innerHTML = `<div class="resources-section">
+      <div class="resources-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Recursos de esta lección
+      </div>
+      ${currentLesson.resources.map(r => `
+        <div class="resource-item">
+          <div class="resource-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="resource-info">
+            <div class="resource-name">${r.name}</div>
+            <div class="resource-type">${r.type}</div>
+          </div>
+          <a href="${r.url}" target="_blank" class="resource-dl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar
+          </a>
+        </div>`).join('')}
+    </div>`;
+  } else {
+    rl.innerHTML = '';
+  }
+
+  // Mark done button
+  const btn2 = document.getElementById('mark-done-btn');
+  btn2.style.display = 'inline-flex';
+  updateMarkBtn();
+}
+
+function markDone(){
+  if(!currentLesson) return;
+  done[currentLesson.id] = !done[currentLesson.id];
+  if(!done[currentLesson.id]) delete done[currentLesson.id];
+  try{ localStorage.setItem('oscarb2b_done', JSON.stringify(done)); }catch(e){}
+
+  const chk = document.getElementById('chk-'+currentLesson.id);
+  if(chk) chk.className = 'lesson-check' + (done[currentLesson.id]?' done':'');
+  updateMarkBtn();
+  updateProgress();
+}
+
+function updateMarkBtn(){
+  const btn = document.getElementById('mark-done-btn');
+  if(done[currentLesson?.id]){
+    btn.className = 'mark-done-btn done';
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Completada`;
+  } else {
+    btn.className = 'mark-done-btn';
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Marcar como completada`;
+  }
+}
+
+function updateProgress(){
+  const total = currentCourse.modules.reduce((a,m) => a + m.lessons.length, 0);
+  const completed = currentCourse.modules.reduce((a,m) => a + m.lessons.filter(l => done[l.id]).length, 0);
+  const pct = total ? Math.round(completed/total*100) : 0;
+  document.getElementById('progress-pct').textContent = pct+'%';
+  document.getElementById('progress-fill').style.width = pct+'%';
+}
+
+function showCatalog(){
+  currentCourse = null;
+  currentLesson = null;
+  document.getElementById('view-catalog').style.display = 'block';
+  document.getElementById('view-course').style.display = 'none';
+  document.getElementById('back-btn').style.display = 'none';
+  renderCatalog();
+}
+
+function openLive(){
+  if(LIVE_URL && LIVE_URL !== '#') window.open(LIVE_URL,'_blank');
+  else alert('La clase en vivo se activa cuando comienza la sesión. Te llegará el link por WhatsApp.');
+}
+
+/* ── LOGIN ── */
+// Códigos válidos — agrega o cambia los que quieras
+const CODES = ['SIE2026','SPRINT01','OSCAR2026'];
+const SESSION_KEY = 'oscarb2b_access';
+
+function checkCode(){
+  const val = document.getElementById('code-input').value.trim().toUpperCase();
+  const input = document.getElementById('code-input');
+  const err = document.getElementById('login-error');
+  if(!val){ err.textContent='Ingresa tu código de acceso.'; input.classList.add('error'); return; }
+  if(CODES.includes(val)){
+    try{ sessionStorage.setItem(SESSION_KEY,'1'); }catch(e){}
+    document.getElementById('login-screen').style.display='none';
+  } else {
+    input.classList.add('error');
+    err.textContent='Código incorrecto. Verifica con Oscar.';
+  }
+}
+
+function initLogin(){
+  let ok = false;
+  try{ ok = sessionStorage.getItem(SESSION_KEY)==='1'; }catch(e){}
+  if(ok) document.getElementById('login-screen').style.display='none';
+  // clear error on type
+  const inp = document.getElementById('code-input');
+  inp.addEventListener('input',()=>{
+    inp.classList.remove('error');
+    document.getElementById('login-error').textContent='';
+  });
+}
+
+/* ── INIT ── */
+initLogin();
+renderLive();
+renderCatalog();
+</script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q139EMTFK0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q139EMTFK0');
+</script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '605342989639546');
+fbq('track', 'PageView');
+fbq('track', 'Lead');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=605342989639546&ev=Lead&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Tu lugar está reservado! — Sprint de Inteligencia Empresarial</title>
+<meta name="robots" content="noindex,nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+
+:root{
+  --bg:#0a0a0a; --bg-1:#0e0e0e; --bg-2:#141414;
+  --glass:rgba(255,255,255,.04); --glass-b:rgba(255,255,255,.08);
+  --gold:#F5A623; --gold-dim:rgba(245,166,35,.10);
+  --gold-glow:rgba(245,166,35,.22); --gold-strong:rgba(245,166,35,.40);
+  --white:#F5F5F5; --g1:#CCCCCC; --g2:#888888; --g3:#444444;
+  --fh:'Space Grotesk',sans-serif; --fb:'Inter',sans-serif;
+  --nav-h:68px; --r:16px; --r-sm:10px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--bg);color:var(--white);font-family:var(--fb);
+  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  min-height:100vh;}
+
+.wrap{width:100%;max-width:680px;margin-inline:auto;padding-inline:clamp(1.25rem,5vw,2.5rem);}
+
+/* NAV */
+#nav{position:fixed;inset:0 0 auto 0;z-index:200;height:var(--nav-h);
+  display:flex;align-items:center;background:rgba(10,10,10,.94);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--glass-b);}
+.nav-row{display:flex;align-items:center;justify-content:space-between;width:100%;gap:1rem;}
+.nav-logo{font-family:var(--fh);font-size:1.3rem;font-weight:700;letter-spacing:-.02em;}
+.nav-logo span{color:var(--gold);}
+.nav-back{display:flex;align-items:center;gap:.45rem;font-size:.8rem;color:var(--g2);transition:color 200ms;}
+.nav-back:hover{color:var(--gold);}
+
+/* MAIN */
+main{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:4rem;}
+
+/* CHECK */
+.check-circle{width:64px;height:64px;border-radius:50%;background:rgba(245,166,35,.12);
+  border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.25rem;font-size:1.6rem;}
+
+.gracias-title{font-family:var(--fh);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;
+  color:var(--gold);text-align:center;margin-bottom:.65rem;}
+
+.gracias-sub{font-size:.92rem;color:var(--g2);line-height:1.75;text-align:center;
+  margin-bottom:.5rem;}
+
+.gracias-note{font-size:.8rem;color:var(--g3);text-align:center;margin-bottom:2.5rem;}
+
+/* MONTO */
+.monto-box{margin-bottom:1.75rem;padding:.9rem 1.25rem;
+  background:rgba(245,166,35,.06);border-left:3px solid var(--gold);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;}
+.monto-label{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--gold);margin-bottom:.3rem;}
+.monto-note{font-size:.78rem;color:var(--g2);margin-top:.2rem;}
+
+/* PAYMENT GRID */
+.pay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:1rem;}
+.pay-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r-sm);padding:1rem 1.25rem;}
+.pay-card-full{grid-column:1/-1;}
+.pay-name{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
+.pay-detail{font-size:.82rem;color:var(--g2);line-height:1.7;}
+@media(max-width:480px){.pay-grid{grid-template-columns:1fr;}}
+
+/* UPLOAD */
+.upload-section{margin-top:1.75rem;padding:1.25rem 1.5rem;background:var(--glass);
+  border:1px solid var(--glass-b);border-radius:var(--r);}
+.upload-title{font-size:.88rem;color:var(--g1);margin-bottom:1rem;font-weight:600;text-align:center;}
+
+.upload-label{display:flex;flex-direction:column;align-items:center;gap:.35rem;
+  border:2px dashed var(--glass-b);border-radius:var(--r-sm);padding:1.25rem 1rem;
+  cursor:pointer;transition:border-color 200ms;color:var(--g2);font-size:.82rem;text-align:center;}
+.upload-label:hover,.upload-label.has-file{border-color:var(--gold);color:var(--g1);}
+
+.btn-submit{margin-top:1rem;width:100%;padding:.9rem 2rem;background:var(--gold);color:#0a0a0a;
+  font-family:var(--fh);font-size:.95rem;font-weight:700;letter-spacing:.03em;border:none;
+  border-radius:10px;display:flex;align-items:center;justify-content:center;gap:.5rem;
+  cursor:pointer;transition:transform 200ms,box-shadow 200ms;}
+.btn-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 36px var(--gold-strong);}
+.btn-submit:disabled{opacity:.55;cursor:not-allowed;}
+
+.upload-ok{display:none;margin-top:1rem;padding:1rem 1.25rem;background:rgba(245,166,35,.08);
+  border:1px solid rgba(245,166,35,.25);border-radius:var(--r-sm);text-align:center;}
+.upload-ok.on{display:block;}
+.upload-ok-title{font-family:var(--fh);font-size:.92rem;font-weight:700;color:var(--gold);margin-bottom:.3rem;}
+.upload-ok-sub{font-size:.82rem;color:var(--g2);line-height:1.65;}
+
+.upload-err{display:none;margin-top:.75rem;padding:.85rem 1rem;
+  background:rgba(245,80,80,.08);border:1px solid rgba(245,80,80,.25);
+  border-radius:var(--r-sm);text-align:center;}
+.upload-err.on{display:block;}
+.upload-err p{font-size:.82rem;color:#f56464;line-height:1.6;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--glass-b);padding:1.5rem 0;}
+.foot-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+.foot-logo{font-family:var(--fh);font-size:1.05rem;font-weight:700;letter-spacing:-.02em;}
+.foot-logo span{color:var(--gold);}
+.foot-link{font-size:.82rem;color:var(--g2);transition:color 200ms;}
+.foot-link:hover{color:var(--gold);}
+.foot-copy{font-size:.75rem;color:var(--g3);}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap" style="max-width:1100px;">
+    <div class="nav-row">
+      <a href="index.html" class="nav-logo">Oscar<span>b2b</span></a>
+      <a href="sprint.html" class="nav-back">← Volver al Sprint</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <div class="check-circle">✓</div>
+    <h1 class="gracias-title">¡Tu lugar está reservado!</h1>
+    <p class="gracias-sub" id="gracias-sub">Recibimos tu inscripción. Para confirmarlo, realiza el pago por cualquiera de los métodos a continuación y envíanos el comprobante.</p>
+    <p class="gracias-note">Te llegará un correo de confirmación en los próximos minutos.</p>
+
+    <div class="monto-box">
+      <p class="monto-label">MONTO A PAGAR: $500 USD</p>
+      <p class="monto-note">Pago en Bs. a tasa BCV del euro del día.</p>
+    </div>
+
+    <!-- Métodos de pago -->
+    <div class="pay-grid">
+      <div class="pay-card">
+        <div class="pay-name">Zelle</div>
+        <div class="pay-detail">📧 oscarpaez17@gmail.com</div>
+        <div class="pay-detail">👤 Oscar Paez</div>
+      </div>
+      <div class="pay-card">
+        <div class="pay-name">PayPal</div>
+        <div class="pay-detail">📧 diddybay@gmail.com</div>
+      </div>
+      <div class="pay-card">
+        <div class="pay-name">Binance Pay</div>
+        <div class="pay-detail">🆔 ID: 114021502</div>
+        <div class="pay-detail" style="font-size:.75rem;color:var(--g3);">USDT</div>
+      </div>
+      <div class="pay-card pay-card-full">
+        <div class="pay-name">Pago Móvil</div>
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.5rem;">
+          <div>
+            <div class="pay-detail">📱 04241640002</div>
+            <div class="pay-detail">🏦 Banco de Venezuela</div>
+          </div>
+          <div>
+            <div class="pay-detail">🪪 Cédula: V-20652480</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subir comprobante -->
+    <div class="upload-section">
+      <p class="upload-title" id="upload-title-p">Una vez realizado el pago, sube tu comprobante aquí:</p>
+
+      <label class="upload-label" id="upload-label" for="comprobante-input">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span id="upload-label-text">Toca aquí para seleccionar imagen o PDF</span>
+        <span style="font-size:.73rem;color:var(--g3);margin-top:.25rem;">Máximo 5 MB</span>
+        <input type="file" id="comprobante-input" accept="image/*,.pdf" style="display:none;">
+      </label>
+
+      <button id="btn-comprobante" class="btn-submit" disabled>Enviar comprobante</button>
+
+      <div class="upload-ok" id="upload-ok">
+        <p class="upload-ok-title">Comprobante recibido</p>
+        <p class="upload-ok-sub">Lo estamos revisando. Recibirás un correo de confirmación cuando verifiquemos tu pago.</p>
+      </div>
+      <div class="upload-err" id="upload-err">
+        <p>Hubo un problema al enviar el archivo. Intenta de nuevo o escríbenos a oscar@oscarb2b.com.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap" style="max-width:1100px;">
+    <div class="foot-row">
+      <a href="index.html" class="foot-logo">Oscar<span>b2b</span></a>
+      <a href="index.html" class="foot-link">← Volver al inicio</a>
+      <span class="foot-copy">© 2026 Oscar B2B · oscarb2b.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxs0-xYrU7GYkuCg3ADf7W9n2PN-OJiIXLzq0_6fTuCnHRLs2M-k1BLaYqL-BPyb5_/exec';
+
+  // Leer datos del usuario desde URL params
+  const params  = new URLSearchParams(location.search);
+  const nombre  = params.get('nombre')  || '';
+  const semana  = params.get('semana')  || '';
+  const email   = params.get('email')   || '';
+  const whatsapp= params.get('whatsapp')|| '';
+
+  // Personalizar mensaje
+  const sub = document.getElementById('gracias-sub');
+  if (sub && nombre) {
+    sub.textContent = nombre + ', recibimos tu inscripción' + (semana ? ' para ' + semana : '') + '. Para confirmar tu lugar, realiza el pago por cualquiera de los métodos a continuación y envíanos el comprobante.';
+  }
+
+  // Subida de comprobante
+  const comprobanteInput  = document.getElementById('comprobante-input');
+  const uploadLabel       = document.getElementById('upload-label');
+  const uploadLabelText   = document.getElementById('upload-label-text');
+  const btnComprobante    = document.getElementById('btn-comprobante');
+  const uploadOk          = document.getElementById('upload-ok');
+  const uploadErr         = document.getElementById('upload-err');
+  const uploadTitleP      = document.getElementById('upload-title-p');
+
+  comprobanteInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      uploadErr.classList.add('on');
+      uploadErr.querySelector('p').textContent = 'El archivo supera los 5 MB. Por favor comprime la imagen y vuelve a intentarlo.';
+      this.value = '';
+      return;
+    }
+    uploadLabelText.textContent = file.name;
+    uploadLabel.classList.add('has-file');
+    btnComprobante.disabled = false;
+  });
+
+  btnComprobante.addEventListener('click', async function() {
+    const file = comprobanteInput.files[0];
+    if (!file) return;
+
+    uploadOk.classList.remove('on');
+    uploadErr.classList.remove('on');
+    btnComprobante.disabled = true;
+    btnComprobante.textContent = 'Enviando...';
+
+    const reader = new FileReader();
+    reader.onload = async function(ev) {
+      const base64 = ev.target.result.split(',')[1];
+      const payload = {
+        type:     'comprobante',
+        nombre:   nombre,
+        email:    email,
+        whatsapp: whatsapp,
+        semana:   semana,
+        fileData: base64,
+        fileName: file.name,
+        mimeType: file.type || 'application/octet-stream'
+      };
+
+      try {
+        await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          mode:   'no-cors',
+          body:   new URLSearchParams(payload)
+        });
+        uploadOk.classList.add('on');
+        if (uploadTitleP) uploadTitleP.style.display = 'none';
+        uploadLabel.style.display    = 'none';
+        btnComprobante.style.display = 'none';
+      } catch (err) {
+        uploadErr.classList.add('on');
+        uploadErr.querySelector('p').textContent = 'Hubo un problema al enviar el archivo. Intenta de nuevo o escríbenos a oscar@oscarb2b.com.';
+        btnComprobante.disabled   = false;
+        btnComprobante.textContent = 'Enviar comprobante';
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+})();
+</script>
+
+</body>
+</html>
