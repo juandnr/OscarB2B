@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — Oscar B2B</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input{font-family:inherit;}
+
+:root{
+  --bg:#0a0a0a;
+  --surf:#161616;
+  --surf-2:#1e1e1e;
+  --surf-3:#262626;
+  --bdr:rgba(255,255,255,.07);
+  --bdr-hover:rgba(255,255,255,.13);
+  --green:#009944;
+  --green-dim:rgba(0,153,68,.12);
+  --text:#ffffff;
+  --g1:rgba(255,255,255,.82);
+  --g2:rgba(255,255,255,.5);
+  --g3:rgba(255,255,255,.3);
+  --g4:rgba(255,255,255,.10);
+  --fh:'Space Grotesk',sans-serif;
+  --fb:'Inter',sans-serif;
+}
+
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-smoothing:antialiased;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;height:60px;z-index:100;
+  display:flex;align-items:center;
+  background:rgba(10,10,10,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bdr);
+}
+.nav-inner{width:100%;padding-inline:clamp(1rem,4vw,2rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.nav-logo{font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:-.02em;}
+.nav-logo span{color:var(--green);}
+.nav-badge{font-size:.72rem;font-weight:700;padding:.25rem .6rem;border-radius:5px;background:rgba(245,166,35,.15);color:#F5A623;border:1px solid rgba(245,166,35,.25);letter-spacing:.06em;}
+.nav-exit{font-size:.76rem;font-weight:600;color:var(--g3);display:flex;align-items:center;gap:.35rem;transition:color .2s;cursor:pointer;}
+.nav-exit:hover{color:var(--text);}
+
+/* ── LOGIN ── */
+.login-wrap{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:2rem;}
+.login-card{background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:2rem;width:100%;max-width:380px;}
+.login-title{font-family:var(--fh);font-size:1.3rem;font-weight:700;margin-bottom:.35rem;}
+.login-sub{font-size:.86rem;color:var(--g2);margin-bottom:1.5rem;}
+.field-label{font-size:.76rem;font-weight:600;color:var(--g2);margin-bottom:.4rem;display:block;letter-spacing:.04em;text-transform:uppercase;}
+.field-input{
+  width:100%;padding:.72rem 1rem;
+  background:var(--surf-2);border:1.5px solid var(--bdr);border-radius:10px;
+  color:var(--text);font-size:.95rem;transition:border-color .2s;outline:none;
+  margin-bottom:.85rem;
+}
+.field-input:focus{border-color:var(--green);}
+.field-error{font-size:.76rem;color:#F87171;margin-bottom:.6rem;min-height:1rem;}
+.btn-primary{
+  width:100%;padding:.82rem;border-radius:10px;
+  background:var(--green);color:#fff;font-size:.92rem;font-weight:700;
+  transition:opacity .2s,transform .1s;cursor:pointer;border:none;
+}
+.btn-primary:hover{opacity:.88;}
+.btn-primary:active{transform:scale(.98);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
+
+/* ── ADMIN PANEL ── */
+.admin-wrap{max-width:960px;margin:0 auto;padding:2rem clamp(1rem,4vw,2rem) 5rem;}
+.admin-header{margin-bottom:2rem;}
+.admin-title{font-family:var(--fh);font-size:1.6rem;font-weight:700;margin-bottom:.3rem;}
+.admin-sub{font-size:.86rem;color:var(--g2);}
+.admin-stats{display:flex;gap:.75rem;margin-bottom:2rem;flex-wrap:wrap;}
+.stat-pill{background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:.5rem 1rem;font-size:.82rem;color:var(--g2);}
+.stat-pill strong{color:var(--text);font-weight:700;}
+
+/* ── SEARCH ── */
+.search-bar{
+  width:100%;padding:.7rem 1rem;
+  background:var(--surf);border:1.5px solid var(--bdr);border-radius:10px;
+  color:var(--text);font-size:.9rem;outline:none;transition:border-color .2s;
+  margin-bottom:1.25rem;
+}
+.search-bar:focus{border-color:var(--green);}
+.search-bar::placeholder{color:var(--g3);}
+
+/* ── TABLE ── */
+.users-table{width:100%;border-collapse:collapse;}
+.users-table thead th{
+  font-size:.72rem;font-weight:700;color:var(--g3);letter-spacing:.07em;text-transform:uppercase;
+  padding:.6rem .75rem;border-bottom:1px solid var(--bdr);text-align:left;
+}
+.users-table tbody tr{border-bottom:1px solid var(--bdr);transition:background .15s;}
+.users-table tbody tr:hover{background:var(--surf);}
+.user-email{font-size:.88rem;font-weight:500;color:var(--text);}
+.user-name{font-size:.76rem;color:var(--g2);margin-top:.15rem;}
+.user-date{font-size:.76rem;color:var(--g3);}
+td{padding:.75rem;}
+
+/* ── TOGGLE ── */
+.toggle-wrap{display:flex;gap:.5rem;flex-wrap:wrap;}
+.access-toggle{
+  display:flex;align-items:center;gap:.4rem;
+  padding:.3rem .65rem;border-radius:7px;font-size:.76rem;font-weight:600;
+  border:1.5px solid;cursor:pointer;transition:all .15s;user-select:none;
+  white-space:nowrap;
+}
+.access-toggle.on{
+  background:var(--green-dim);border-color:var(--green);color:var(--green);
+}
+.access-toggle.off{
+  background:transparent;border-color:var(--bdr);color:var(--g3);
+}
+.access-toggle.off:hover{border-color:var(--bdr-hover);color:var(--g2);}
+.access-toggle.loading{opacity:.5;pointer-events:none;}
+.toggle-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+
+/* ── EMPTY / LOADING ── */
+.table-msg{text-align:center;padding:3rem;color:var(--g3);font-size:.9rem;}
+.spinner{
+  width:22px;height:22px;border:2.5px solid var(--g4);border-top-color:var(--green);
+  border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--surf-3);border:1px solid var(--bdr);border-radius:10px;
+  padding:.7rem 1.2rem;font-size:.84rem;font-weight:500;
+  transition:transform .3s,opacity .3s;opacity:0;z-index:300;white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{border-color:rgba(0,153,68,.3);color:#4ade80;}
+.toast.err{border-color:rgba(239,68,68,.3);color:#f87171;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div style="display:flex;align-items:center;gap:.75rem;">
+      <a href="index.html" class="nav-logo">Oscar<span>b2b</span></a>
+      <span class="nav-badge">ADMIN</span>
+    </div>
+    <button class="nav-exit" onclick="doSignOut()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Salir
+    </button>
+  </div>
+</nav>
+
+<!-- LOGIN -->
+<div id="view-login" class="login-wrap">
+  <div class="login-card">
+    <div class="login-title">Panel de administrador</div>
+    <p class="login-sub">Acceso exclusivo. Ingresa con tu cuenta de administrador.</p>
+    <label class="field-label" for="adm-email">Correo</label>
+    <input id="adm-email" class="field-input" type="email" placeholder="tucorreo@email.com" autocomplete="email" onkeydown="if(event.key==='Enter')document.getElementById('adm-pass').focus()">
+    <label class="field-label" for="adm-pass">Contraseña</label>
+    <input id="adm-pass" class="field-input" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+    <div class="field-error" id="adm-error"></div>
+    <button class="btn-primary" id="adm-btn" onclick="doAdminLogin()">Entrar →</button>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div id="view-admin" style="display:none">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <h1 class="admin-title">Usuarios</h1>
+      <p class="admin-sub">Haz click en cualquier permiso para activarlo o desactivarlo.</p>
+    </div>
+    <div class="admin-stats" id="admin-stats"></div>
+    <input class="search-bar" id="search-input" type="search" placeholder="Buscar por nombre o correo…" oninput="filterUsers()">
+    <div id="users-container"><div class="table-msg"><div class="spinner"></div>Cargando usuarios…</div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL = 'https://gslzmhtabkklvxemtkhk.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzbHptaHRhYmtrbHZ4ZW10a2hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwOTI3MjUsImV4cCI6MjEwNTY2ODcyNX0.JHSLrTQCts8ixOPiD34pNLjzPqeev2KaPzAC0OxXQo0';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+let allUsers = [];
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if(session){ await checkAdminAndLoad(session.user); }
+  else { showLogin(); }
+});
+
+function showLogin(){
+  document.getElementById('view-login').style.display = 'flex';
+  document.getElementById('view-admin').style.display = 'none';
+  setTimeout(()=>document.getElementById('adm-email').focus(), 100);
+}
+
+async function doAdminLogin(){
+  const email = document.getElementById('adm-email').value.trim();
+  const pass  = document.getElementById('adm-pass').value;
+  const errEl = document.getElementById('adm-error');
+  const btn   = document.getElementById('adm-btn');
+  errEl.textContent = '';
+  if(!email || !pass){ errEl.textContent = 'Ingresa correo y contraseña.'; return; }
+  btn.textContent = 'Cargando...'; btn.disabled = true;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if(error){
+    errEl.textContent = 'Credenciales incorrectas.';
+    btn.textContent = 'Entrar →'; btn.disabled = false;
+    return;
+  }
+  await checkAdminAndLoad(data.user);
+}
+
+async function checkAdminAndLoad(user){
+  const { data: adm } = await sb.from('admins').select('id').eq('id', user.id).single();
+  if(!adm){
+    await sb.auth.signOut();
+    document.getElementById('adm-error').textContent = 'No tienes acceso de administrador.';
+    document.getElementById('adm-btn').textContent = 'Entrar →';
+    document.getElementById('adm-btn').disabled = false;
+    return;
+  }
+  document.getElementById('view-login').style.display = 'none';
+  document.getElementById('view-admin').style.display  = 'block';
+  await loadUsers();
+}
+
+async function doSignOut(){
+  await sb.auth.signOut();
+  window.location.reload();
+}
+
+/* ── LOAD USERS ── */
+async function loadUsers(){
+  const [profRes, accRes] = await Promise.all([
+    sb.from('profiles').select('*').order('created_at', { ascending: false }),
+    sb.from('user_access').select('*')
+  ]);
+  const profiles = profRes.data || [];
+  const access   = accRes.data  || [];
+  const accMap   = Object.fromEntries(access.map(a => [a.id, a]));
+
+  allUsers = profiles.map(p => ({
+    id:       p.id,
+    email:    p.email,
+    name:     p.name || '',
+    created:  p.created_at,
+    sprint:   !!(accMap[p.id]?.sprint),
+    bootcamp: !!(accMap[p.id]?.bootcamp),
+    recursos: !!(accMap[p.id]?.recursos ?? true)
+  }));
+
+  renderStats();
+  renderTable(allUsers);
+}
+
+function renderStats(){
+  const total    = allUsers.length;
+  const sprints  = allUsers.filter(u=>u.sprint).length;
+  const bootcamp = allUsers.filter(u=>u.bootcamp).length;
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="stat-pill">Total: <strong>${total}</strong></div>
+    <div class="stat-pill">Sprint: <strong>${sprints}</strong></div>
+    <div class="stat-pill">Bootcamp: <strong>${bootcamp}</strong></div>
+  `;
+}
+
+function filterUsers(){
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  const filtered = q ? allUsers.filter(u=> u.email.toLowerCase().includes(q) || u.name.toLowerCase().includes(q)) : allUsers;
+  renderTable(filtered);
+}
+
+function renderTable(users){
+  const container = document.getElementById('users-container');
+  if(!users.length){
+    container.innerHTML = `<div class="table-msg">No se encontraron usuarios.</div>`;
+    return;
+  }
+  container.innerHTML = `
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Registro</th>
+          <th>Acceso</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${users.map(u => `
+        <tr>
+          <td>
+            <div class="user-email">${u.email}</div>
+            ${u.name ? `<div class="user-name">${u.name}</div>` : ''}
+          </td>
+          <td><span class="user-date">${fmtDate(u.created)}</span></td>
+          <td>
+            <div class="toggle-wrap">
+              ${toggle(u, 'sprint',   'Sprint')}
+              ${toggle(u, 'bootcamp', 'Bootcamp')}
+              ${toggle(u, 'recursos', 'Recursos')}
+            </div>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+function toggle(u, field, label){
+  const on = u[field];
+  return `<button class="access-toggle ${on?'on':'off'}" id="tog-${u.id}-${field}"
+    onclick="toggleAccess('${u.id}','${field}',${!on})">
+    <span class="toggle-dot"></span>${label}
+  </button>`;
+}
+
+async function toggleAccess(userId, field, newVal){
+  const btnId = `tog-${userId}-${field}`;
+  const btn = document.getElementById(btnId);
+  if(!btn) return;
+  btn.classList.add('loading');
+
+  const { error } = await sb.from('user_access')
+    .update({ [field]: newVal, updated_at: new Date().toISOString() })
+    .eq('id', userId);
+
+  if(error){
+    showToast('Error al actualizar.', 'err');
+    btn.classList.remove('loading');
+    return;
+  }
+
+  // Update local state
+  const user = allUsers.find(u=>u.id===userId);
+  if(user) user[field] = newVal;
+
+  btn.className = `access-toggle ${newVal?'on':'off'}`;
+  btn.onclick = ()=>toggleAccess(userId, field, !newVal);
+
+  renderStats();
+  showToast(`${field.charAt(0).toUpperCase()+field.slice(1)} ${newVal?'activado':'desactivado'}.`, 'ok');
+}
+
+/* ── HELPERS ── */
+function fmtDate(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('es-VE', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+let toastTimer;
+function showToast(msg, type='ok'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ t.classList.remove('show'); }, 2500);
+}
+</script>
+</body>
+</html>

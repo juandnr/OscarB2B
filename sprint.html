@@ -308,6 +308,7 @@ textarea{resize:vertical;min-height:90px;}
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M11 6.5H2M5 3L2 6.5 5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span>Inicio</span>
       </a>
+      <a href="estudiantes.html" style="font-size:.82rem;font-weight:600;color:var(--g2);text-decoration:none;">Estudiantes</a>
       <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" class="nav-cta" target="_blank" rel="noopener" onclick="if(typeof fbq==='function')fbq('track','Lead')">Hablar por WhatsApp →</a>
     </div>
   </div>
@@ -627,11 +628,13 @@ textarea{resize:vertical;min-height:90px;}
             </div>
           </div>
           <div class="side-cta">
-            <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" class="btn-apply" target="_blank" rel="noopener" onclick="if(typeof fbq==='function')fbq('track','Lead')">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-              Hablar con Oscar
+            <div style="padding:.75rem 1rem;background:rgba(220,60,60,.07);border:1px solid rgba(220,60,60,.2);border-radius:8px;text-align:center;margin-bottom:.75rem;">
+              <span style="font-size:.75rem;font-weight:700;color:#f87171;letter-spacing:.06em;text-transform:uppercase;">Inscripciones cerradas</span>
+            </div>
+            <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+quiero+que+me+avisen+cuando+abran+la+pr%C3%B3xima+edici%C3%B3n+del+Sprint." class="btn-apply" target="_blank" rel="noopener" style="background:#111;color:#fff;border:1px solid rgba(255,255,255,.1);">
+              Avisarme de la próxima edición
             </a>
-            <a href="#form-section" style="display:block;text-align:center;font-size:.78rem;color:var(--g2);margin-top:.65rem;text-decoration:underline;text-underline-offset:3px;">o llena el formulario</a>
+            <a href="estudiantes.html" style="display:block;text-align:center;font-size:.78rem;color:var(--g2);margin-top:.65rem;text-decoration:underline;text-underline-offset:3px;">¿Ya inscrito? → Área de estudiantes</a>
           </div>
         </div>
 
@@ -655,170 +658,58 @@ textarea{resize:vertical;min-height:90px;}
   </div>
 </div>
 
-<!-- FORMULARIO DE INSCRIPCIÓN -->
-<div id="form-section">
+<!-- AVISO INSCRIPCIONES CERRADAS -->
+<div id="form-section" style="padding:3rem 0 5rem;border-top:1px solid var(--glass-b);">
   <div class="wrap">
     <div class="form-inner">
-      <h2 class="form-title">Reserva tu lugar</h2>
-      <p class="form-sub">Espacios limitados. Si tienes dudas antes de inscribirte, escríbenos directo por WhatsApp y te respondemos.</p>
 
-      <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.9rem 1.5rem;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);border-radius:10px;color:#25d366;font-family:var(--fh);font-size:.92rem;font-weight:700;text-decoration:none;margin-bottom:1rem;transition:background 200ms;" onmouseover="this.style.background='rgba(37,211,102,.18)'" onmouseout="this.style.background='rgba(37,211,102,.1)'" onclick="if(typeof fbq==='function')fbq('track','Lead')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-        Hablar con Oscar por WhatsApp
-      </a>
-
-      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;">
-        <div style="flex:1;height:1px;background:var(--glass-b);"></div>
-        <span style="font-size:.75rem;color:var(--g3);white-space:nowrap;">o si ya decidiste, llena el formulario</span>
-        <div style="flex:1;height:1px;background:var(--glass-b);"></div>
+      <div style="padding:2rem;background:rgba(220,60,60,.05);border:1.5px solid rgba(220,60,60,.18);border-radius:var(--r);text-align:center;margin-bottom:2.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:.5rem;">🔒</div>
+        <h2 style="font-family:var(--fh);font-size:1.35rem;font-weight:700;color:#f87171;margin-bottom:.5rem;">Inscripciones cerradas</h2>
+        <p style="font-size:.9rem;color:var(--g2);line-height:1.7;max-width:440px;margin:0 auto .75rem;">Esta edición del Sprint ya está completa. Déjanos tu contacto por WhatsApp y te avisamos cuando abramos la próxima edición.</p>
+        <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+quiero+que+me+avisen+cuando+abran+la+pr%C3%B3xima+edici%C3%B3n+del+Sprint." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.55rem;padding:.8rem 1.5rem;background:#25D366;color:#fff;font-family:var(--fh);font-size:.9rem;font-weight:700;border-radius:9px;text-decoration:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+          Avisarme de la próxima edición
+        </a>
       </div>
 
-      <p style="font-size:.78rem;color:var(--g3);text-align:center;margin-bottom:1.25rem;line-height:1.6;">¿Eres padre o representante? Escríbenos por WhatsApp y resolvemos todas tus dudas antes de inscribirte.</p>
-
-      <!--
-        TODO: Integrar con servicio de formularios.
-        Recomendado para GitHub Pages: Formspree (formspree.io)
-        Cambiar el handler JS por: action="https://formspree.io/f/YOUR_ID"
-      -->
-      <!-- PASO 1: Datos personales -->
-      <form id="sprint-form" novalidate>
-        <div class="fgrid">
-
-          <div class="field-group-title">Datos del estudiante</div>
-
-          <div class="field">
-            <label for="nombre">Nombre completo *</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
-          </div>
-          <div class="field">
-            <label for="edad">Edad *</label>
-            <select id="edad" name="edad" required>
-              <option value="" disabled selected>Seleccionar</option>
-              <option>17 años</option>
-              <option>18 años</option>
-              <option>19 años</option><option>20 años</option><option>21 años</option><option>22 años</option><option>23 años</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="email">Correo electrónico *</label>
-            <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
-          </div>
-          <div class="field">
-            <label for="ciudad">Ciudad de residencia *</label>
-            <input type="text" id="ciudad" name="ciudad" placeholder="Ej. Caracas" required>
-          </div>
-
-          <div class="field">
-            <label for="wa">WhatsApp *</label>
-            <input type="tel" id="wa" name="whatsapp" placeholder="+58 412 000 0000" required>
-          </div>
-
-          <div class="field">
-            <label for="talla">Talla de franela *</label>
-            <select id="talla" name="talla" required>
-              <option value="" disabled selected>Seleccionar talla</option>
-              <option>XS</option>
-              <option>S</option>
-              <option>M</option>
-              <option>L</option>
-              <option>XL</option>
-              <option>XXL</option>
-            </select>
-          </div>
-
-          <div class="field full">
-            <label for="semana">Semana de preferencia *</label>
-            <select id="semana" name="semana" required>
-              <option value="Semana 5 · 31 ago – 4 sep" selected>31 de agosto – 4 de septiembre</option>
-            </select>
-          </div>
-
-        </div>
-
-        <!-- Honeypot anti-spam: campo invisible para humanos -->
-        <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
-
-        <button type="button" id="btn-paso1" class="btn-submit">
-          Reservar lugar →
-        </button>
-        <p class="form-note">Te contactamos por WhatsApp o correo con los datos de pago para reservar tu lugar.</p>
-      </form>
-
-      <!-- GRACIAS + DATOS DE PAGO -->
-      <div id="gracias" style="display:none;">
-        <div style="text-align:center;margin-bottom:2rem;">
-          <div style="width:56px;height:56px;border-radius:50%;background:rgba(245,166,35,.15);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.4rem;">✓</div>
-          <h2 style="font-family:var(--fh);font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:.5rem;">¡Tu lugar está reservado!</h2>
-          <p id="gracias-sub" style="font-size:.9rem;color:var(--g2);line-height:1.7;">Recibimos tu inscripción. Para confirmarlo, realiza el pago por cualquiera de los métodos a continuación y envíanos el comprobante.</p>
-          <p style="font-size:.8rem;color:var(--g3);margin-top:.5rem;">Te llegará un correo de confirmación en los próximos minutos.</p>
-        </div>
-
-        <div style="margin-bottom:1.5rem;padding:.85rem 1.25rem;background:rgba(245,166,35,.06);border-left:3px solid var(--gold);border-radius:0 var(--r-sm) var(--r-sm) 0;">
-          <p style="font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--gold);margin-bottom:.3rem;">MONTO A PAGAR: $500 USD</p>
-          <p style="font-size:.78rem;color:var(--g2);margin-top:.2rem;">Pago en Bs. a tasa BCV del euro del día.</p>
-        </div>
-
-        <!-- Grid de métodos de pago -->
-        <div class="pay-grid">
-          <div class="pay-card">
-            <div class="pay-name">Zelle</div>
-            <div class="pay-detail">📧 oscarpaez17@gmail.com</div>
-            <div class="pay-detail">👤 Oscar Paez</div>
-          </div>
-          <div class="pay-card">
-            <div class="pay-name">PayPal</div>
-            <div class="pay-detail">📧 diddybay@gmail.com</div>
-          </div>
-          <div class="pay-card">
-            <div class="pay-name">Binance Pay</div>
-            <div class="pay-detail">🆔 ID: 114021502</div>
-            <div class="pay-detail" style="font-size:.75rem;color:var(--g3);">USDT</div>
-          </div>
-          <div class="pay-card pay-card-full">
-            <div class="pay-name">Pago Móvil</div>
-            <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.5rem;">
-              <div>
-                <div class="pay-detail">📱 04241640002</div>
-                <div class="pay-detail">🏦 Banco de Venezuela</div>
-              </div>
-              <div>
-                <div class="pay-detail">🪪 Cédula: V-20652480</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Subir comprobante -->
-        <div id="upload-section" style="margin-top:1.75rem;padding:1.25rem 1.5rem;background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r);">
-          <p style="font-size:.88rem;color:var(--g1);margin-bottom:1rem;font-weight:600;text-align:center;">Una vez realizado el pago, sube tu comprobante aquí:</p>
-
-          <label class="upload-label" id="upload-label" for="comprobante-input">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <span id="upload-label-text">Toca aquí para seleccionar imagen o PDF</span>
-            <span style="font-size:.73rem;color:var(--g3);margin-top:.25rem;">Máximo 5 MB</span>
-            <input type="file" id="comprobante-input" accept="image/*,.pdf" style="display:none;">
-          </label>
-
-          <button id="btn-comprobante" class="btn-submit" style="margin-top:.85rem;" disabled>
-            Enviar comprobante
-          </button>
-
-          <div id="upload-ok" style="display:none;margin-top:1rem;padding:1rem 1.25rem;background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);border-radius:var(--r-sm);text-align:center;">
-            <p style="font-family:var(--fh);font-size:.92rem;font-weight:700;color:var(--gold);margin-bottom:.3rem;">Comprobante recibido</p>
-            <p style="font-size:.82rem;color:var(--g2);line-height:1.65;">Lo estamos revisando. Recibirás un correo de confirmación cuando verifiquemos tu pago.</p>
-          </div>
-          <div id="upload-err" style="display:none;margin-top:.75rem;padding:.85rem 1rem;background:rgba(245,80,80,.08);border:1px solid rgba(245,80,80,.25);border-radius:var(--r-sm);text-align:center;">
-            <p style="font-size:.82rem;color:#f56464;line-height:1.6;">Hubo un problema al enviar el archivo. Intenta de nuevo o escríbenos a oscar@oscarb2b.com.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-err" id="form-err">
-        <p>Hubo un problema al enviar tu inscripción. Por favor intenta de nuevo. Si el error persiste, escríbenos directamente por WhatsApp.</p>
-      </div>
     </div>
   </div>
 </div>
+
+<!-- OTROS PROGRAMAS -->
+<div style="padding:3rem 0 5rem;background:var(--bg-1);border-top:1px solid var(--glass-b);">
+  <div class="wrap">
+    <div style="font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.5rem;margin-bottom:.65rem;">
+      <span style="width:18px;height:1px;background:var(--gold);display:inline-block;flex-shrink:0;"></span>
+      Programas
+    </div>
+    <h2 style="font-family:var(--fh);font-size:1.6rem;font-weight:700;letter-spacing:-.025em;margin-bottom:.5rem;">Se vienen más cursos</h2>
+    <p style="font-size:.9rem;color:var(--g2);max-width:520px;line-height:1.7;margin-bottom:2rem;">Estamos construyendo el siguiente nivel. Regístrate para que te avisemos cuando lancemos.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;max-width:700px;">
+
+      <a href="sprint.html" style="display:block;padding:1.5rem;background:#fff;border:1px solid var(--glass-b);border-radius:14px;text-decoration:none;transition:border-color 200ms;" onmouseover="this.style.borderColor='rgba(0,153,68,.3)'" onmouseout="this.style.borderColor='var(--glass-b)'">
+        <div style="display:inline-flex;align-items:center;gap:.45rem;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,153,68,.1);color:var(--gold);border:1px solid rgba(0,153,68,.2);border-radius:99px;padding:.25rem .7rem;margin-bottom:.85rem;">
+          <span style="width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;"></span>Este programa
+        </div>
+        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:#111;margin-bottom:.3rem;">Sprint de Inteligencia Empresarial</div>
+        <div style="font-size:.82rem;color:var(--g2);">5 días presenciales · Caracas · 17–23 años</div>
+      </a>
+
+      <div style="padding:1.5rem;background:#fff;border:1.5px dashed var(--glass-b);border-radius:14px;opacity:.7;">
+        <div style="display:inline-flex;align-items:center;gap:.45rem;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.05);color:var(--g3);border:1px solid var(--glass-b);border-radius:99px;padding:.25rem .7rem;margin-bottom:.85rem;">
+          Próximamente
+        </div>
+        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:#555;margin-bottom:.3rem;">Bootcamp</div>
+        <div style="font-size:.82rem;color:var(--g3);">Más intensivo · Detalles pronto</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 
 <!-- FOOTER -->
 <footer id="footer">
@@ -888,146 +779,6 @@ if (priceEl2 && mobCtaSub) {
   }, {passive: true});
 }
 
-// ── TODO: Pega aquí la URL de tu Google Apps Script Web App ──────────────────
-// Después de hacer el deploy del archivo apps-script.gs, copia la URL y pégala:
-const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxc9rVUjAMbsPHvITM0N9AnsNjcLQ1ziw4kl0mk7wlveNUuG9LLWG0mZSirWBmDyJ5D0A/exec';
-// Ejemplo: 'https://script.google.com/macros/s/AKfycb.../exec'
-// ─────────────────────────────────────────────────────────────────────────────
-
-let userData = {};
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_RE = /^[\d\s\+\-\(\)]{7,20}$/;
-
-function markField(f, valid) {
-  f.style.borderColor = valid ? '' : 'rgba(245,100,100,.6)';
-  f.style.boxShadow   = valid ? '' : '0 0 0 3px rgba(245,100,100,.1)';
-}
-
-function validateFields(form) {
-  let ok = true;
-  form.querySelectorAll('[required]').forEach(f => {
-    const val = f.value.trim();
-    let valid = val.length > 0;
-    if (valid && f.type === 'email')  valid = EMAIL_RE.test(val);
-    if (valid && f.type === 'tel')    valid = PHONE_RE.test(val);
-    markField(f, valid);
-    if (!valid) ok = false;
-  });
-  // Reset non-required fields styling
-  form.querySelectorAll(':not([required])').forEach(f => markField(f, true));
-  return ok;
-}
-
-// Limpiar error visual al escribir
-document.querySelectorAll('input, select, textarea').forEach(f => {
-  f.addEventListener('input', () => markField(f, true));
-});
-
-// ── Subida de comprobante ────────────────────────────────
-const comprobanteInput = document.getElementById('comprobante-input');
-const uploadLabel      = document.getElementById('upload-label');
-const uploadLabelText  = document.getElementById('upload-label-text');
-const btnComprobante   = document.getElementById('btn-comprobante');
-
-if (comprobanteInput) {
-  comprobanteInput.addEventListener('change', function() {
-    const file = this.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      document.getElementById('upload-err').style.display = 'block';
-      document.getElementById('upload-err').querySelector('p').textContent =
-        'El archivo supera los 5 MB. Por favor comprime la imagen y vuelve a intentarlo.';
-      this.value = '';
-      return;
-    }
-    uploadLabelText.textContent = file.name;
-    uploadLabel.classList.add('has-file');
-    btnComprobante.disabled = false;
-  });
-
-  btnComprobante.addEventListener('click', async function() {
-    const file = comprobanteInput.files[0];
-    if (!file) return;
-
-    const okDiv  = document.getElementById('upload-ok');
-    const errDiv = document.getElementById('upload-err');
-    okDiv.style.display  = 'none';
-    errDiv.style.display = 'none';
-    btnComprobante.disabled  = true;
-    btnComprobante.textContent = 'Enviando...';
-
-    const reader = new FileReader();
-    reader.onload = async function(ev) {
-      const base64 = ev.target.result.split(',')[1];
-      const payload = {
-        type:     'comprobante',
-        nombre:   userData.nombre   || '',
-        email:    userData.email    || '',
-        whatsapp: userData.whatsapp || '',
-        semana:   userData.semana   || '',
-        fileData: base64,
-        fileName: file.name,
-        mimeType: file.type || 'application/octet-stream'
-      };
-
-      try {
-        await fetch(FORM_ENDPOINT, {
-          method: 'POST',
-          mode:   'no-cors',
-          body:   new URLSearchParams(payload)
-        });
-        okDiv.style.display = 'block';
-        document.getElementById('upload-section').querySelector('p').style.display = 'none';
-        uploadLabel.style.display    = 'none';
-        btnComprobante.style.display = 'none';
-      } catch (err) {
-        errDiv.style.display     = 'block';
-        btnComprobante.disabled  = false;
-        btnComprobante.textContent = 'Enviar comprobante';
-      }
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-// ── Formulario paso 1 ────────────────────────────────────
-document.getElementById('btn-paso1').addEventListener('click', async function() {
-  const form = document.getElementById('sprint-form');
-  if (!validateFields(form)) return;
-
-  const btn = this;
-  const errDiv = document.getElementById('form-err');
-  errDiv.classList.remove('on');
-  btn.disabled = true;
-  btn.textContent = 'Enviando...';
-
-  const payload = {};
-  new FormData(form).forEach((v, k) => { payload[k] = v; });
-  userData = { ...payload };
-
-  try {
-    await fetch(FORM_ENDPOINT, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: new URLSearchParams(payload)
-    });
-  } catch (err) {
-    // Si falla la red, igual mostramos la pantalla de pago
-    // (el honeypot ya filtra bots; errores de red son raros)
-  }
-
-  if (typeof fbq === 'function') {
-    fbq('track', 'Lead');
-  }
-
-  const nombre  = payload.nombre  || '';
-  const semana  = payload.semana  || '';
-  const email   = payload.email   || '';
-  const whatsapp= payload.whatsapp|| '';
-  const qs = new URLSearchParams({ nombre, semana, email, whatsapp }).toString();
-  window.location.href = 'sprint-gracias.html?' + qs;
-});
 </script>
 </body>
 </html>

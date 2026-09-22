@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q139EMTFK0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q139EMTFK0');
+</script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '605342989639546');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bootcamp — Próximamente · Oscar B2B</title>
+<meta name="description" content="El siguiente nivel está en construcción. Únete a la lista de espera del Bootcamp de Oscar B2B.">
+<meta property="og:title" content="Bootcamp — Próximamente · Oscar B2B">
+<meta property="og:description" content="El siguiente nivel está en construcción. Únete a la lista de espera del Bootcamp de Oscar B2B.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+
+:root{
+  --bg:#F6F3EE; --bg-1:#EDE9E1; --bg-2:#E4DFD5;
+  --glass:#FFFFFF; --glass-b:rgba(0,0,0,.09);
+  --gold:#009944; --gold-dim:rgba(0,153,68,.10);
+  --gold-glow:rgba(0,153,68,.20); --gold-strong:rgba(0,153,68,.35);
+  --white:#111111; --g1:#333333; --g2:#666666; --g3:#999999;
+  --fh:'Space Grotesk',sans-serif; --fb:'Inter',sans-serif;
+  --nav-h:68px; --r:16px; --r-sm:10px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--bg);color:var(--white);font-family:var(--fb);
+  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+.wrap{width:100%;max-width:1100px;margin-inline:auto;padding-inline:clamp(1.25rem,5vw,2.5rem);}
+
+/* NAV */
+#nav{position:fixed;inset:0 0 auto 0;z-index:200;height:var(--nav-h);
+  display:flex;align-items:center;border-bottom:1px solid transparent;
+  transition:background 300ms,border-color 300ms;}
+#nav.scrolled{background:rgba(246,243,238,.96);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);border-color:var(--glass-b);}
+.nav-row{display:flex;align-items:center;justify-content:space-between;width:100%;gap:1rem;}
+.nav-logo{font-family:var(--fh);font-size:1.3rem;font-weight:700;letter-spacing:-.02em;}
+.nav-logo span{color:var(--gold);}
+.nav-back{display:flex;align-items:center;gap:.45rem;font-size:.8rem;color:var(--g2);transition:color 200ms;}
+.nav-back:hover{color:var(--gold);}
+.nav-cta{padding:.55rem 1.15rem;background:var(--gold);color:#fff;font-family:var(--fh);
+  font-size:.8rem;font-weight:700;border-radius:8px;border:none;white-space:nowrap;
+  transition:box-shadow 200ms,transform 200ms;}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--gold-strong);}
+@media(max-width:520px){.nav-cta{display:none;}.nav-back span{display:none;}}
+
+/* HERO */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding-top:var(--nav-h);
+  position:relative;overflow:hidden;
+}
+
+/* subtle dot grid bg */
+#hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle, rgba(0,153,68,.08) 1px, transparent 1px);
+  background-size:32px 32px;
+  z-index:0;
+}
+
+.hero-inner{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:4rem 0;
+}
+
+/* BADGE */
+.badge-soon{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  background:rgba(0,153,68,.12);color:var(--gold);
+  border:1px solid rgba(0,153,68,.25);border-radius:99px;
+  padding:.35rem .9rem;margin-bottom:1.75rem;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+
+.hero-tag{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;justify-content:center;gap:.5rem;}
+.hero-tag::before,.hero-tag::after{content:'';width:18px;height:1px;background:var(--gold);}
+
+.hero-title{
+  font-family:var(--fh);font-size:clamp(2.2rem,6vw,4rem);
+  font-weight:700;line-height:1.08;letter-spacing:-.03em;
+  margin-bottom:1rem;max-width:640px;
+}
+.hero-title .hl{color:var(--gold);}
+
+.hero-sub{
+  font-size:1rem;color:var(--g2);max-width:480px;
+  line-height:1.7;margin-bottom:2.5rem;
+}
+
+/* WAITLIST CTA */
+.waitlist-wrap{display:flex;flex-direction:column;align-items:center;gap:.75rem;width:100%;max-width:420px;}
+
+.wa-btn{
+  display:inline-flex;align-items:center;gap:.65rem;
+  padding:.9rem 1.75rem;background:#25D366;color:#fff;
+  font-family:var(--fh);font-size:.95rem;font-weight:700;
+  border-radius:10px;border:none;
+  transition:transform 200ms,box-shadow 200ms;
+  width:100%;justify-content:center;
+}
+.wa-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(37,211,102,.35);}
+
+.wa-note{font-size:.78rem;color:var(--g3);}
+
+/* FEATURES GRID */
+#features{padding:5rem 0;border-top:1px solid var(--glass-b);}
+.feat-header{margin-bottom:3rem;text-align:center;}
+.feat-tag{font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.65rem;}
+.feat-tag::before,.feat-tag::after{content:'';width:18px;height:1px;background:var(--gold);}
+.feat-title{font-family:var(--fh);font-size:clamp(1.4rem,3vw,2rem);font-weight:700;
+  letter-spacing:-.025em;margin-bottom:.5rem;}
+.feat-sub{font-size:.9rem;color:var(--g2);max-width:480px;margin-inline:auto;line-height:1.7;}
+
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;}
+.feat-card{
+  padding:1.5rem;background:#fff;border:1px solid var(--glass-b);border-radius:var(--r);
+  box-shadow:0 1px 4px rgba(0,0,0,.04);transition:border-color 200ms,box-shadow 200ms;
+}
+.feat-card:hover{border-color:rgba(0,153,68,.25);box-shadow:0 4px 16px rgba(0,153,68,.08);}
+.feat-ico{width:40px;height:40px;border-radius:10px;background:var(--gold-dim);
+  display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:1rem;}
+.feat-name{font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.35rem;}
+.feat-desc{font-size:.82rem;color:var(--g2);line-height:1.65;}
+
+/* SPRINT CARD (cross-sell) */
+#crossell{padding:4rem 0 6rem;}
+.crossell-inner{
+  background:#fff;border:1px solid var(--glass-b);border-radius:var(--r);
+  padding:2.5rem;display:flex;flex-direction:column;align-items:center;text-align:center;
+  max-width:600px;margin-inline:auto;
+  box-shadow:0 2px 16px rgba(0,0,0,.05);
+}
+.crossell-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.45rem;}
+.crossell-label::before,.crossell-label::after{content:'';width:14px;height:1px;background:var(--gold);}
+.crossell-title{font-family:var(--fh);font-size:1.3rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem;}
+.crossell-sub{font-size:.88rem;color:var(--g2);line-height:1.7;margin-bottom:1.5rem;max-width:400px;}
+.crossell-btn{
+  padding:.75rem 1.6rem;background:var(--gold);color:#fff;
+  font-family:var(--fh);font-size:.88rem;font-weight:700;
+  border-radius:9px;border:none;
+  transition:transform 200ms,box-shadow 200ms;
+}
+.crossell-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--gold-strong);}
+
+/* FOOTER */
+#footer{padding:2rem 0;border-top:1px solid var(--glass-b);background:var(--bg-1);}
+.footer-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+.footer-logo{font-family:var(--fh);font-size:1rem;font-weight:700;}
+.footer-logo span{color:var(--gold);}
+.footer-copy{font-size:.78rem;color:var(--g3);}
+
+/* SCROLL reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .55s var(--ease),transform .55s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap">
+    <div class="nav-row">
+      <a href="index.html" class="nav-logo">oscar<span>b2b</span></a>
+      <a href="index.html" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        <span>Volver al inicio</span>
+      </a>
+      <a href="estudiantes.html" class="nav-cta">Ingresar →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+
+      <div class="badge-soon">
+        <span class="badge-dot"></span>
+        Próximamente
+      </div>
+
+      <div class="hero-tag">Nuevo programa</div>
+
+      <h1 class="hero-title">
+        El siguiente nivel<br>está en <span class="hl">construcción</span>
+      </h1>
+
+      <p class="hero-sub">
+        Estamos diseñando el Bootcamp: un programa más intensivo para quienes ya tienen criterio y quieren ejecutar. Te avisamos cuando abramos inscripciones.
+      </p>
+
+      <div class="waitlist-wrap">
+        <a
+          href="https://wa.me/584221863453?text=Hola+Oscar%2C+quiero+que+me+avisen+cuando+abran+el+Bootcamp."
+          target="_blank" rel="noopener"
+          class="wa-btn"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+          Avisarme cuando abran inscripciones
+        </a>
+        <span class="wa-note">Sin spam. Solo un mensaje cuando sea el momento.</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+
+    <div class="feat-header reveal">
+      <div class="feat-tag">Lo que se viene</div>
+      <h2 class="feat-title">Más profundidad. Más ejecución.</h2>
+      <p class="feat-sub">El Bootcamp está pensado para quienes completaron el Sprint o ya tienen experiencia en negocios y quieren ir al siguiente nivel.</p>
+    </div>
+
+    <div class="feat-grid">
+
+      <div class="feat-card reveal">
+        <div class="feat-ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="feat-name">Programa intensivo</div>
+        <div class="feat-desc">Semanas de trabajo real. No teoría. Casos prácticos, proyectos y retroalimentación directa.</div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="feat-name">Grupo selecto</div>
+        <div class="feat-desc">Cupos limitados para garantizar atención personalizada y dinámica de grupo de alto nivel.</div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="feat-name">IA aplicada</div>
+        <div class="feat-desc">Herramientas de inteligencia artificial integradas a procesos reales de negocio y toma de decisiones.</div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="feat-name">Recursos digitales</div>
+        <div class="feat-desc">Acceso a materiales exclusivos, prompts avanzados y biblioteca de recursos en tu dashboard personal.</div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- CROSS-SELL SPRINT -->
+<section id="crossell">
+  <div class="wrap">
+    <div class="crossell-inner reveal">
+      <div class="crossell-label">Mientras tanto</div>
+      <h2 class="crossell-title">¿Ya hiciste el Sprint?</h2>
+      <p class="crossell-sub">El Sprint de Inteligencia Empresarial es el punto de partida. 5 días presenciales en Caracas para desarrollar criterio comercial real.</p>
+      <a href="sprint.html" class="crossell-btn">Ver el Sprint →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="wrap">
+    <div class="footer-row">
+      <div class="footer-logo">oscar<span>b2b</span></div>
+      <div class="footer-copy">© 2026 Oscar B2B · Caracas, Venezuela</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// NAV scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10);
+},{ passive:true });
+
+// Scroll reveal
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+},{ threshold:.12 });
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>

@@ -28,7 +28,7 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net; img-src 'self' data: https://www.google-analytics.com https://www.facebook.com; connect-src https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://cdn.jsdelivr.net; img-src 'self' data: https://www.google-analytics.com https://www.facebook.com; connect-src https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://connect.facebook.net https://www.facebook.com https://gslzmhtabkklvxemtkhk.supabase.co;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="description" content="Oscar b2b — Sprint de Inteligencia Empresarial en Caracas. 5 días presenciales para desarrollar criterio empresarial real. Agosto–Septiembre 2026.">
@@ -36,6 +36,7 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* ── Reset ─────────────────────────────────────── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -198,6 +199,55 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
         }
         .nav-links a:hover { color: var(--white); }
         .nav-links a:hover::after { width: 100%; }
+
+        /* dropdown */
+        .nav-dropdown { position: relative; }
+        .nav-dropdown > a { display: flex; align-items: center; gap: .28rem; cursor: pointer; }
+        .nav-dropdown > a svg { transition: transform 200ms; flex-shrink:0; }
+        .nav-dropdown:hover > a svg,
+        .nav-dropdown.open > a svg { transform: rotate(180deg); }
+        .drop-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 12px); left: 50%;
+            transform: translateX(-50%);
+            background: rgba(246,243,238,.97);
+            border: 1px solid var(--glass-b);
+            border-radius: 12px;
+            padding: .4rem;
+            min-width: 190px;
+            box-shadow: 0 16px 48px rgba(0,0,0,.1);
+            backdrop-filter: blur(16px);
+            z-index: 300;
+        }
+        .nav-dropdown:hover .drop-menu,
+        .nav-dropdown.open .drop-menu { display: block; }
+        .drop-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: .62rem .85rem;
+            border-radius: 8px;
+            font-size: .84rem; font-weight: 500; color: var(--g1);
+            transition: background 150ms, color 150ms;
+            white-space: nowrap;
+        }
+        .drop-item:hover { background: var(--gold-dim); color: var(--gold); }
+        .drop-item .drop-badge {
+            font-size: .62rem; font-weight: 700; letter-spacing: .06em;
+            text-transform: uppercase; color: var(--g3);
+            border: 1px solid var(--glass-b); border-radius: 99px;
+            padding: .15rem .45rem;
+        }
+
+        /* auth nav btn */
+        .nav-auth {
+            display: inline-flex; align-items: center; gap: .35rem;
+            font-size: .82rem; font-weight: 600; color: var(--gold);
+            border: 1.5px solid var(--gold); padding: .4rem .9rem;
+            border-radius: 7px; transition: background 200ms, color 200ms;
+            white-space: nowrap;
+        }
+        .nav-auth:hover { background: var(--gold-dim); }
+
         .ham {
             display: none;
             flex-direction: column;
@@ -747,8 +797,16 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             <ul class="nav-links">
                 <li><a href="#sobre">Quién soy</a></li>
                 <li><a href="blog.html">Blog</a></li>
+                <li class="nav-dropdown">
+                    <a href="#cursos" onclick="return false;">Cursos <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 4l4 4 4-4"/></svg></a>
+                    <div class="drop-menu">
+                        <a href="sprint.html" class="drop-item">Sprint</a>
+                        <a href="bootcamp.html" class="drop-item">Bootcamp <span class="drop-badge">Próx.</span></a>
+                        <a href="estudiantes.html" class="drop-item">Recursos Gratis <span class="drop-badge">Gratis</span></a>
+                    </div>
+                </li>
                 <li><a href="#contacto">Contacto</a></li>
-                <li><a href="sprint.html" style="display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;background:var(--gold);color:#fff;font-weight:700;border-radius:8px;font-size:.82rem;white-space:nowrap;">Sprint →</a></li>
+                <li><a href="estudiantes.html" id="nav-auth-btn" class="nav-auth">Ingresar →</a></li>
             </ul>
             <button class="ham" id="ham" aria-label="Menú">
                 <span></span><span></span><span></span>
@@ -762,7 +820,11 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
         <li><a href="#sobre">Quién soy</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="#contacto">Contacto</a></li>
-        <li><a href="sprint.html" style="color:var(--gold);font-weight:700;">Sprint →</a></li>
+        <li style="padding:.2rem 0;"><span style="display:block;padding:.3rem clamp(1.25rem,5vw,2.5rem);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);">Cursos</span></li>
+        <li><a href="sprint.html" style="padding-left:calc(clamp(1.25rem,5vw,2.5rem) + .75rem);">Sprint</a></li>
+        <li><a href="bootcamp.html" style="padding-left:calc(clamp(1.25rem,5vw,2.5rem) + .75rem);color:var(--g3);">Bootcamp <span style="font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:rgba(0,0,0,.06);border-radius:99px;padding:.1rem .45rem;margin-left:.25rem;">Próx.</span></a></li>
+        <li><a href="estudiantes.html" style="padding-left:calc(clamp(1.25rem,5vw,2.5rem) + .75rem);">Recursos Gratis</a></li>
+        <li><a href="estudiantes.html" id="mob-auth-btn" style="color:var(--gold);font-weight:700;">Ingresar →</a></li>
     </ul>
 </nav>
 
@@ -1024,7 +1086,6 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
         const io = new IntersectionObserver(entries => {
             entries.forEach(e => {
                 if (!e.isIntersecting) return;
-                // Stagger by horizontal position so left col fires first, then center, then right
                 const rect = e.target.getBoundingClientRect();
                 const vw = window.innerWidth;
                 const col = rect.left < vw * 0.35 ? 0 : rect.left < vw * 0.65 ? 1 : 2;
@@ -1033,11 +1094,42 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             });
         }, {
             threshold: 0.1,
-            rootMargin: '0px 0px -6% 0px'   // card must be 6% inside viewport before triggering
+            rootMargin: '0px 0px -6% 0px'
         });
 
         els.forEach(el => io.observe(el));
     })();
+
+    /* ── Auth session check ─────────────────────── */
+    (async function(){
+        try {
+            const sb = supabase.createClient(
+                'https://gslzmhtabkklvxemtkhk.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzbHptaHRhYmtrbHZ4ZW10a2hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwOTI3MjUsImV4cCI6MjEwNTY2ODcyNX0.JHSLrTQCts8ixOPiD34pNLjzPqeev2KaPzAC0OxXQo0'
+            );
+            const { data: { session } } = await sb.auth.getSession();
+            if(session) {
+                const label = 'Mi cuenta →';
+                const btn = document.getElementById('nav-auth-btn');
+                const mob = document.getElementById('mob-auth-btn');
+                if(btn) btn.textContent = label;
+                if(mob) mob.textContent = label;
+            }
+        } catch(e){}
+    })();
+
+    /* ── Dropdown toggle (touch) ────────────────── */
+    document.querySelectorAll('.nav-dropdown').forEach(dd => {
+        dd.querySelector('a').addEventListener('click', e => {
+            e.preventDefault();
+            dd.classList.toggle('open');
+        });
+    });
+    document.addEventListener('click', e => {
+        if(!e.target.closest('.nav-dropdown')) {
+            document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+        }
+    });
 
 })();
 </script>

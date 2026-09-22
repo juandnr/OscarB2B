@@ -1,6 +1,20 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q139EMTFK0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q139EMTFK0');
+</script>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','605342989639546');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"/></noscript>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
@@ -8,766 +22,1990 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 img{max-width:100%;display:block;}
 a{text-decoration:none;color:inherit;}
-button{font-family:inherit;cursor:pointer;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
 
-/* ── LOGIN SCREEN ── */
-#login-screen{
-  position:fixed;inset:0;z-index:999;
-  background:var(--bg);
+:root{
+  --bg:#0a0a0a;
+  --sidebar-bg:#111111;
+  --surf:#161616;
+  --surf-2:#1e1e1e;
+  --surf-3:#262626;
+  --bdr:rgba(255,255,255,.07);
+  --bdr-hover:rgba(255,255,255,.13);
+  --green:#009944;
+  --green-dim:rgba(0,153,68,.12);
+  --green-bdr:rgba(0,153,68,.22);
+  --green-light:rgba(0,153,68,.08);
+  --text:#ffffff;
+  --g1:rgba(255,255,255,.82);
+  --g2:rgba(255,255,255,.5);
+  --g3:rgba(255,255,255,.3);
+  --g4:rgba(255,255,255,.10);
+  --g5:rgba(255,255,255,.05);
+  --fh:'Space Grotesk',sans-serif;
+  --fb:'Inter',sans-serif;
+  --nav-h:60px;
+  --sidebar-w:272px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+
+:root[data-theme="light"]{
+  --bg:#f5f5f5;
+  --sidebar-bg:#ebebeb;
+  --surf:#ffffff;
+  --surf-2:#f0f0f0;
+  --surf-3:#e8e8e8;
+  --bdr:rgba(0,0,0,.09);
+  --bdr-hover:rgba(0,0,0,.16);
+  --green-dim:rgba(0,153,68,.1);
+  --green-bdr:rgba(0,153,68,.25);
+  --green-light:rgba(0,153,68,.07);
+  --text:#0a0a0a;
+  --g1:rgba(0,0,0,.78);
+  --g2:rgba(0,0,0,.5);
+  --g3:rgba(0,0,0,.35);
+  --g4:rgba(0,0,0,.10);
+  --g5:rgba(0,0,0,.05);
+}
+
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-smoothing:antialiased;}
+
+/* ════════════════════════════════
+   SHARED NAV
+════════════════════════════════ */
+nav{
+  position:sticky;top:0;
+  height:var(--nav-h);z-index:100;
+  display:flex;align-items:center;
+  background:color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bdr);
+}
+.nav-inner{
+  width:100%;padding-inline:clamp(1rem,4vw,2rem);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.nav-logo{font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:-.02em;}
+.nav-logo span{color:var(--green);}
+.nav-actions{display:flex;align-items:center;gap:1rem;}
+.nav-back{
+  font-size:.76rem;font-weight:600;color:var(--g3);
+  display:flex;align-items:center;gap:.35rem;
+  transition:color .2s;
+}
+.nav-back:hover{color:var(--text);}
+.nav-exit-btn{
+  font-size:.76rem;font-weight:600;color:var(--g3);
+  display:flex;align-items:center;gap:.35rem;
+  transition:color .2s;
+}
+.nav-exit-btn:hover{color:var(--text);}
+.nav-theme-btn{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--bdr);
+  background:var(--surf-2);color:var(--g2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .2s,color .2s,border-color .2s;flex-shrink:0;
+}
+.nav-theme-btn:hover{background:var(--surf-3);color:var(--text);border-color:var(--bdr-hover);}
+
+/* ════════════════════════════════
+   LOGIN MODAL
+════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   display:flex;align-items:center;justify-content:center;
   padding:1.5rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .2s var(--ease);
 }
-.login-card{
-  background:var(--surf);border:1px solid var(--bdr);border-radius:16px;
-  padding:2.5rem 2rem;width:100%;max-width:380px;
-  box-shadow:0 4px 32px rgba(0,0,0,.08);
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-card{
+  background:var(--sidebar-bg);
+  border:1px solid var(--bdr-hover);
+  border-radius:16px;
+  padding:2.25rem 2rem;
+  width:100%;max-width:380px;
+  box-shadow:0 0 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);
+  transform:translateY(8px);
+  transition:transform .25s var(--ease);
 }
-.login-logo{font-family:var(--fh);font-size:1.3rem;font-weight:700;letter-spacing:-.02em;margin-bottom:2rem;}
-.login-logo span{color:var(--green);}
-.login-badge{
+.modal-overlay.open .modal-card{transform:translateY(0);}
+.modal-logo{font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1.5rem;}
+.modal-logo span{color:var(--green);}
+.modal-badge{
   display:inline-flex;align-items:center;gap:.4rem;
   background:var(--green-dim);color:var(--green);
   border:1px solid var(--green-bdr);
-  font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  padding:.25rem .65rem;border-radius:20px;margin-bottom:1.5rem;
+  font-size:.67rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:.22rem .6rem;border-radius:20px;margin-bottom:1.25rem;
 }
-.login-title{font-family:var(--fh);font-size:1.4rem;font-weight:700;line-height:1.2;margin-bottom:.4rem;}
-.login-sub{font-size:.88rem;color:var(--g2);margin-bottom:1.75rem;line-height:1.5;}
-.login-label{font-size:.8rem;font-weight:600;color:var(--g1);margin-bottom:.45rem;display:block;}
-.login-input{
-  width:100%;padding:.75rem 1rem;
+.modal-title{font-family:var(--fh);font-size:1.3rem;font-weight:700;margin-bottom:.35rem;}
+.modal-sub{font-size:.86rem;color:var(--g2);margin-bottom:1.5rem;line-height:1.55;}
+.modal-label{font-size:.76rem;font-weight:600;color:var(--g2);margin-bottom:.4rem;display:block;letter-spacing:.04em;text-transform:uppercase;}
+.modal-input{
+  width:100%;padding:.72rem 1rem;
   border:1.5px solid var(--bdr);border-radius:8px;
-  font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:.2em;
+  font-family:var(--fh);font-size:1.05rem;font-weight:700;letter-spacing:.2em;
   background:var(--bg);color:var(--text);
   transition:border-color .2s;outline:none;
   text-transform:uppercase;
 }
-.login-input:focus{border-color:var(--green);}
-.login-input.error{border-color:#E53E3E;}
-.login-error{font-size:.78rem;color:#E53E3E;margin-top:.4rem;min-height:1rem;}
-.login-btn{
-  width:100%;margin-top:1.25rem;padding:.85rem;
-  background:var(--green);color:#fff;border:none;border-radius:8px;
-  font-family:var(--fh);font-size:.95rem;font-weight:700;letter-spacing:.02em;
-  transition:opacity .2s;
+.modal-input::placeholder{letter-spacing:.05em;font-weight:500;}
+.modal-input:focus{border-color:var(--green);}
+.modal-input.error{border-color:#E53E3E;}
+.modal-error{font-size:.76rem;color:#F87171;margin-top:.4rem;min-height:1rem;}
+.modal-btn{
+  width:100%;margin-top:1.1rem;padding:.82rem;
+  background:var(--green);color:#fff;border-radius:8px;
+  font-family:var(--fh);font-size:.92rem;font-weight:700;letter-spacing:.02em;
+  transition:opacity .2s,transform .1s;
 }
-.login-btn:hover{opacity:.88;}
-.login-hint{font-size:.75rem;color:var(--g3);margin-top:1.25rem;text-align:center;line-height:1.5;}
-
-
-:root{
-  --bg:#F6F3EE;
-  --bg-1:#EDE9E1;
-  --bg-2:#E4DFD5;
-  --surf:#FFFFFF;
-  --bdr:rgba(0,0,0,.09);
-  --green:#009944;
-  --green-dim:rgba(0,153,68,.10);
-  --green-bdr:rgba(0,153,68,.25);
-  --text:#111111;
-  --g1:#333333;
-  --g2:#666666;
-  --g3:#999999;
-  --fh:'Space Grotesk',sans-serif;
-  --fb:'Inter',sans-serif;
-  --nav-h:64px;
-  --sidebar-w:280px;
-  --r:12px;
-  --ease:cubic-bezier(.4,0,.2,1);
+.modal-btn:hover{opacity:.88;}
+.modal-btn:active{transform:scale(.98);}
+.modal-input-email{
+  font-size:.95rem;font-weight:400;letter-spacing:0;text-transform:none;
 }
-
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.6;-webkit-font-smoothing:antialiased;}
-
-/* ── NAV ── */
-nav{
-  position:fixed;inset:0 0 auto 0;height:var(--nav-h);
-  display:flex;align-items:center;
-  background:rgba(246,243,238,.96);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--bdr);
-  z-index:100;
-}
-.nav-inner{
-  width:100%;max-width:1400px;margin-inline:auto;
-  padding-inline:clamp(1rem,4vw,2rem);
-  display:flex;align-items:center;justify-content:space-between;gap:1rem;
-}
-.nav-logo{font-family:var(--fh);font-size:1.2rem;font-weight:700;letter-spacing:-.02em;}
-.nav-logo span{color:var(--green);}
-.nav-badge{
-  background:var(--green-dim);color:var(--green);border:1px solid var(--green-bdr);
-  font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  padding:.3rem .75rem;border-radius:20px;
-}
-.nav-back{
-  display:inline-flex;align-items:center;gap:.4rem;
-  font-size:.85rem;font-weight:500;color:var(--g2);
+.modal-input-email::placeholder{letter-spacing:0;font-weight:400;}
+.modal-cancel{
+  display:block;margin-top:.9rem;text-align:center;
+  font-size:.76rem;color:var(--g3);cursor:pointer;
   transition:color .2s;
 }
-.nav-back:hover{color:var(--green);}
-.nav-back svg{width:16px;height:16px;}
+.modal-cancel:hover{color:var(--g1);}
+.auth-tabs{display:flex;gap:0;border-bottom:1px solid var(--bdr);margin:0 0 .25rem;}
+.auth-tab{flex:1;padding:.65rem;font-size:.82rem;font-weight:600;color:var(--g2);border-bottom:2px solid transparent;transition:color .2s,border-color .2s;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;}
+.auth-tab.active{color:var(--text);border-bottom-color:var(--green);}
+.auth-tab:hover:not(.active){color:var(--g1);}
+.modal-success{text-align:center;padding:1rem 0;}
+.modal-success-icon{width:48px;height:48px;border-radius:50%;background:var(--green-dim);border:2px solid var(--green-bdr);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:var(--green);}
+.card-locked{opacity:.5;cursor:not-allowed !important;}
+.pc-soon{font-size:.72rem;font-weight:600;color:var(--g3);display:flex;align-items:center;gap:.3rem;}
 
-/* ── VIEWS ── */
-#view-catalog{display:block;}
-#view-course{display:none;}
-
-/* ── CATALOG ── */
-.catalog-wrap{
-  max-width:1100px;margin-inline:auto;
-  padding:calc(var(--nav-h) + 2.5rem) clamp(1rem,4vw,2rem) 4rem;
+/* ════════════════════════════════
+   DASHBOARD
+════════════════════════════════ */
+#view-dashboard{padding:3rem clamp(1rem,5vw,2.5rem) 5rem;}
+.dash-eyebrow{
+  font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--green);margin-bottom:.9rem;
+  display:flex;align-items:center;gap:.55rem;
 }
-.catalog-header{margin-bottom:2.5rem;}
-.catalog-label{
-  display:inline-flex;align-items:center;gap:.5rem;
-  font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--green);margin-bottom:.75rem;
+.dash-eyebrow::before{content:'';display:block;width:18px;height:1.5px;background:var(--green);}
+.dash-title{
+  font-family:var(--fh);font-size:clamp(1.8rem,4vw,2.75rem);
+  font-weight:700;letter-spacing:-.03em;line-height:1.1;
+  text-wrap:balance;margin-bottom:.55rem;
 }
-.catalog-label::before{content:'';width:20px;height:1px;background:var(--green);}
-.catalog-title{font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;line-height:1.2;letter-spacing:-.025em;}
-.catalog-sub{margin-top:.6rem;color:var(--g2);font-size:.95rem;}
+.dash-sub{font-size:.95rem;color:var(--g2);line-height:1.6;max-width:480px;margin-bottom:3rem;}
 
-.course-grid{
+.dash-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:1.25rem;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1rem;
+  max-width:820px;
 }
-.course-card{
-  background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);
-  overflow:hidden;cursor:pointer;
-  transition:border-color .2s,box-shadow .2s,transform .2s;
+
+/* Product card */
+.product-card{
+  background:var(--surf);
+  border:1px solid var(--bdr);
+  border-radius:14px;
+  padding:1.75rem;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .2s,background .2s,transform .18s var(--ease);
+  display:flex;flex-direction:column;gap:1rem;
 }
-.course-card:hover{border-color:var(--green-bdr);box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-2px);}
-.course-thumb{
-  aspect-ratio:16/9;background:var(--bg-1);position:relative;overflow:hidden;
+.product-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 200% 120% at 50% 110%,var(--card-glow,transparent),transparent 70%);
+  pointer-events:none;
+  opacity:0;transition:opacity .3s;
+}
+.product-card:hover{border-color:var(--bdr-hover);background:var(--surf-2);transform:translateY(-2px);}
+.product-card:hover::before{opacity:1;}
+.product-card:active{transform:translateY(0);}
+
+.pc-sprint{--card-glow:rgba(0,153,68,.18);}
+.pc-online{--card-glow:rgba(99,102,241,.18);}
+.pc-recursos{--card-glow:rgba(245,158,11,.18);}
+
+.pc-icon{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.pc-icon-sprint{background:var(--green-dim);color:var(--green);border:1px solid var(--green-bdr);}
+.pc-icon-online{background:rgba(99,102,241,.12);color:#818cf8;border:1px solid rgba(99,102,241,.22);}
+.pc-icon-recursos{background:rgba(245,158,11,.1);color:#F59E0B;border:1px solid rgba(245,158,11,.2);}
+.pc-icon svg{width:22px;height:22px;}
+
+.pc-body{flex:1;}
+.pc-tag{
+  font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:.45rem;
+}
+.pc-tag-sprint{color:var(--green);}
+.pc-tag-online{color:#818cf8;}
+.pc-tag-recursos{color:#F59E0B;}
+.pc-name{font-family:var(--fh);font-size:1.2rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.35rem;}
+.pc-desc{font-size:.84rem;color:var(--g2);line-height:1.55;}
+
+.pc-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:.75rem;border-top:1px solid var(--bdr);
+}
+.pc-lock{
+  display:flex;align-items:center;gap:.35rem;
+  font-size:.72rem;color:var(--g3);
+}
+.pc-lock svg{width:12px;height:12px;}
+.pc-arrow{
+  display:flex;align-items:center;gap:.35rem;
+  font-size:.76rem;font-weight:700;
+  transition:gap .2s;
+}
+.pc-arrow-sprint{color:var(--green);}
+.pc-arrow-online{color:#818cf8;}
+.pc-arrow-recursos{color:#F59E0B;}
+.product-card:hover .pc-arrow{gap:.55rem;}
+.pc-free-badge{display:flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:600;color:#F59E0B;}
+.pc-free-badge svg{width:12px;height:12px;}
+.pc-arrow svg{width:14px;height:14px;}
+
+/* ════════════════════════════════
+   SPRINT RESOURCES VIEW
+════════════════════════════════ */
+#view-sprint{display:none;}
+
+.sprint-header{
+  padding:2.25rem clamp(1rem,5vw,2.5rem) 0;
+  border-bottom:1px solid var(--bdr);
+}
+.sprint-header-top{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;
+  flex-wrap:wrap;margin-bottom:1.5rem;
+}
+.sprint-eyebrow{
+  font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--green);margin-bottom:.5rem;
+  display:flex;align-items:center;gap:.45rem;
+}
+.sprint-eyebrow::before{content:'';display:block;width:14px;height:1.5px;background:var(--green);}
+.sprint-title{font-family:var(--fh);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;letter-spacing:-.025em;text-wrap:balance;}
+
+.sprint-tabs{display:flex;gap:0;border-bottom:none;}
+.sprint-tab{
+  padding:.65rem 1.1rem;
+  font-size:.82rem;font-weight:600;color:var(--g2);
+  border-bottom:2px solid transparent;
+  transition:color .2s,border-color .2s;
+  cursor:pointer;
+}
+.sprint-tab.active{color:var(--text);border-bottom-color:var(--green);}
+.sprint-tab:hover:not(.active){color:var(--g1);}
+
+.sprint-body{padding:2rem clamp(1rem,5vw,2.5rem) 5rem;}
+
+/* Tab panels */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Day groups */
+.day-group{margin-bottom:2.5rem;}
+.day-group-label{
+  font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--g3);margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.day-group-label::after{content:'';flex:1;height:1px;background:var(--bdr);}
+
+/* File rows */
+.file-rows{display:flex;flex-direction:column;gap:2px;}
+.file-row{
+  display:flex;align-items:center;gap:.85rem;
+  padding:.7rem .85rem;
+  background:var(--surf);
+  border-radius:8px;
+  transition:background .15s;
+}
+.file-row:hover{background:var(--surf-2);}
+.file-row-icon{
+  width:32px;height:32px;flex-shrink:0;
+  border-radius:7px;
   display:flex;align-items:center;justify-content:center;
 }
-.course-thumb-img{width:100%;height:100%;object-fit:cover;}
-.course-thumb-placeholder{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
-  color:var(--g3);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  text-align:center;padding:1rem;
-  background:linear-gradient(135deg,var(--bg-1) 0%,var(--bg-2) 100%);
-  width:100%;height:100%;
-}
-.course-thumb-placeholder strong{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);line-height:1.2;}
-.course-thumb .live-badge{
-  position:absolute;top:.6rem;right:.6rem;
-  background:#E53E3E;color:#fff;
-  font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  padding:.2rem .5rem;border-radius:4px;
-  display:flex;align-items:center;gap:.3rem;
-}
-.live-dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.course-info{padding:.9rem 1rem 1rem;}
-.course-tag{font-size:.68rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:.35rem;}
-.course-name{font-family:var(--fh);font-size:.95rem;font-weight:700;line-height:1.3;color:var(--text);}
-.course-meta{font-size:.78rem;color:var(--g3);margin-top:.4rem;}
+.file-row-icon svg{width:16px;height:16px;}
+.icon-pdf{background:rgba(239,68,68,.12);color:#F87171;}
+.icon-pptx{background:rgba(249,115,22,.12);color:#FB923C;}
+.icon-doc{background:rgba(59,130,246,.12);color:#60A5FA;}
+.icon-drive{background:rgba(16,185,129,.12);color:#34D399;}
+.icon-prompt{background:var(--green-dim);color:var(--green);}
+.icon-soon{background:var(--g5);color:var(--g3);}
 
-/* ── LIVE SECTION ── */
-.live-section{margin-bottom:3rem;}
-.section-label{
-  display:flex;align-items:center;gap:.6rem;
-  font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--g2);margin-bottom:1rem;
+.file-row-info{flex:1;min-width:0;}
+.file-row-name{font-size:.86rem;color:var(--g1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.file-row-type{font-size:.7rem;color:var(--g3);margin-top:.05rem;}
+.file-row-action{flex-shrink:0;}
+.file-btn{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.74rem;font-weight:700;
+  padding:.38rem .8rem;border-radius:6px;
+  transition:background .15s,color .15s;
 }
-.section-label span{flex:1;height:1px;background:var(--bdr);}
+.file-btn-green{color:var(--green);background:var(--green-dim);border:1px solid var(--green-bdr);}
+.file-btn-green:hover{background:rgba(0,153,68,.2);}
+.file-btn-muted{color:var(--g3);background:var(--g5);border:1px solid var(--bdr);cursor:default;}
+.file-btn svg{width:11px;height:11px;}
 
-/* Live player embebido */
-.live-player-wrap{
-  position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;
-  background:#000;
-}
-.live-player-wrap iframe{position:absolute;inset:0;width:100%;height:100%;}
-.live-active-bar{
-  display:flex;align-items:center;gap:.75rem;
-  margin-bottom:.75rem;
-}
-.live-dot-badge{
-  display:inline-flex;align-items:center;gap:.4rem;
-  background:#E53E3E;color:#fff;
-  font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  padding:.3rem .7rem;border-radius:20px;
-}
-.live-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.live-active-title{font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--text);}
+/* Prompt cards */
+/* Prompt accordion */
+.prompt-accordion{border:1px solid var(--bdr);border-radius:10px;overflow:hidden;margin-bottom:6px;background:var(--surf);}
+.prompt-accordion-header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.9rem 1.1rem;cursor:pointer;user-select:none;transition:background .15s;}
+.prompt-accordion-header:hover{background:var(--surf-2);}
+.prompt-accordion-title{font-size:.88rem;font-weight:600;color:var(--text);line-height:1.4;}
+.prompt-accordion-arrow{flex-shrink:0;color:var(--g3);transition:transform .25s;}
+.prompt-accordion.open .prompt-accordion-arrow{transform:rotate(180deg);}
+.prompt-accordion-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.prompt-accordion.open .prompt-accordion-body{max-height:9999px;}
+.prompt-accordion-content{padding:1rem 1.1rem;border-top:1px solid var(--bdr);font-size:.83rem;line-height:1.8;color:var(--g1);white-space:pre-wrap;word-break:break-word;}
+.prompt-rows{display:flex;flex-direction:column;gap:6px;}
 
-/* Próxima clase (cuando no hay live activo) */
-.live-upcoming{
-  background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);
-  padding:1.75rem 1.5rem;
-  display:flex;align-items:center;gap:1.25rem;
+/* Sprint empty state */
+.sprint-empty{text-align:center;padding:3.5rem 1rem;color:var(--g3);}
+.sprint-empty-icon{
+  width:48px;height:48px;background:var(--g5);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1rem;color:var(--g3);
 }
-.live-upcoming-icon{
-  width:48px;height:48px;border-radius:10px;flex-shrink:0;
-  background:var(--bg-1);display:flex;align-items:center;justify-content:center;
-}
-.live-upcoming-icon svg{width:22px;height:22px;color:var(--g3);}
-.live-upcoming-info{flex:1;}
-.live-upcoming-title{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--text);}
-.live-upcoming-desc{font-size:.82rem;color:var(--g2);margin-top:.25rem;}
+.sprint-empty-icon svg{width:22px;height:22px;}
+.sprint-empty-text{font-size:.86rem;line-height:1.6;color:var(--g3);}
 
-/* ── COURSE VIEW ── */
-.course-layout{
+/* ════════════════════════════════
+   ONLINE COURSE VIEW (existing)
+════════════════════════════════ */
+#view-online{display:none;height:calc(100vh - var(--nav-h));}
+
+.online-layout{
   display:grid;
   grid-template-columns:var(--sidebar-w) 1fr;
-  min-height:calc(100vh - var(--nav-h));
-  margin-top:var(--nav-h);
+  height:100%;
 }
 
 /* Sidebar */
 .sidebar{
-  background:var(--surf);border-right:1px solid var(--bdr);
-  height:calc(100vh - var(--nav-h));
-  position:sticky;top:var(--nav-h);
-  overflow-y:auto;
-  scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;
+  background:var(--sidebar-bg);
+  border-right:1px solid var(--bdr);
+  display:flex;flex-direction:column;
+  overflow:hidden;
 }
-.sidebar-header{padding:1.25rem 1.25rem .75rem;border-bottom:1px solid var(--bdr);}
-.sidebar-course-tag{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:.3rem;}
-.sidebar-course-name{font-family:var(--fh);font-size:.92rem;font-weight:700;line-height:1.3;color:var(--text);}
+.sidebar-scroll{flex:1;overflow-y:auto;padding:.5rem 0 2rem;}
+.sidebar-scroll::-webkit-scrollbar{width:4px;}
+.sidebar-scroll::-webkit-scrollbar-track{background:transparent;}
+.sidebar-scroll::-webkit-scrollbar-thumb{background:var(--g4);border-radius:99px;}
 
-.module-list{padding:.5rem 0 2rem;}
-.module-item{}
-.module-header{
-  display:flex;align-items:center;gap:.6rem;
-  padding:.65rem 1.25rem;
-  font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
-  color:var(--g2);cursor:pointer;
-  background:var(--bg);border-top:1px solid var(--bdr);
-  user-select:none;
+.sb-live{
+  margin:.75rem .75rem .25rem;padding:.6rem .85rem;
+  background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.22);
+  border-radius:8px;display:flex;align-items:center;gap:.55rem;
+  cursor:pointer;transition:background .2s;
 }
-.module-header svg{width:14px;height:14px;margin-left:auto;transition:transform .2s;flex-shrink:0;}
-.module-item.open .module-header svg{transform:rotate(180deg);}
-.lesson-list{display:none;}
-.module-item.open .lesson-list{display:block;}
-.lesson-btn{
-  display:flex;align-items:center;gap:.75rem;width:100%;
-  padding:.65rem 1.25rem .65rem 1.5rem;
-  font-size:.83rem;color:var(--g1);
-  background:none;border:none;text-align:left;
-  transition:background .15s,color .15s;
-  cursor:pointer;
+.sb-live:hover{background:rgba(220,38,38,.16);}
+.sb-live-dot{width:7px;height:7px;border-radius:50%;background:#DC2626;flex-shrink:0;animation:livepulse 1.4s ease-in-out infinite;}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.75);}}
+.sb-live-label{font-size:.74rem;font-weight:700;color:#F87171;letter-spacing:.04em;text-transform:uppercase;}
+.sb-live-title{font-size:.74rem;color:var(--g2);margin-left:auto;max-width:120px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.sb-upcoming{
+  margin:.75rem .75rem .25rem;padding:.6rem .85rem;
+  background:var(--green-dim);border:1px solid var(--green-bdr);border-radius:8px;
+}
+.sb-upcoming-label{font-size:.68rem;font-weight:700;color:var(--green);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem;}
+.sb-upcoming-title{font-size:.78rem;font-weight:600;color:var(--g1);}
+.sb-upcoming-date{font-size:.72rem;color:var(--g3);margin-top:.15rem;}
+
+.sb-day{border-bottom:1px solid var(--bdr);}
+.sb-day-header{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.65rem .9rem;cursor:pointer;
+  transition:background .15s;user-select:none;
+}
+.sb-day-header:hover{background:rgba(255,255,255,.04);}
+.sb-day-tag{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:var(--green-dim);padding:.18rem .5rem;border-radius:4px;flex-shrink:0;}
+.sb-day-name{font-size:.8rem;font-weight:600;color:var(--g2);flex:1;line-height:1.3;}
+.sb-day-chevron{width:14px;height:14px;color:var(--g3);flex-shrink:0;transition:transform .2s var(--ease);}
+.sb-day.open .sb-day-chevron{transform:rotate(180deg);}
+.sb-day-lessons{display:none;padding:.25rem 0 .5rem;}
+.sb-day.open .sb-day-lessons{display:block;}
+
+.sb-lesson{
+  display:flex;align-items:center;gap:.6rem;
+  width:100%;padding:.5rem .9rem .5rem 2.1rem;
+  font-size:.8rem;color:var(--g2);
+  text-align:left;transition:background .15s,color .15s;
   border-left:2px solid transparent;
 }
-.lesson-btn:hover{background:var(--bg-1);color:var(--text);}
-.lesson-btn.active{color:var(--green);font-weight:600;border-left-color:var(--green);background:var(--green-dim);}
-.lesson-check{
-  width:18px;height:18px;border-radius:50%;border:1.5px solid var(--bdr);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+.sb-lesson:hover{background:rgba(255,255,255,.04);color:var(--g1);}
+.sb-lesson.active{background:var(--green-dim);color:var(--text);border-left-color:var(--green);}
+.sb-lesson-check{
+  width:16px;height:16px;flex-shrink:0;border-radius:50%;
+  border:1.5px solid var(--bdr-hover);
+  display:flex;align-items:center;justify-content:center;
   transition:background .2s,border-color .2s;
 }
-.lesson-check.done{background:var(--green);border-color:var(--green);}
-.lesson-check.done svg{display:block;}
-.lesson-check svg{display:none;width:10px;height:10px;stroke:#fff;stroke-width:2.5;fill:none;}
-.lesson-btn.active .lesson-check{border-color:var(--green);}
-.lesson-label{flex:1;line-height:1.35;}
+.sb-lesson-check svg{opacity:0;transition:opacity .2s;}
+.sb-lesson-check.done{background:var(--green);border-color:var(--green);}
+.sb-lesson-check.done svg{opacity:1;}
+.sb-lesson-name{flex:1;line-height:1.3;}
 
-/* Main content */
-.course-main{padding:2rem clamp(1rem,3vw,2.5rem) 4rem;}
-.lesson-breadcrumb{font-size:.78rem;color:var(--g3);margin-bottom:1rem;}
-.lesson-breadcrumb span{color:var(--green);}
-.lesson-title{font-family:var(--fh);font-size:clamp(1.2rem,2.5vw,1.65rem);font-weight:700;letter-spacing:-.02em;margin-bottom:1.25rem;}
+/* Content area */
+.online-content{overflow-y:auto;background:var(--bg);}
+.online-content::-webkit-scrollbar{width:5px;}
+.online-content::-webkit-scrollbar-track{background:transparent;}
+.online-content::-webkit-scrollbar-thumb{background:var(--g4);border-radius:99px;}
 
-/* Video player */
-.video-wrap{
-  position:relative;background:#000;border-radius:var(--r);overflow:hidden;
-  aspect-ratio:16/9;margin-bottom:1.5rem;
+#state-welcome{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100%;padding:3rem 2rem;text-align:center;
 }
-.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;}
-.video-placeholder{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
-  background:linear-gradient(135deg,#0a1a0e 0%,#1a3a22 100%);color:#fff;text-align:center;
+.welcome-icon{
+  width:64px;height:64px;background:var(--green-dim);border:1px solid var(--green-bdr);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.5rem;color:var(--green);
 }
-.video-placeholder svg{width:64px;height:64px;opacity:.4;}
-.video-placeholder p{font-size:.9rem;color:rgba(255,255,255,.5);}
+.welcome-title{font-family:var(--fh);font-size:1.6rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.6rem;}
+.welcome-sub{font-size:.9rem;color:var(--g2);max-width:380px;line-height:1.6;}
+.welcome-cta{
+  margin-top:2rem;display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.82rem;font-weight:600;color:var(--green);
+  border:1px solid var(--green-bdr);background:var(--green-dim);
+  padding:.6rem 1.2rem;border-radius:8px;cursor:pointer;transition:background .2s;
+}
+.welcome-cta:hover{background:rgba(0,153,68,.2);}
 
-/* Resources */
-.resources-section{margin-top:1.75rem;}
-.resources-title{font-family:var(--fh);font-size:1rem;font-weight:700;margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}
-.resources-title svg{width:18px;height:18px;color:var(--green);}
-.resource-list{display:flex;flex-direction:column;gap:.5rem;}
-.resource-item{
-  display:flex;align-items:center;gap:.9rem;
-  background:var(--surf);border:1px solid var(--bdr);border-radius:8px;
-  padding:.75rem 1rem;transition:border-color .2s;
-}
-.resource-item:hover{border-color:var(--green-bdr);}
-.resource-icon{
-  width:36px;height:36px;border-radius:8px;
-  background:var(--green-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.resource-icon svg{width:18px;height:18px;color:var(--green);}
-.resource-info{flex:1;}
-.resource-name{font-size:.85rem;font-weight:600;color:var(--text);}
-.resource-type{font-size:.73rem;color:var(--g3);text-transform:uppercase;letter-spacing:.06em;}
-.resource-dl{
-  font-size:.78rem;font-weight:600;color:var(--green);
-  display:flex;align-items:center;gap:.3rem;
-  transition:opacity .2s;
-}
-.resource-dl:hover{opacity:.7;}
-.resource-dl svg{width:14px;height:14px;}
+#state-lesson{display:none;flex-direction:column;}
+.video-wrap{width:100%;background:#000;aspect-ratio:16/9;position:relative;}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;color:var(--g3);}
+.vph-icon{width:56px;height:56px;background:var(--g4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--g2);}
+.vph-icon svg{width:22px;height:22px;margin-left:3px;}
+.vph-text{font-size:.84rem;color:var(--g3);}
 
-/* Mark done button */
+.live-player-area{width:100%;background:#000;aspect-ratio:16/9;position:relative;}
+.live-player-area iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+
+.lesson-body{padding:1.75rem clamp(1.25rem,4vw,2.5rem) 4rem;}
+.lesson-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:.6rem;}
+.lesson-title{font-family:var(--fh);font-size:clamp(1.3rem,2.5vw,1.75rem);font-weight:700;letter-spacing:-.025em;line-height:1.2;margin-bottom:1.5rem;}
+
+.res-section-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);margin-bottom:.6rem;}
+.res-rows{display:flex;flex-direction:column;gap:1px;margin-bottom:1.75rem;}
+.res-row{display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;background:var(--surf);border-radius:6px;transition:background .15s;}
+.res-row:hover{background:var(--surf-2);}
+.res-row-icon{width:28px;height:28px;flex-shrink:0;background:var(--g4);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--g2);}
+.res-row-icon svg{width:14px;height:14px;}
+.res-row-name{flex:1;font-size:.84rem;color:var(--g1);}
+.res-row-type{font-size:.7rem;color:var(--g3);margin-right:.5rem;}
+.res-row-dots{flex:1;border-bottom:1px dotted var(--bdr);margin:0 .5rem;min-width:0;}
+.res-row-open{font-size:.72rem;font-weight:700;color:var(--green);letter-spacing:.04em;display:flex;align-items:center;gap:.3rem;flex-shrink:0;transition:opacity .2s;}
+.res-row-open:hover{opacity:.75;}
+
 .mark-done-btn{
   display:inline-flex;align-items:center;gap:.5rem;
-  background:var(--green);color:#fff;border:none;
-  font-size:.85rem;font-weight:700;
-  padding:.65rem 1.25rem;border-radius:8px;
-  margin-top:1.5rem;
-  transition:opacity .2s;
+  padding:.65rem 1.2rem;border-radius:8px;
+  font-family:var(--fh);font-size:.84rem;font-weight:700;
+  background:var(--surf);color:var(--g1);
+  border:1.5px solid var(--bdr);
+  transition:background .2s,border-color .2s,color .2s;
 }
-.mark-done-btn:hover{opacity:.88;}
-.mark-done-btn.done{background:var(--bg-2);color:var(--g2);}
+.mark-done-btn:hover{border-color:var(--bdr-hover);background:var(--surf-2);}
+.mark-done-btn.done{background:var(--green-dim);border-color:var(--green-bdr);color:var(--green);}
 .mark-done-btn svg{width:16px;height:16px;}
 
-/* Progress bar */
-.progress-wrap{padding:.9rem 1.25rem;border-bottom:1px solid var(--bdr);}
-.progress-label{font-size:.73rem;color:var(--g2);margin-bottom:.4rem;display:flex;justify-content:space-between;}
-.progress-bar{height:4px;background:var(--bg-1);border-radius:2px;overflow:hidden;}
-.progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .4s var(--ease);}
+#state-live{display:none;flex-direction:column;}
+.live-dot-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(220,38,38,.12);color:#F87171;
+  border:1px solid rgba(220,38,38,.25);
+  font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.22rem .6rem;border-radius:20px;
+}
+.live-dot-badge-dot{width:6px;height:6px;border-radius:50%;background:#DC2626;animation:livepulse 1.4s ease-in-out infinite;}
+.live-header-title{font-family:var(--fh);font-size:1.1rem;font-weight:700;}
 
-/* ── MOBILE ── */
+/* Online nav strip */
+.online-nav-strip{
+  padding:.6rem clamp(1rem,4vw,2rem);
+  background:var(--sidebar-bg);
+  border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;gap:1rem;
+}
+.online-progress-wrap{display:flex;align-items:center;gap:.6rem;margin-left:auto;}
+.online-progress-bar{width:80px;height:3px;background:var(--g4);border-radius:99px;overflow:hidden;}
+.online-progress-fill{height:100%;background:var(--green);border-radius:99px;transition:width .4s var(--ease);}
+.online-progress-pct{font-size:.72rem;font-weight:700;color:var(--g2);}
+
+/* Mobile sidebar toggle */
+.sb-toggle{
+  display:none;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:8px;background:var(--g4);color:var(--g1);
+  transition:background .2s;
+}
+.sb-toggle:hover{background:var(--bdr-hover);}
+.sb-toggle svg{width:17px;height:17px;}
+
 @media(max-width:768px){
-  :root{--sidebar-w:100%;}
-  .course-layout{grid-template-columns:1fr;}
-  .sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--bdr);}
-  .lesson-list{max-height:240px;overflow-y:auto;}
-  .nav-badge{display:none;}
+  :root{--sidebar-w:260px;}
+  .online-layout{grid-template-columns:1fr;}
+  .sidebar{
+    position:fixed;inset:var(--nav-h) auto 0 0;
+    width:var(--sidebar-w);z-index:80;
+    transform:translateX(-100%);
+    transition:transform .25s var(--ease);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .sb-overlay{display:none;position:fixed;inset:0;z-index:79;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);}
+  .sb-overlay.open{display:block;}
+  .sb-toggle{display:flex;}
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">Oscar<span>b2b</span></div>
-    <div class="login-badge">Sprint de Inteligencia Empresarial</div>
-    <h1 class="login-title">Portal de<br>Estudiantes</h1>
-    <p class="login-sub">Ingresa tu código de acceso para ver las clases y recursos del Sprint.</p>
-    <label class="login-label" for="code-input">Código de acceso</label>
-    <input class="login-input" id="code-input" type="text" maxlength="10" placeholder="SIE2026" autocomplete="off" autocapitalize="characters" onkeydown="if(event.key==='Enter')checkCode()">
-    <div class="login-error" id="login-error"></div>
-    <button class="login-btn" onclick="checkCode()">Entrar al portal →</button>
-    <p class="login-hint">¿No tienes tu código? Escríbele a Oscar por WhatsApp.</p>
-  </div>
-</div>
-
-<!-- NAV -->
-<nav>
+<!-- ════════ SHARED NAV ════════ -->
+<nav id="main-nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Oscar<span>b2b</span></a>
-    <span class="nav-badge">Portal Estudiantes</span>
-    <a href="#" class="nav-back" id="back-btn" style="display:none" onclick="showCatalog();return false;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      Todos los cursos
-    </a>
+    <div style="display:flex;align-items:center;gap:.75rem;">
+      <button class="sb-toggle" id="sb-toggle-btn" onclick="toggleSidebar()" style="display:none;" aria-label="Menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <a href="index.html" class="nav-logo">Oscar<span>b2b</span></a>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-back" id="nav-back-btn" onclick="goToDashboard()" style="display:none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Portal
+      </button>
+      <div class="online-progress-wrap" id="online-progress-wrap" style="display:none;">
+        <div class="online-progress-bar"><div class="online-progress-fill" id="online-progress-fill" style="width:0%"></div></div>
+        <span class="online-progress-pct" id="online-progress-pct">0%</span>
+      </div>
+      <button class="nav-theme-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar tema">
+        <svg id="theme-icon-dark" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="theme-icon-light" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="nav-exit-btn" onclick="doSignOut()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Salir
+      </button>
+    </div>
   </div>
 </nav>
 
-<!-- ════════════════════════════════════════
-     CATALOG VIEW
-════════════════════════════════════════ -->
-<div id="view-catalog">
-  <div class="catalog-wrap">
-    <div class="catalog-header">
-      <div class="catalog-label">Sprint de Inteligencia Empresarial</div>
-      <h1 class="catalog-title">Tu biblioteca de aprendizaje</h1>
-      <p class="catalog-sub">Clases, recursos y herramientas del sprint.</p>
+<!-- ════════ AUTH MODAL ════════ -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal-card">
+    <div class="modal-logo">Oscar<span>b2b</span></div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Iniciar sesión</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Crear cuenta</button>
     </div>
-
-    <!-- LIVE -->
-    <div class="live-section" id="live-section"></div>
-
-    <!-- COURSES -->
-    <div class="section-label">Módulos del Sprint <span></span></div>
-    <div class="course-grid" id="course-grid"></div>
+    <!-- Login -->
+    <div id="auth-form-login">
+      <label class="modal-label" style="margin-top:1.2rem">Correo electrónico</label>
+      <input id="login-email" class="modal-input modal-input-email" type="email" placeholder="tucorreo@email.com" autocomplete="email" spellcheck="false" onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
+      <label class="modal-label" style="margin-top:.85rem">Contraseña</label>
+      <input id="login-password" class="modal-input modal-input-email" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="modal-error" id="login-error"></div>
+      <button class="modal-btn" id="login-btn" onclick="doLogin()">Iniciar sesión →</button>
+    </div>
+    <!-- Signup -->
+    <div id="auth-form-signup" style="display:none">
+      <label class="modal-label" style="margin-top:1.2rem">Nombre completo</label>
+      <input id="signup-name" class="modal-input modal-input-email" type="text" placeholder="Tu nombre" autocomplete="name" spellcheck="false" onkeydown="if(event.key==='Enter')document.getElementById('signup-email').focus()">
+      <label class="modal-label" style="margin-top:.85rem">Correo electrónico</label>
+      <input id="signup-email" class="modal-input modal-input-email" type="email" placeholder="tucorreo@email.com" autocomplete="email" spellcheck="false" onkeydown="if(event.key==='Enter')document.getElementById('signup-password').focus()">
+      <label class="modal-label" style="margin-top:.85rem">Contraseña</label>
+      <input id="signup-password" class="modal-input modal-input-email" type="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" onkeydown="if(event.key==='Enter')doSignup()">
+      <div class="modal-error" id="signup-error"></div>
+      <button class="modal-btn" id="signup-btn" onclick="doSignup()">Crear cuenta →</button>
+    </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     COURSE VIEW
-════════════════════════════════════════ -->
-<div id="view-course">
-  <div class="course-layout">
+<!-- ════════ DASHBOARD ════════ -->
+<div id="view-dashboard">
+  <div class="dash-eyebrow">Portal de Estudiantes</div>
+  <h1 class="dash-title">Sprint de Inteligencia<br>Empresarial</h1>
+  <p class="dash-sub">Selecciona el acceso que corresponde a tu inscripción.</p>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-course-tag" id="sb-tag">Módulo</div>
-        <div class="sidebar-course-name" id="sb-name">Nombre del módulo</div>
+  <div class="dash-grid">
+
+    <!-- Sprint recursos -->
+    <div class="product-card pc-sprint" id="card-sprint">
+      <div class="pc-icon pc-icon-sprint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
       </div>
-      <div class="progress-wrap">
-        <div class="progress-label">
-          <span>Progreso</span>
-          <span id="progress-pct">0%</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="pc-body">
+        <div class="pc-tag pc-tag-sprint">Materiales</div>
+        <div class="pc-name">Sprint</div>
+        <p class="pc-desc">Presentaciones de cada día, plantillas y recursos descargables del Sprint presencial.</p>
       </div>
-      <div class="module-list" id="module-list"></div>
+      <div class="pc-footer">
+        <span class="pc-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Acceso con código
+        </span>
+        <span class="pc-arrow pc-arrow-sprint">
+          Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- Bootcamp -->
+    <div class="product-card pc-online" id="card-bootcamp">
+      <div class="pc-icon pc-icon-online">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      </div>
+      <div class="pc-body">
+        <div class="pc-tag pc-tag-online">Clases en video</div>
+        <div class="pc-name">Bootcamp</div>
+        <p class="pc-desc">Accede a las grabaciones de las clases en vivo y sigue el contenido a tu propio ritmo.</p>
+      </div>
+      <div class="pc-footer">
+        <span class="pc-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Acceso con código
+        </span>
+        <span class="pc-arrow pc-arrow-online">
+          Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- Recursos Gratis -->
+    <div class="product-card pc-recursos" id="card-recursos">
+      <div class="pc-icon pc-icon-recursos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <div class="pc-body">
+        <div class="pc-tag pc-tag-recursos">Gratis</div>
+        <div class="pc-name">Recursos Gratis</div>
+        <p class="pc-desc">Plantillas, guías y herramientas seleccionadas para impulsar tu negocio, sin costo.</p>
+      </div>
+      <div class="pc-footer">
+        <span class="pc-free-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg>
+          Acceso gratuito
+        </span>
+        <span class="pc-arrow pc-arrow-recursos">
+          Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════ SPRINT RESOURCES VIEW ════════ -->
+<div id="view-sprint">
+  <div class="sprint-header">
+    <div class="sprint-header-top">
+      <div>
+        <div class="sprint-eyebrow">Materiales del Sprint</div>
+        <h2 class="sprint-title">Prompts y Tips</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="sprint-body">
+    <div id="sprint-prompts-content"></div>
+  </div>
+</div><!-- /view-sprint -->
+
+<!-- ════════ RECURSOS GRATIS VIEW ════════ -->
+<div id="view-recursos" style="display:none">
+  <div class="sprint-header">
+    <div class="sprint-header-top">
+      <div>
+        <div class="sprint-eyebrow" style="color:#F59E0B;--green:#F59E0B">Recursos Gratuitos</div>
+        <h2 class="sprint-title">Recursos para tu negocio</h2>
+      </div>
+    </div>
+  </div>
+  <div class="sprint-body">
+    <div id="recursos-content"></div>
+  </div>
+</div><!-- /view-recursos -->
+
+<!-- ════════ ONLINE COURSE VIEW ════════ -->
+<div id="view-online">
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+  <div class="online-layout">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-scroll" id="sidebar-scroll">
+        <div id="sb-live-area"></div>
+        <div id="sb-course-tree"></div>
+      </div>
     </aside>
 
-    <!-- MAIN -->
-    <main class="course-main" id="course-main">
-      <div class="lesson-breadcrumb" id="lesson-breadcrumb"></div>
-      <h1 class="lesson-title" id="lesson-title">Selecciona una lección</h1>
-      <div class="video-wrap" id="video-wrap">
-        <div class="video-placeholder">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
-          <p>Selecciona una lección para comenzar</p>
+    <main class="online-content" id="online-content">
+      <div id="state-welcome">
+        <div class="welcome-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <h1 class="welcome-title">Bienvenido al Bootcamp</h1>
+        <p class="welcome-sub">Selecciona una lección en el menú de la izquierda para comenzar.</p>
+        <button class="welcome-cta" onclick="openFirstLesson()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Empezar desde el principio
+        </button>
+      </div>
+
+      <div id="state-lesson">
+        <div class="video-wrap" id="video-wrap"></div>
+        <div class="lesson-body">
+          <div class="lesson-eyebrow" id="lesson-eyebrow"></div>
+          <h1 class="lesson-title" id="lesson-title"></h1>
+          <div id="resource-list"></div>
+          <button class="mark-done-btn" id="mark-done-btn" onclick="markDone()" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Marcar como completada
+          </button>
         </div>
       </div>
-      <div class="resource-list" id="resource-list"></div>
-      <button class="mark-done-btn" id="mark-done-btn" onclick="markDone()" style="display:none">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Marcar como completada
-      </button>
+
+      <div id="state-live">
+        <div class="live-player-area" id="live-player-area"></div>
+        <div class="lesson-body">
+          <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.75rem;">
+            <span class="live-dot-badge"><span class="live-dot-badge-dot"></span>En vivo ahora</span>
+            <span class="live-header-title" id="live-header-title"></span>
+          </div>
+          <p style="font-size:.88rem;color:var(--g2);line-height:1.6;">La clase está en transmisión. Cuando termine, la grabación quedará disponible aquí.</p>
+        </div>
+      </div>
     </main>
 
   </div>
-</div>
+</div><!-- /view-online -->
 
 <script>
-/* ── DATA ── */
+/* ══════════════════════════════════════════════
+   COURSE DATA
+══════════════════════════════════════════════ */
 const COURSES = [
-  {
-    id:'dia1',
-    tag:'Día 1',
-    name:'Idea y validación de negocio',
-    modules:[
-      {
-        id:'m1',name:'Bienvenida',
-        lessons:[
-          {id:'l1',name:'Bienvenida al Sprint',vimeoId:'',resources:[]},
-          {id:'l2',name:'Cómo aprovechar al máximo estos 5 días',vimeoId:'',resources:[]},
-        ]
-      },
-      {
-        id:'m2',name:'Módulo 1 · Idea de negocio',
-        lessons:[
-          {id:'l3',name:'Qué es una idea de negocio real',vimeoId:'',resources:[
-            {name:'Plantilla: Mapa de Idea de Negocio',type:'Google Docs',url:'#'},
-          ]},
-          {id:'l4',name:'Cómo validar sin gastar dinero',vimeoId:'',resources:[
-            {name:'Checklist de validación rápida',type:'PDF',url:'#'},
-          ]},
-          {id:'l5',name:'Entrevista de descubrimiento al cliente',vimeoId:'',resources:[]},
-        ]
-      },
-    ]
-  },
-  {
-    id:'dia2',
-    tag:'Día 2',
-    name:'Propuesta de valor y cliente ideal',
-    modules:[
-      {
-        id:'m3',name:'Módulo 2 · Propuesta de valor',
-        lessons:[
-          {id:'l6',name:'Qué problema resuelves realmente',vimeoId:'',resources:[]},
-          {id:'l7',name:'Canvas de propuesta de valor',vimeoId:'',resources:[
-            {name:'Value Proposition Canvas',type:'Google Slides',url:'#'},
-          ]},
-        ]
-      },
-      {
-        id:'m4',name:'Módulo 3 · Cliente ideal',
-        lessons:[
-          {id:'l8',name:'Perfil del cliente objetivo',vimeoId:'',resources:[
-            {name:'Plantilla: Buyer Persona',type:'Google Docs',url:'#'},
-          ]},
-          {id:'l9',name:'Cómo hablar el idioma de tu cliente',vimeoId:'',resources:[]},
-        ]
-      },
-    ]
-  },
-  {
-    id:'dia3',
-    tag:'Día 3',
-    name:'Modelo de negocio y precios',
-    modules:[
-      {
-        id:'m5',name:'Módulo 4 · Modelo de negocio',
-        lessons:[
-          {id:'l10',name:'Business Model Canvas',vimeoId:'',resources:[
-            {name:'Business Model Canvas',type:'Google Slides',url:'#'},
-          ]},
-          {id:'l11',name:'Fuentes de ingreso y estructura de costos',vimeoId:'',resources:[]},
-        ]
-      },
-      {
-        id:'m6',name:'Módulo 5 · Estrategia de precios',
-        lessons:[
-          {id:'l12',name:'Cómo poner el precio correcto',vimeoId:'',resources:[]},
-          {id:'l13',name:'Psicología del precio',vimeoId:'',resources:[]},
-        ]
-      },
-    ]
-  },
-  {
-    id:'dia4',
-    tag:'Día 4',
-    name:'Ventas y primeros clientes',
-    modules:[
-      {
-        id:'m7',name:'Módulo 6 · Primeras ventas',
-        lessons:[
-          {id:'l14',name:'El proceso de venta simplificado',vimeoId:'',resources:[]},
-          {id:'l15',name:'Cómo hacer una llamada de ventas',vimeoId:'',resources:[
-            {name:'Script de llamada de ventas',type:'Google Docs',url:'#'},
-          ]},
-          {id:'l16',name:'Manejo de objeciones',vimeoId:'',resources:[]},
-        ]
-      },
-    ]
-  },
-  {
-    id:'dia5',
-    tag:'Día 5 · Pitch Day',
-    name:'Pitch y plan de acción',
-    modules:[
-      {
-        id:'m8',name:'Módulo 7 · El Pitch',
-        lessons:[
-          {id:'l17',name:'Estructura del pitch perfecto',vimeoId:'',resources:[
-            {name:'Plantilla de Pitch Deck',type:'Google Slides',url:'#'},
-          ]},
-          {id:'l18',name:'Cómo presentar con confianza',vimeoId:'',resources:[]},
-          {id:'l19',name:'Pitch Day — Grabación completa',vimeoId:'',resources:[]},
-        ]
-      },
-      {
-        id:'m9',name:'Módulo 8 · Próximos pasos',
-        lessons:[
-          {id:'l20',name:'Plan de acción post-sprint',vimeoId:'',resources:[
-            {name:'Hoja de ruta 30 días',type:'PDF',url:'#'},
-          ]},
-          {id:'l21',name:'Red de Sprinters — acceso a la comunidad',vimeoId:'',resources:[]},
-        ]
-      },
-    ]
-  },
-  {
-    id:'recursos',
-    tag:'Recursos',
-    name:'Herramientas y plantillas',
-    modules:[
-      {
-        id:'m10',name:'Todas las plantillas',
-        lessons:[
-          {id:'l22',name:'Pack completo de plantillas del Sprint',vimeoId:'',resources:[
-            {name:'Pack de plantillas completo',type:'Google Drive',url:'#'},
-            {name:'Glosario de términos empresariales',type:'PDF',url:'#'},
-          ]},
-        ]
-      },
-    ]
-  },
+  { id:'dia1', tag:'Día 1', name:'Idea y validación de negocio', modules:[
+    { id:'m1', name:'Bienvenida', lessons:[
+      {id:'l1', name:'Bienvenida al Sprint', vimeoId:'', resources:[]},
+      {id:'l2', name:'Cómo aprovechar al máximo estos 5 días', vimeoId:'', resources:[]},
+    ]},
+    { id:'m2', name:'Módulo 1 · Idea de negocio', lessons:[
+      {id:'l3', name:'Qué es una idea de negocio real', vimeoId:'', resources:[
+        {name:'Plantilla: Mapa de Idea de Negocio', type:'Google Docs', url:'#'},
+      ]},
+      {id:'l4', name:'Cómo validar sin gastar dinero', vimeoId:'', resources:[
+        {name:'Checklist de validación rápida', type:'PDF', url:'#'},
+      ]},
+      {id:'l5', name:'Entrevista de descubrimiento al cliente', vimeoId:'', resources:[]},
+    ]},
+  ]},
+  { id:'dia2', tag:'Día 2', name:'Propuesta de valor y cliente ideal', modules:[
+    { id:'m3', name:'Módulo 2 · Propuesta de valor', lessons:[
+      {id:'l6', name:'Qué problema resuelves realmente', vimeoId:'', resources:[]},
+      {id:'l7', name:'Canvas de propuesta de valor', vimeoId:'', resources:[
+        {name:'Value Proposition Canvas', type:'Google Slides', url:'#'},
+      ]},
+    ]},
+    { id:'m4', name:'Módulo 3 · Cliente ideal', lessons:[
+      {id:'l8', name:'Perfil del cliente objetivo', vimeoId:'', resources:[
+        {name:'Plantilla: Buyer Persona', type:'Google Docs', url:'#'},
+      ]},
+      {id:'l9', name:'Cómo hablar el idioma de tu cliente', vimeoId:'', resources:[]},
+    ]},
+  ]},
+  { id:'dia3', tag:'Día 3', name:'Modelo de negocio y precios', modules:[
+    { id:'m5', name:'Módulo 4 · Modelo de negocio', lessons:[
+      {id:'l10', name:'Business Model Canvas', vimeoId:'', resources:[
+        {name:'Business Model Canvas', type:'Google Slides', url:'#'},
+      ]},
+      {id:'l11', name:'Fuentes de ingreso y estructura de costos', vimeoId:'', resources:[]},
+    ]},
+    { id:'m6', name:'Módulo 5 · Estrategia de precios', lessons:[
+      {id:'l12', name:'Cómo poner el precio correcto', vimeoId:'', resources:[]},
+      {id:'l13', name:'Psicología del precio', vimeoId:'', resources:[]},
+    ]},
+  ]},
+  { id:'dia4', tag:'Día 4', name:'Ventas y primeros clientes', modules:[
+    { id:'m7', name:'Módulo 6 · Primeras ventas', lessons:[
+      {id:'l14', name:'El proceso de venta simplificado', vimeoId:'', resources:[]},
+      {id:'l15', name:'Cómo hacer una llamada de ventas', vimeoId:'', resources:[
+        {name:'Script de llamada de ventas', type:'Google Docs', url:'#'},
+      ]},
+      {id:'l16', name:'Manejo de objeciones', vimeoId:'', resources:[]},
+    ]},
+  ]},
+  { id:'dia5', tag:'Día 5 · Pitch Day', name:'Pitch y plan de acción', modules:[
+    { id:'m8', name:'Módulo 7 · El Pitch', lessons:[
+      {id:'l17', name:'Estructura del pitch perfecto', vimeoId:'', resources:[
+        {name:'Plantilla de Pitch Deck', type:'Google Slides', url:'#'},
+      ]},
+      {id:'l18', name:'Cómo presentar con confianza', vimeoId:'', resources:[]},
+      {id:'l19', name:'Pitch Day — Grabación completa', vimeoId:'', resources:[]},
+    ]},
+    { id:'m9', name:'Módulo 8 · Próximos pasos', lessons:[
+      {id:'l20', name:'Plan de acción post-sprint', vimeoId:'', resources:[
+        {name:'Hoja de ruta 30 días', type:'PDF', url:'#'},
+      ]},
+      {id:'l21', name:'Red de Sprinters — acceso a la comunidad', vimeoId:'', resources:[]},
+    ]},
+  ]},
+  { id:'recursos', tag:'Recursos', name:'Herramientas y plantillas', modules:[
+    { id:'m10', name:'Todas las plantillas', lessons:[
+      {id:'l22', name:'Pack completo de plantillas del Sprint', vimeoId:'', resources:[
+        {name:'Pack de plantillas completo', type:'Google Drive', url:'#'},
+        {name:'Glosario de términos empresariales', type:'PDF', url:'#'},
+      ]},
+    ]},
+  ]},
 ];
 
-// ── VIMEO CONFIG ────────────────────────────────────────────────
-// Cuando haya clase en vivo: pon el Event ID de Vimeo Live aquí
-// Ejemplo: const VIMEO_LIVE_ID = '123456789';
-// Cuando no hay clase: déjalo en null
-const VIMEO_LIVE_ID = null;
+/* ══════════════════════════════════════════════
+   SPRINT DATA — edita aquí para agregar archivos
+   Para presentaciones, type puede ser: 'pdf' | 'pptx' | 'drive' | 'doc'
+   Para prompts: si tiene 'url' → botón "Ver"; si tiene 'text' → botón "Copiar"
+══════════════════════════════════════════════ */
+const SPRINT_DATA = {
+  days: [
+    { label: 'Día 1 — Idea y validación de negocio', files: [
+      { name: 'Presentación Día 1 — Idea y validación de negocio', type: 'pdf', url: 'recursos/sprint/sprint-dia-1.pdf' },
+    ]},
+    { label: 'Día 2 — Propuesta de valor y cliente ideal', files: [
+      { name: 'Presentación Día 2 — Propuesta de valor y cliente ideal', type: 'pdf', url: 'recursos/sprint/sprint-dia-2.pdf' },
+    ]},
+    { label: 'Día 3 — Modelo de negocio y precios', files: [
+      { name: 'Presentación Día 3 — Modelo de negocio y precios', type: 'pdf', url: 'recursos/sprint/sprint-dia-3.pdf' },
+    ]},
+    { label: 'Día 4 — Ventas y primeros clientes', files: [
+      { name: 'Presentación Día 4 — Ventas y primeros clientes', type: 'pdf', url: 'recursos/sprint/sprint-dia-4.pdf' },
+    ]},
+    { label: 'Día 5 — Pitch y plan de acción', files: [
+      { name: 'Presentación Día 5 — Pitch y plan de acción', type: 'pdf', url: 'recursos/sprint/sprint-dia-5.pdf' },
+    ]},
+  ],
+  prompts: [
+    {
+      title: '1. Prompts',
+      text: `MÓDULO 1: PROMPTS
 
-// Título y fecha de la próxima clase (se muestra cuando no hay live activo)
+Bienvenido al centro de operaciones del Sprint de Inteligencia Empresarial. En este módulo aprenderás a transformar la inteligencia artificial de un simple "buscador de respuestas" a un equipo de consultoría B2B de alto rendimiento.
+
+Para obtener respuestas con datos duros, criterio comercial y rigor estratégico, utilizaremos la Fórmula R.C.T.F. para construir prompts de nivel profesional y configuraremos tu propia Junta de Mentores en Gemini usando Gems.
+
+1. La Fórmula R.C.T.F. (Estructura de un buen prompt)
+
+Un buen prompt no es una pregunta al azar; es una instrucción de trabajo. Cada vez que interactúes con una IA para tomar decisiones de negocio, asegúrate de que tu prompt contenga estos 4 pilares:
+
+  R - ROL       →  ¿Quién es la IA?
+  C - CONTEXTO  →  ¿Qué situación o datos debe conocer?
+  T - TAREA     →  ¿Qué acción específica debe ejecutar?
+  F - FORMATO   →  ¿Cómo debe entregar la respuesta?
+
+Plantilla Base: Prompt R.C.T.F.
+
+Aquí les dejo la estructura que deben seguir. Puedes copiarla y completarla para cualquier tarea de tu negocio:
+
+[ROL]
+Actúa como un [Cargo/Especialidad, ej: Director Comercial B2B con 15 años de experiencia en el sector retail]. Tu enfoque es estricto, orientado a datos duros, rentabilidad y pragmatismo comercial.
+
+[CONTEXTO]
+Estoy desarrollando [breve descripción de tu negocio/proyecto]. Mi mercado objetivo es [público objetivo] en la ciudad/región de [ubicación]. Las condiciones actuales de mi entorno son [mencionar retos clave o presupuesto disponible].
+
+[TAREA]
+Necesito que realices [acción concreta, ej: evaluar los 3 principales canales de adquisición de clientes con menor CAC estimado para este modelo de negocio].
+
+[FORMATO DE SALIDA]
+Presenta la información estructurada de la siguiente manera:
+1. Resumen ejecutivo (máximo 3 oraciones).
+2. Tabla comparativa con las columnas: Canal | Costo Estimado | Tiempo de Implementación | Nivel de Riesgo (Alto/Medio/Bajo).
+3. Conclusión con la recomendación con mayor viabilidad financiera inmediata.
+
+Tip: Si el prompt no te está dando el resultado que quieres, no es porque la inteligencia artificial no es tan inteligente, es porque prompteaste mal. Para arreglar esto, abre un chat fresco con la IA y dile: "Quiero lograr X con este prompt [pegar prompt] pero no lo estoy logrando, ¿qué estoy prompteando mal?" y deja que te corrija.
+
+Tip 2: Si sientes que no estás prompteando bien, pídele el prompt a la IA: "Necesito un prompt bien hecho para lograr X." A la IA le podemos delegar casi todo, menos revisar con criterio propio si lo que nos está diciendo tiene sentido para nosotros.`
+    },
+    {
+      title: '2. Agentes',
+      text: `2. Agentes
+
+En lugar de escribir prompts largos desde cero cada vez que abres el chat, crearemos un Gem personalizado en Google Gemini. Un Gem es un agente que guarda un rol permanente y un contexto profundo para darte feedback como si tuvieras a los mejores profesionales sentados a tu mesa.
+
+¿Cómo crear tu Gem en Gemini?
+
+Entra a Gemini y en el menú lateral selecciona Gems → Nuevo Gem.
+Asigna un nombre (Ej: Junta de Mentores B2B).
+Copia y pega el siguiente System Prompt (Instrucciones) en el panel de configuración.
+
+System Prompt: Agente "Junta de Mentores"
+Instrucciones para configurar en el Gem:
+
+ROL Y MENTALIDAD
+Actúas como una Junta Directiva y de Mentores de alto nivel para un emprendimiento en desarrollo. La junta está conformada por 4 perfiles expertos con visiones complementarias:
+
+1. El Director Financiero (CFO): Enfocado obsesivamente en flujo de caja, márgenes de ganancia, CAC, LTV y viabilidad económica real.
+2. El Director Comercial (CRO): Enfocado en adquisición de clientes, estrategia B2B/B2C, canales de venta y tracción rápida.
+3. El Director de Operaciones (COO): Enfocado en logística, escala, prevención de cuellos de botella y mitigación de riesgos operativos.
+4. El Inversionista Estratégico (Socio Crítico): No acepta suposiciones ni optimismo ingenuo. Cuestiona los puntos ciegos, la propuesta de valor y exige validación con datos duros.
+
+OBJETIVO DEL AGENTE
+Analizar las propuestas, datos, estrategias e ideas que el estudiante comparta y evaluarlas desde los 4 ángulos de la Junta. Tu objetivo NO es desmotivar, sino auditar el plan, corregir fallas antes de gastar capital y elevar el criterio comercial del emprendedor.
+
+REGLAS DE INTERACCIÓN
+- Nunca des respuestas genéricas ni adulaciones vacías.
+- Si una idea carece de datos o viabilidad, indícalo directamente y propone cómo validarla o corregirla.
+- Mantén un tono profesional, exigente, estructurado y altamente pragmático.
+
+FORMATO DE SALIDA HABITUAL
+Cada vez que el usuario someta una idea, avance o documento a revisión, la Junta responderá con esta estructura:
+
+1. DIAGNÓSTICO RÁPIDO DE LA JUNTA
+Un párrafo breve resumiendo la fortaleza principal y la vulnerabilidad más grave del planteamiento.
+
+2. FEEDBACK POR PERSPECTIVA
+- Visión Financiera (CFO): [Análisis de márgenes, costos ocultos y viabilidad]
+- Visión Comercial (CRO): [Análisis de atracción de clientes y modelo de ventas]
+- Visión Operativa (COO): [Análisis de ejecución, tiempos y riesgos]
+- El Punto Ciego del Inversionista: [El mayor riesgo que el emprendedor no está viendo]
+
+3. PREGUNTAS DE AUDITORÍA
+Plantea 2 o 3 preguntas críticas que el emprendedor DEBE poder responder con datos para defender su proyecto en el Pitch Day.
+
+¿Cómo poner a prueba a tu Junta de Mentores?
+
+Una vez guardado tu Gem, interactúa con él compartiendo las premisas de tu proyecto. Ejemplo de prompt de prueba para los estudiantes:
+
+"Hola Junta de Mentores. Quiero evaluar la siguiente idea para mi proyecto:
+- Proyecto: [Escribe brevemente tu idea de negocio]
+- Cliente objetivo: [A quién le vendes]
+- Estrategia de precio inicial: [Cuánto piensas cobrar]
+- Canal de ventas pensado: [Cómo vas a llegar al cliente]
+
+Por favor, auditen este planteamiento e indíquenme qué riesgos, inconsistencias o puntos ciegos detectan."
+
+Una vez que creaste tu agente es hora de ponerlo a prueba: interactúa con él, hazle preguntas, cuestiona sus respuestas y ve si efectivamente está cumpliendo con su objetivo. En caso de que no esté dándote los resultados que quieres, corrige el prompt, no el resultado.`
+    },
+    {
+      title: '3. Estudio de mercado',
+      text: `3. Estudio de mercado
+
+Con este prompt vamos a hacer un estudio de mercado sobre nuestra idea con la intención principal de entender: qué tan grande es el mercado al que queremos llegar, qué tan buena es nuestra idea de negocio para las condiciones actuales del mercado, quiénes son los competidores principales de este mercado y si el mercado está en crecimiento o haciéndose más pequeño.
+
+PASO CRÍTICO ANTES DE COMENZAR:
+
+Este prompt NO debe ejecutarse en una conversación normal de chat.
+Entra a Gemini (o la herramienta de IA que estés utilizando).
+Activa la función "Deep Research" (o la herramienta de investigación profunda disponible en la interfaz).
+
+¿Por qué? Porque un chat estándar te dará datos generales de su memoria previa, mientras que con Deep Research la IA navegará por internet en tiempo real, buscará reportes de industria, noticias económicas y fuentes actualizadas sobre Caracas, Venezuela y LATAM.
+
+Instrucciones de Uso:
+Copia el prompt que está a continuación.
+Asegúrate de tener activada la opción Deep Research.
+Rellena los espacios marcados entre corchetes [ ] con los datos específicos de tu proyecto.
+Presiona enviar y dale unos minutos a la herramienta para que procese e investigue toda la información antes de generar el informe.
+
+Prompt base:
+
+[ROL Y OBJETIVO]
+Actúa como un Consultor de Estrategia Senior con el rigor analítico de una firma de consultoría estratégica de primer nivel (tipo McKinsey o Deloitte). Tu objetivo es realizar un estudio de mercado exhaustivo, profundo y fundamentado para validar la viabilidad técnica y financiera de mi idea de negocio:
+
+👉 Quiero crear un negocio/empresa que se encargue de: [Describe brevemente qué hace tu negocio]
+👉 Dirigido a: [Define tu público objetivo o tipo de cliente]
+👉 Ubicación / Mercado principal: [Ej: Caracas, Venezuela / Latinoamérica / Online]
+
+[CONTEXTO DEL PROYECTO]
+Esta idea se está desarrollando en el marco del "Sprint de Inteligencia Empresarial". Mi meta es demostrar con datos duros y proyecciones lógicas que este proyecto posee un mercado real, solvente y escalable en el contexto económico actual.
+
+[MÉTODO Y REGLAS DE TRABAJO]
+1. Fundamentación con Datos: Presenta cifras basadas en reportes de industria, cámaras de comercio o datos financieros. Si el dato exacto no es público (especialmente para Venezuela/LATAM), utiliza benchmarks de la industria, tendencias globales y estimaciones lógicas aclarando la metodología empleada.
+2. Lenguaje Claro y Accesible: Explica los términos técnicos de manera sencilla (por ejemplo, si usas conceptos como EBITDA, CAC, LTV o TAM, coloca una breve explicación entre paréntesis).
+
+[ESTRUCTURA DEL INFORME REQUERIDO]
+
+1. Problema y Necesidad del Mercado:
+   - Identifica los 3 principales problemas u obstáculos operativos de los clientes en este sector.
+   - Cuantifica el impacto financiero de estos problemas (cuánto dinero o tiempo pierden por no resolverlo).
+
+2. Tamaño del Mercado (¿Qué tan grande es la oportunidad?):
+   - Explica de forma sencilla qué es TAM, SAM y SOM.
+   - Identifica los 3 sectores o industrias con mayor necesidad de este producto/servicio.
+   - Realiza un cálculo estimado de:
+     * TAM (Mercado Total Absoluto).
+     * SAM (Mercado que realmente podemos atender).
+     * SOM (Mercado que podemos captar de forma realista en el primer año).
+
+3. Dinámica del Mercado (¿Está en crecimiento o haciéndose más pequeño?):
+   - Indica claramente si esta industria está en crecimiento, estancada o achicándose en la región y cuál es su tendencia estimada a 3 años.
+   - Señala factores económicos, sociales o legales que benefician o frenan el crecimiento del negocio.
+
+4. Panorama Competitivo (¿Quiénes son los competidores principales?):
+   - Identifica a los 3 competidores o alternativas principales en este mercado.
+   - Analiza la ventaja o diferenciación clave de nuestra propuesta frente a la competencia.
+   - Describe el perfil de los 3 tipos de clientes más importantes dentro de esta industria.
+
+5. Perfil de Cliente Ideal (ICP) y Estrategia de Entrada:
+   - Define detalladamente a mi Cliente Ideal (ICP).
+   - Identifica el nicho de mercado más fácil de cerrar rápidamente y con mayor margen de ganancia.
+
+6. Análisis de Riesgos (A 3-5 Años):
+   - Identifica las 3 amenazas o riesgos más grandes (financieros, operativos o de entorno) que podrían afectar la sostenibilidad del negocio y cómo prevenirnos.
+
+7. VEREDICTO ESTRATÉGICO FINAL (¿Qué tan buena es la idea para el mercado actual?):
+   - Viabilidad Actual: Califica la oportunidad (Alta / Media / Baja) y justifica por qué bajo las condiciones actuales.
+   - Factores Críticos: ¿Cuáles son las 2 cosas indispensables que DEBEN salir bien para garantizar el éxito?
+   - Proyección de Retorno: Estima el tiempo promedio para recuperar la inversión inicial.
+   - Conclusión Directa: Responde sin rodeos: ¿Existe un mercado real y dispuesto a pagar por esta idea hoy?
+
+Tip: Este documento tiene más peso del que pueden imaginar en un principio, la data que obtienen de hacer este prompt le costaba a las empresas antes cientos de miles de dólares, en 5 minutos y con una precisión mucho mayor a la que lograban las consultoras de antes. Lean a profundidad todo el documento, les va a dar respuestas a preguntas que no sabían que tenían que hacerse y con eso ahorran un montón de plata.
+
+Tip 2: La investigación de data e inteligencia artificial nos da velocidad y estructura, pero no reemplaza el feedback humano nunca. La IA tiende a ser optimista; el mercado real no. Hacer estudio de mercado no es únicamente correr un algoritmo. Es salir a presentar la idea, recibir críticas constructivas de mentores, conocidos y desconocidos. Abran conversaciones, toquen puertas, indaguen, pidan reuniones y busquen feedback real del entorno. No hay sustituto para eso.`
+    },
+    {
+      title: '4. Modelo de Negocio & Pivot de Enfoque',
+      text: `3.5 Modelo de Negocio & Pivot de Enfoque
+
+Objetivo de este Módulo:
+Antes de diseñar tus ventas y finanzas, necesitamos responder una pregunta crucial: ¿Tu modelo de negocio actual es la forma más rápida y rentable de monetizar tu idea?
+
+Este prompt auditará si debes venderle directamente al cliente final (B2C), a empresas (B2B), a través de intermediarios/aliados (B2B2C), o mediante suscripción/servicios para asegurar tracción real en el mercado actual.
+
+Instrucciones de Uso:
+Ten a la mano los hallazgos de tu Estudio de Mercado (Módulo 2).
+Copia el prompt maestro e insértalo en Gemini (idealmente en tu Junta de Mentores).
+Analiza las alternativas de monetización antes de decidir tu estructura definitiva.
+
+Prompt:
+
+[1 · ROL]
+Actúa como un Arquitecto de Modelos de Negocio Senior y Estratega de Monetización B2B/B2C. Tu especialidad es auditar ideas de emprendimiento en etapas tempranas y optimizar su modelo de ingresos para maximizar el margen de ganancia, reducir el ciclo de venta y acelerar la tracción comercial.
+
+[2 · CONTEXTO]
+Estoy definiendo la estructura de monetización para mi proyecto. A partir de los siguientes datos, necesito que audites si mi planteamiento actual es el correcto o si existe una alternativa con menor resistencia comercial:
+
+1. Mi idea básica (Qué soluciono y a quién):
+   [ Describe tu idea en 2-3 oraciones ]
+
+2. Cómo pensaba monetizar inicialmente (Ej: vender producto individual B2C, cobrar comisión, suscripción mensual, servicio B2B):
+   [ Explica cómo tenías pensado cobrar ]
+
+3. Precio aproximado que tenía en mente:
+   [ Ej: $10, $50, $500, etc. ]
+
+4. Retos principales que he detectado en mi entorno/estudio de mercado:
+   [ Ej: El cliente final no tiene mucho presupuesto / Las empresas tardan en responder / Es difícil generar confianza ]
+
+[3 · TAREA Y AUDITORÍA REQUERIDA]
+
+1. Evaluación del Modelo Planteado:
+   - Analiza los pros y contras de mi enfoque inicial (B2C, B2B, B2B2C, etc.).
+   - Evalúa: Capacidad de pago del cliente objetivo, fricción en la venta y nivel de escalabilidad.
+
+2. Comparativa de Alternativas de Monetización:
+   Presenta una tabla comparativa evaluando mi idea bajo 3 enfoques diferentes:
+   - Opción A: Modelo B2C (Venta directa al usuario final).
+   - Opción B: Modelo B2B (Venta a empresas que necesitan solucionar esto para sus empleados o clientes).
+   - Opción C: Modelo B2B2C o Alianzas (Apalancamiento en empresas/plataformas existentes).
+   Para cada opción analiza: Nivel de esfuerzo comercial (Alto/Medio/Bajo), Ticket Promedio Estimado ($), Tiempo para cerrar la venta y Margen de Rentabilidad.
+
+3. Redireccionamiento y Recomendación de Pivot:
+   - ¿Debería mantener mi modelo original o ajustar el enfoque? Justifica con rigor comercial.
+   - Si recomiendas cambiar de B2C a B2B (o viceversa), explica cómo empaquetar la oferta para que sea irresistible para ese nuevo cliente.
+
+4. Formulación del Modelo Definitivo:
+   Sintetiza la recomendación final respondiendo:
+   - ¿A quién le cobramos?
+   - ¿Por qué nos pagan? (¿Qué métrica o dolor atacamos?)
+   - ¿Cuál es la estructura de cobro más eficiente? (Pago único, recurrencia, proyecto por hito, licencias, etc.).
+
+Tip: A veces el problema de una idea no es el producto, sino a quién se lo vendes. Cambiar un enfoque de B2C (vender $10 a 100 personas) a B2B (vender $1,000 a un solo cliente corporativo) puede ser la diferencia entre un proyecto que quiebra y un negocio rentable desde el primer mes.`
+    },
+    {
+      title: '5. Plan de mercadeo y ventas',
+      text: `MÓDULO 3: Plan de mercadeo y ventas
+
+El plan de mercadeo y ventas es el primer paso de nuestro plan de negocios, teniendo ya nuestra idea. Transformar tu estudio de mercado en una estrategia comercial ejecutable: definirás tu propuesta de valor, la matemática inversa de tus ventas, el cálculo de tu CAC/LTV y el paso a paso táctico para cerrar clientes por WhatsApp, DM o presencial con los recursos que tienes hoy.
+
+Instrucciones de Uso:
+Copia el prompt maestro a continuación.
+Abre Gemini (o ejecútalo dentro de tu Gem / Junta de Mentores).
+Rellena los 9 puntos del CONTEXTO con la información de tu negocio. Si no tienes un dato, colócalo como estimado para que la IA aplique la lógica del mercado.
+
+Prompt: Plan de Mercadeo y Ventas Ejecutable
+
+[1 · ROL]
+Actúa como Especialista en Marketing Digital y Growth comercial (CRO/CMO) enfocado en negocios que lanzan desde cero en Venezuela y Latinoamérica. Tu experiencia es lanzar ofertas con presupuestos mínimos o nulos, equipos de una sola persona (solopreneurs) y canales orgánicos. Conoces a la perfección la realidad operativa local: el uso de WhatsApp como canal principal de venta, cierres por mensajes directos, pagos en divisas/Pago Móvil, la desconfianza inicial del cliente y la baja tolerancia a procesos de compra largos. No eres un consultor teórico: eres alguien que ejecuta.
+
+[2 · CONTEXTO DEL NEGOCIO]
+Completa la siguiente información. Si algún dato falta, NO inventes cifras al azar: márcalo explícitamente como [SUPUESTO ESTIMADO] y explica la lógica empleada:
+
+1. Mi oferta (Qué vendo y cuál es la propuesta de valor principal):
+   [ .................................................... ]
+
+2. Mi Cliente Ideal / ICP (Edad, ubicación, dolor principal, dónde pasa su tiempo y cómo habla):
+   [ .................................................... ]
+
+3. Mi precio y métodos de pago aceptados:
+   [ Ej: $25 por servicio/producto | Pago Móvil / Zelle / Efectivo ]
+
+4. Mis 2 competidores principales y qué hacen mejor que yo:
+   [ .................................................... ]
+
+5. Canal principal donde voy a prospectar/vender:
+   [ Ej: WhatsApp / Instagram / LinkedIn / Presencial / TikTok ]
+
+6. Objetivo medible a 30 días:
+   [ Ej: Conseguir 10 ventas, 5 clientes recurrentes o 15 llamadas de diagnóstico ]
+
+7. Presupuesto total disponible para marketing a 30 días:
+   [ Ej: $0, $50, $200 ]
+
+8. Horas reales semanales que puedo dedicarle a la ejecución comercial:
+   [ Ej: 6 horas por semana ]
+
+9. Activos que YA tengo (contactos, cuenta con seguidores, fotos, producto listo, local, etc.):
+   [ .................................................... ]
+
+[3 · TAREA]
+Diseña un Plan de Mercadeo y Ventas paso a paso para alcanzar exactamente el objetivo del punto 6, respetando el presupuesto del punto 7 y las horas del punto 8.
+
+Paso indispensable previo: Realiza la MATEMÁTICA INVERSA DEL OBJETIVO. Calcula cuántas conversaciones, clics o prospectos necesito por semana asumiendo tasas de conversión realistas para un negocio nuevo sin reputación de marca previa. Declara las tasas de conversión que utilizaste. Si el objetivo es matemáticamente imposible con las horas y presupuesto indicados, indícalo directamente y propone un objetivo alcanzable.
+
+[4 · FORMATO DE SALIDA REQUERIDO]
+
+1. MATEMÁTICA INVERSA DEL OBJETIVO & MÉTRICAS CLAVE
+   - Tabla: Objetivo final → Tasa de cierre estimada (%) → Conversaciones/Leads necesarios → Alcance requerido.
+   - Estimación de Costo de Adquisición de Cliente (CAC) y Valor de Vida del Cliente (LTV).
+
+2. POSICIONAMIENTO Y PROPUESTA ÚNICA DE VALOR (PUV)
+   - Una frase contundente: "Ayudo a [Cliente] a lograr [Resultado] sin [Su mayor dolor/fricción]."
+   - La razón diferenciadora clave para elegirme a mí y no a los competidores.
+
+3. ESTRATEGIA DEL MENSAJE Y AVISO
+   - 3 ganchos (hooks) de alto impacto escritos en el lenguaje literal de mi cliente ideal.
+   - 1 Oferta Irresistible de Entrada (Llamado a la acción de bajo riesgo para iniciar conversación).
+
+4. CALENDARIO TÁCTICO DE EJECUCIÓN (DESGLOSE 1 A 6 MESES)
+   - Presenta un mapa de ruta organizado por fases:
+     * Fase 1 (Mes 1): Validación, preparación de oferta y lanzamiento.
+     * Fase 2 (Mes 2-3): Consistencia, seguimiento de prospectos y manejo de objeciones.
+     * Fase 3 (Mes 4-6): Cierre, testimonios, escalamiento y retención.
+   - Tabla táctica del primer mes (Semana/Día | Acción concreta | Entregable | Tiempo estimado).
+   - EL TOTAL DE HORAS SEMANALES NO PUEDE EXCEDER MIS HORAS DISPONIBLES.
+
+5. RUTA DE VENTA Y MANEJO DE OBJECIONES (FUNNEL DE WHATSAPP / DM)
+   - Flujo paso a paso desde el primer contacto hasta la confirmación del pago.
+   - Las 3 objeciones más probables con su respuesta textual exacta de manejo.
+
+6. PLANTILLAS LISTAS PARA USAR (COPIAR Y PEGAR)
+   - 1 Publicación completa para mi canal principal.
+   - 1 Mensaje directo de primer contacto (Prospección fría o tibia).
+   - 1 Mensaje de seguimiento para quien dejó de responder ("Ghosting").
+
+Tip: El mercadeo y ventas funcionan mejor a nivel de embudos: tienes que tener claro cuál es el proceso del cliente desde que no te conoce hasta que te compra, para que puedas tener una estrategia comunicacional que le hable a los diferentes clientes en las diferentes etapas del proceso en que se encuentran.
+
+Tip 2: Aunque el fin último del marketing es generar ventas, no todo el marketing se diseña para generar ventas. El marketing también incluye que la gente entienda tu identidad, tus valores, propósito, a los fundadores del proyecto, lo que los motiva, la historia en general que la empresa cuenta. Más allá de generar rentabilidad, ¿por qué existimos y a dónde vamos?`
+    },
+    {
+      title: '6. Plan de operaciones',
+      text: `MÓDULO 4: Plan de Operaciones (Ejecución, Logística & Capacidad)
+
+El objetivo de esta parte del plan es definir la arquitectura operativa de tu negocio para garantizar que puedes cumplir lo que vendes sin morir en el intento ni quedar mal ante el cliente. No se trata de armar manuales de 50 páginas, sino de mapear el flujo de entrega, identificar tus insumos/herramientas clave, calcular tu capacidad real de producción y anticipar los puntos en que se te puede trancar la rueda y le quedes mal a nadie.
+
+Prompt Maestro: Plan Operativo
+
+[1 · ROL]
+Actúa como un Director de Operaciones (COO) experto en optimización de procesos, logística y escalabilidad para negocios en etapa temprana en Venezuela. Tu enfoque es pragmático, orientado a la eficiencia, la eliminación de desperdicios y la prevención de fallas operativas.
+
+[2 · CONTEXTO DEL NEGOCIO]
+
+1. Mi idea de negocio (Qué vendo, a quién y cómo se entrega):
+   [ Describe brevemente tu producto o servicio ]
+
+2. Ubicación / Alcance operativo:
+   [ Ej: Caracas (servicio presencial), Envíos a nivel nacional, 100% Digital / Remoto ]
+
+3. Tamaño actual del equipo operativo:
+   [ Ej: Solo yo (1 persona), 2 socios, 1 desarrollador y 1 vendedor, etc. ]
+
+4. Horas/días disponibles para operar a la semana:
+   [ Ej: Lunes a Viernes de 8:00 am a 5:00 pm ]
+
+[3 · TAREA]
+Diseña un Plan Operativo simplificado y de alta ejecución para mi negocio. Presenta la información de forma estructurada en una tabla o secciones claras que incluyan los siguientes 4 puntos clave:
+
+1. Flujo Operativo Paso a Paso:
+   - Mapea el proceso completo ordenado cronológicamente: desde que el cliente confirma el pedido/pago hasta la entrega final del producto/servicio y el post-venta.
+
+2. Herramientas, Tecnología y Proveedores Clave:
+   - Identifica las 3 herramientas tecnológicas, software o proveedores indispensables para arrancar la operación al menor costo posible.
+
+3. Capacidad Máxima Instalada (Primer Mes):
+   - Calcula de forma realista cuántos pedidos, clientes o servicios podemos atender con el equipo actual en el primer mes sin colapsar la calidad ni el servicio.
+
+4. Matriz de Riesgos Operativos y Mitigación:
+   - Identifica los 2 principales riesgos o cuellos de botella operativos que podrían paralizar el negocio o hacernos quedar mal con un cliente.
+   - Detalla la acción preventiva específica (Plan B) para cada uno.
+
+Tip: Vender es solo la mitad de la ecuación; la otra mitad es cumplir con la promesa. Calcula tu cuello de botella: Si la IA calcula que tu capacidad máxima son 15 entregas por mes con tu equipo actual, tu meta comercial del Módulo 3 no puede ser vender 50. Operaciones y Ventas deben ir siempre alineadas.
+
+Ten a la mano a tus proveedores: Si tu negocio depende de un insumo crítico o una plataforma, asegúrate de tener cotización y contacto real con las personas clave.`
+    },
+    {
+      title: '7. Plan financiero',
+      text: `Plan financiero
+
+El objetivo financiero es que entiendan que el negocio no es una idea bonita; es un sistema que debe producir dinero. En este módulo vas a aterrizar tus números para entender:
+
+- Cómo definir tus costos fijos y variables sin dejar nada por fuera.
+- Cómo poner precios basados en tu margen de rentabilidad real por venta.
+- Cuántas ventas necesitas realmente para llegar al Punto de Equilibrio y no perder dinero.
+- Un marco de tiempo realista para tu primera venta y tu punto de equilibrio (sin la ilusión irreal de que serás rentable en el Mes 1).
+- El monitoreo riguroso de la inversión inicial, demostrando que cada dólar cuenta.
+
+Prompt: Plan Financiero y Auditoría de Sostenibilidad
+
+[1 · ROL]
+Actúa como un Director Financiero (CFO) para startups y negocios en etapa temprana en Latinoamérica. Tu mentalidad es de extremo rigor financiero, resguardo obsesivo del flujo de caja y cero tolerancia a las "proyecciones de fantasía". Sabes que la mayoría de los negocios no hacen dinero el primer mes y que calcular mal la rentabilidad o los precios es la causa #1 de quiebra comercial.
+
+[2 · CONTEXTO DEL NEGOCIO]
+
+1. Mi oferta y cómo se entrega:
+   [ Describe qué vendes, si es producto o servicio y cómo se produce/entrega ]
+
+2. Precio de venta que tengo pensado cobrar por unidad o cliente:
+   [ Ej: $30 por producto / $200 por servicio/proyecto ]
+
+3. Inversión inicial o capital disponible para arrancar:
+   [ Ej: $100, $500, $2,000, o $0 si arranco solo con tiempo ]
+
+4. Mis costos conocidos hasta hoy (si los tengo):
+   [ Enumera alquiler, transporte, internet, software, materia prima, salarios, etc. Si no los sabes, colócalo para que la IA los estime ]
+
+[3 · TAREA DE ANÁLISIS Y ESTRUCTURACIÓN]
+
+1. Definición de Precios y Estructura de Costos:
+   - Identifica y lista detalladamente mis Costos Fijos Mensuales (los que debo pagar sí o sí vendas o no).
+   - Identifica y lista los Costos Variables por unidad/servicio (lo que me cuesta producir o entregar CADA venta).
+   - Audita mi precio de venta: ¿El precio planteado cubre los costos variables y deja un margen de contribución saludable? Propón un precio ajustado con su justificación.
+
+2. Margen de Rentabilidad por Venta:
+   - Muestra la matemática simple: Precio de Venta - Costo Variable = Margen de Contribución ($ y %).
+   - Explica cuánto aporta en dinero REAL cada venta individual a la bolsa de mis costos fijos.
+
+3. Punto de Equilibrio y Tiempo Real de Maduración:
+   - Aplica la fórmula: Costos Fijos Mensuales ÷ Margen de Contribución por Venta.
+   - Muestra la cifra exacta: ¿Cuántas ventas o cuántos dólares exactos de facturación mensual necesito para estar en $0 de pérdida?
+   - Evaluación de tiempo realista: Considerando que un negocio nuevo tarda en generar confianza y cerrar sus primeros clientes, evalúa en cuántos meses es REALISTA alcanzar ese Punto de Equilibrio (evalúa escenarios a 3, 6 y 12 meses).
+
+4. Monitoreo del Capital Inicial e Inversión Requerida:
+   - Detalla una lista de inversión inicial mínima (software, licencias, empaques, inventario, registros) monitoreada al centavo.
+   - Muestra cuánto "piso financiero" (runway) necesito para aguantar los meses de arranque antes de llegar al punto de equilibrio.
+
+Tips:
+La mayoría de los emprendedores quiebran por confundir ventas con rentabilidad, o por asumir que van a vivir del negocio desde la semana 2.
+
+El punto de equilibrio es tu primera meta: No pienses en "ganancias" hasta que tu volumen de ventas pague el 100% de tus costos fijos cada mes.
+
+Tu inversión se cuida al centavo: Un buen empresario no alardea de cuánto gastó para lanzar, sino de lo eficiente que fue para validar su idea gastando lo mínimo indispensable.
+
+Sé honesto con tus tiempos: Si la matemática indica que necesitas 6 meses de gestión comercial para llegar a tu punto de equilibrio, prepárate operativamente para aguantar esos 6 meses.`
+    },
+    {
+      title: '8. Integración plan de negocios',
+      text: `MÓDULO 6: Integración del Plan de Negocios (Auditoría de Coherencia & Desafío de Decisiones)
+
+Objetivo de este Módulo:
+En este punto ya construiste tus módulos individuales. Ahora toca unirlos y auditarlos de forma crítica. Es muy común que Marketing proyecte vender 100 unidades, que Operaciones solo tenga capacidad para 30, y que Finanzas haya calculado costos para 50.
+
+Toda incoherencia entre tus planes representa una decisión estratégica que debes tomar como fundador. En este módulo, la IA no te resolverá el problema en automático: te confrontará con las contradicciones de tu plan y te desafiará a decidir cuál será tu estrategia real.
+
+Instrucciones de Uso:
+Copia el prompt a continuación.
+Abre Gemini (o tu Gem de la Junta de Mentores).
+Pega los resultados de tus Módulos 3, 4 y 5 en sus respectivos bloques al final del prompt.
+Lee la auditoría de la FASE 1, analiza las decisiones planteadas y asegúrate de entender qué ajustes tuviste que aceptar para que tu plan sea viable.
+
+Prompt Maestro: Auditoría de Coherencia e Integración del Plan de Negocios
+
+[1 · ROL]
+Actúa como un Consultor Senior de Estrategia Empresarial y CFO Fraccionado, experto en auditoría de negocios, modelado financiero y toma de decisiones ejecutivas. Tu perfil no es de un asistente complaciente que arregla los problemas en silencio, sino de un auditor exigente que confronta al emprendedor con sus contradicciones para enseñarle criterio comercial.
+
+[2 · CONTEXTO]
+Estoy desarrollando el plan de negocios para:
+- Empresa/Proyecto: [NOMBRE DE TU EMPRESA / PROYECTO]
+- Sector/Industria: [SECTOR]
+- Modelo de Negocio: [DESCRIPCIÓN EN 1 O 2 LÍNEAS DE QUÉ HACES Y CÓMO MONETIZAS]
+
+He redactado tres planes independientes (Mercadeo/Ventas, Operaciones y Finanzas). Necesito auditar la alineación cruzada entre ellos, identificar las incoherencias y entender qué decisiones estratégicas debo tomar para que el modelo sea 100% coherente.
+
+[3 · TAREA Y AUDITORÍA DE INCOHERENCIAS]
+Realiza un análisis cruzado entre los 3 planes e identifica las fricciones principales en:
+
+1. Coherencia Operativa vs. Comercial: ¿La capacidad de Operaciones soporta las metas de Ventas, o Ventas está prometiendo más de lo que la operación puede entregar?
+2. Consistencia Financiera vs. Operativa/Comercial: ¿Los costos de las herramientas, presupuestos de marketing y capacidad productiva están reflejados con exactitud en las finanzas?
+3. Alineación de Precios, CAC y Margen: ¿El precio de venta y el volumen realista permiten cubrir los costos fijos al ritmo que se proyecta?
+
+[4 · FORMATO DE SALIDA DE LA AUDITORÍA]
+
+FASE 1: DIAGNÓSTICO DE INCOHERENCIAS Y DESAFÍO DE DECISIÓN
+Para cada contradicción encontrada entre tus planes (ejemplo: Ventas proyecta 100 unidades pero Operaciones solo puede producir 30):
+1. Declara la Incoherencia de forma clara y directa.
+2. Explica el dilema del fundador: ¿Por qué esto paralizaría o quebraría el negocio si se ejecuta así?
+3. Plantea las Alternativas de Decisión: Presenta al menos 2 opciones reales para resolver el cuello de botella.
+4. Pregunta de Decisión: Desafía al emprendedor a elegir qué camino prefiere tomar.
+
+FASE 2: DOCUMENTO UNIFICADO "PLAN DE NEGOCIOS REALISTA"
+Asumiendo la restricción operativa/financiera más estricta o la solución más lógica para un arranque seguro, redacta el PLAN DE NEGOCIOS CONSOLIDADO aclarando explícitamente en cada sección qué criterio y decisión se adoptó para resolver las contradicciones.
+
+Estructura del Plan Unificado:
+1. Resumen Ejecutivo Consolidado: Síntesis del modelo, propuesta de valor y decisiones clave adoptadas.
+2. Plan Integrado de Crecimiento & Ventas: Estrategia de captación y metas de ventas alineadas a la capacidad real.
+3. Plan de Operaciones & Capacidad Real: Flujo paso a paso, herramientas y control del cuello de botella.
+4. Plan Financiero & Punto de Equilibrio Sincronizado: Estructura de costos fijos, variables y punto de equilibrio calculado con la capacidad real.
+5. Hoja de Ruta y Próximos Pasos (3 a 12 Meses): Hitos de ejecución ordenados por trimestres.
+
+======================================================
+INSERTA TUS INSUMOS A CONTINUACIÓN PARA EJECUTAR EL PROMPT
+======================================================
+
+--- 1. PLAN DE MERCADEO Y VENTAS (MÓDULO 3) ---
+[Pega aquí el resultado de tu Plan de Mercadeo y Ventas]
+
+--- 2. PLAN DE OPERACIONES (MÓDULO 4) ---
+[Pega aquí el resultado de tu Plan Operativo]
+
+--- 3. PLAN FINANCIERO (MÓDULO 5) ---
+[Pega aquí el resultado de tu Plan Financiero]
+
+Recuerda: Las incoherencias en un plan de negocios no son "errores" tontos; son las decisiones difíciles que definen a un empresario.
+
+Acepta la restricción real: Si Operaciones solo puede atender a 30 clientes este mes, tu meta comercial NO puede ser 100. Tienes dos opciones: o vendes 30 a un precio mayor para mantener la rentabilidad, o buscas capital para escalar tu capacidad operativa.
+
+Aprende a renunciar: Dirigir un negocio es aprender a decir "no" a proyecciones irrealistas para proteger tu reputación y tu caja.`
+    },
+    {
+      title: '9. Plan de negocios vs estudio de mercado',
+      text: `Objetivo de este Módulo:
+Validar la "Prueba de Fuego" antes de tu presentación. En este paso vas a confrontar tu Estudio de Mercado (Módulo 2) contra tu Plan de Negocios Unificado (Módulo 6).
+
+Queremos asegurarnos de que no diseñaste un negocio en el aire, sino que cada precio, canal de venta, capacidad operativa y margen responde directamente a los problemas, competidores y capacidad de pago reales de tus clientes en el mercado.
+
+Instrucciones de Uso:
+Copia el prompt maestro a continuación.
+Abre Gemini (o tu Gem de la Junta de Mentores).
+Pega el resultado de tu Módulo 2 (Estudio de Mercado) y tu Módulo 6 (Plan de Negocios Unificado) en los bloques correspondientes al final.
+
+Prompt Maestro: Auditoría Mercado vs. Plan de Negocios
+
+[1 · ROL]
+Actúa como un Auditor de Inversión y Consultor Estratégico Senior. Tu trabajo es evaluar la alineación real entre la investigación de mercado previa y el plan de negocios definitivo diseñado por un emprendedor. Evalúas si el plan responde a la realidad del entorno o si el emprendedor cayó en el error de ignorar la data para imponer su propia idea.
+
+[2 · CONTEXTO Y OBJETIVO]
+Tengo dos documentos clave de mi proyecto [NOMBRE DE TU EMPRESA]:
+1. El Estudio de Mercado inicial (donde identificamos dolores, competidores, tamaño de mercado TAM/SAM/SOM y cliente ideal).
+2. El Plan de Negocios Unificado (donde definimos oferta, ventas, operación y finanzas).
+
+Necesito una auditoría directa que compare ambos documentos y me diga con claridad si mi Plan de Negocios responde fielmente a los hallazgos de mi Estudio de Mercado o si existen desconexiones o puntos ciegos.
+
+[3 · COMPROBACIONES CRÍTICAS DE ALINEACIÓN]
+Analiza y compara ambos documentos respondiendo a estas 4 preguntas clave:
+
+1. Problema vs. Oferta: ¿Mi plan de producto/servicio resuelve directamente el dolor financiero u operativo principal detectado en el estudio de mercado?
+2. Cliente Ideal (ICP) vs. Estrategia Comercial: ¿El precio planteado, los canales de venta (WhatsApp, presencial, B2B) y la ruta de cobro encajan con la capacidad de pago y hábitos del cliente ideal estudiado?
+3. Competencia vs. Ventaja Diferenciadora: ¿Mi estrategia comercial aprovecha las debilidades detectadas en los 3 competidores principales del mercado?
+4. Tamaño de Mercado vs. Metas Financieras: ¿Las metas de ventas a corto plazo caben de forma realista dentro del mercado accesible (SOM) que calculamos inicialmente?
+
+[4 · FORMATO DE SALIDA REQUERIDO]
+
+1. DIAGNÓSTICO DE ALINEACIÓN (MERCADO VS. PLAN)
+   - Calificación de Alineación: (Excelente / Aceptable / En Riesgo).
+   - Síntesis de coherencia: Un párrafo explicando qué tan bien responde el plan de negocios a las condiciones del mercado actual.
+
+2. MATRIZ DE COMPARACIÓN Y DESCONEXIONES
+   Presenta una tabla comparativa en formato:
+   Hallazgo del Mercado | Lo que propone el Plan de Negocios | Estado (Alineado / Desconectado) | Comentario Breve
+
+3. AUDITORÍA DE PUNTOS CIEGOS Y SUGERENCIAS
+   Identifica si el plan cometió alguno de estos 3 errores típicos:
+   - Cobrar por encima o por debajo de la disposición a pagar del mercado.
+   - Usar un canal de ventas que el cliente ideal no utiliza.
+   - Ignorar un riesgo del entorno que el estudio de mercado ya había advertido.
+
+4. CONCLUSIÓN DE DEFENDEDOR DE PITCH
+   Redacta un argumento de 3 oraciones que el estudiante pueda usar en el Pitch Day para responder a la pregunta: "¿Cómo sabes que el mercado realmente quiere comprar esto a ese precio?"
+
+======================================================
+INSERTA TUS INSUMOS A CONTINUACIÓN
+======================================================
+
+--- 1. ESTUDIO DE MERCADO (MÓDULO 2) ---
+[Pega aquí el resultado de tu Estudio de Mercado obtenido con Deep Research]
+
+--- 2. PLAN DE NEGOCIOS UNIFICADO (MÓDULO 6) ---
+[Pega aquí el resultado de tu Plan de Negocios Unificado de la Fase 2]
+
+Este prompt fue creado después del Sprint. Me pareció valioso chequear data vs plan, además es algo parecido al análisis que hace el jurado naturalmente.`
+    },
+    {
+      title: '10. Presentación arco histórico',
+      text: `MÓDULO 8: Pitch Day Kit (Arco Histórico & Defensa frente al Jurado)
+
+Objetivo de este Módulo:
+Llegó el momento de defender tu proyecto frente al panel de directivos y empresarios. En este módulo vas a transformar tu Plan de Negocios Consolidado en:
+
+- Un Guión de Pitch de 5 minutos estructurado bajo la narrativa del Arco Histórico.
+- La estructura visual de tu Deck de 6 Diapositivas (máximo una idea central por lámina).
+- Una Simulación de Preguntas Difíciles para ensayar tu manejo de objeciones comerciales, operativas y financieras.
+
+Parte 1: Prompt Maestro — Guión y Deck en Arco Histórico
+
+[1 · ROL Y ESCENARIO]
+Actúa como un Director de Comunicación Estratégica y Mentor de Pitch B2B especializado en competencias de emprendimiento. Estoy preparando mi presentación final de 5 minutos para el Pitch Day frente a un panel de directivos y empresarios experimentados. El jurado no busca gráficos corporativos aburridos: busca evaluar la viabilidad comercial real de mi idea, el rigor con el que estructuré mis números y la convicción/pasión con la que defiendo el proyecto.
+
+[2 · CONTEXTO DE MI PROYECTO]
+Utilizarás la información de mi Plan de Negocios Unificado para construir el guión:
+- Nombre del Proyecto: [NOMBRE DE TU EMPRESA]
+- Qué hace y a quién ayuda: [DESCRIPCIÓN EN 1 ORACIÓN]
+- Plan de Negocios Consolidado: [Pega aquí el resultado del Módulo 6 o Módulo 7]
+
+[3 · TAREA Y ESTRUCTURA DEL ARCO HISTÓRICO (6 SLIDES / 5 MINUTOS)]
+Diseña el guión hablado exacto (lo que voy a decir) y el contenido visual (lo que irán en las diapositivas) dividido en estas 6 secciones narrativas:
+
+1. El Gancho y el Problema (Minuto 0:00 - 0:45):
+   - Guión: Una anécdota, dato duro o cifra impactante que valide el dolor del cliente.
+   - Slide: Frase o cifra impactante + sugerencia de imagen de apoyo.
+
+2. La Solución Inevitable y Propuesta de Valor (Minuto 0:45 - 1:30):
+   - Guión: Qué es el proyecto en una sola frase y por qué nuestra ventaja diferenciadora hace que esta solución sea la mejor opción.
+   - Slide: Nombre del proyecto, PUV en una línea + concepto visual.
+
+3. Estrategia Comercial y Mercadeo (Minuto 1:30 - 2:30):
+   - Guión: Quién es el Cliente Ideal (ICP), a través de qué canal los captaremos (WhatsApp, B2B, etc.) y nuestro CAC/LTV estimado.
+   - Slide: Perfil de cliente + 3 pilares del canal de venta.
+
+4. Plan Operativo y Capacidad (Minuto 2:30 - 3:15):
+   - Guión: Cómo entregamos el producto/servicio, nuestras herramientas clave, la capacidad máxima mensual y cómo prevenimos cuellos de botella.
+   - Slide: Diagrama del flujo de trabajo en 3 o 4 pasos.
+
+5. Sostenibilidad Financiera y Punto de Equilibrio (Minuto 3:15 - 4:15):
+   - Guión: Costo unitario, precio de venta, margen de contribución, costos fijos y el número exacto de ventas para alcanzar el Punto de Equilibrio.
+   - Slide: Tabla limpia con Precio | Margen % | Punto de Equilibrio ($ y Unidades).
+
+6. El Cierre y Llamado a la Acción (Minuto 4:15 - 5:00):
+   - Guión: La visión del equipo, por qué somos las personas indicadas para ejecutarlo y una pregunta o llamado a la acción directo para el jurado.
+   - Slide: Frase de cierre + datos de contacto / redes.
+
+[4 · REGLAS DE REDACCIÓN]
+- Tono: Seguro, directo, profesional y apasionado.
+- Diapositivas limpias: Cada slide debe tener MÁXIMO 15 palabras (el protagonista eres tú hablando, no la diapositiva).
+- Indica entre corchetes [Pausa de 2 segundos] o [Enfatizar cifra] para guiarme en la oratoria.
+
+Parte 2: Prompt Maestro — Simulador de Preguntas del Jurado (Ensayo de Defensa)
+
+Una vez que tengas tu guión, ejecuta este segundo prompt en el mismo chat para ensayar las preguntas que te hará el jurado al terminar tus 5 minutos:
+
+"Actúa ahora como el Jurado del Pitch Day (conformado por un Director Financiero obsesionado con los costos, un Director Comercial enfocado en cómo vas a conseguir clientes y un Inversionista escéptico).
+
+A partir del guión y plan que te presenté, genera:
+
+1. Las 4 preguntas más difíciles o incómodas que el jurado me hará al terminar mi presentación sobre:
+   - Mi precio o disposición a pagar del cliente.
+   - Mi capacidad operativa real o cuellos de botella.
+   - Mi punto de equilibrio o costos fijos omitidos.
+   - Mi estrategia para competir contra las alternativas actuales del mercado.
+
+2. Para cada pregunta, redacta la 'Respuesta de Alto Criterio': Una respuesta basada en datos duros de mi plan que demuestre que no estoy adivinando, sino que tengo el control de mi negocio."
+
+Reglas de Oro para presentarte ante el jurado:
+
+Las láminas no se leen: La presentación en pantalla es solo un apoyo visual para el jurado; la historia y los datos los dominas tú con tu voz.
+
+Domina tus números de memoria: Debes saberte de memoria 3 datos sin dudar un segundo: tu Precio de Venta, tu Margen de Ganancia por unidad y tu Punto de Equilibrio.
+
+No te pongas a la defensiva: Si el jurado critica un punto de tu plan, no discutas. Responde con criterio: "Es un excelente punto. En nuestro análisis consideramos ese riesgo y nuestra estrategia de mitigación consiste en...".`
+    },
+  ]
+};
+
+/* ── Sprint render ── */
+const _SPRINT_FILE_ICONS = {
+  pdf:   { cls:'icon-pdf',   svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>` },
+  pptx:  { cls:'icon-pptx',  svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>` },
+  ppt:   { cls:'icon-pptx',  svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>` },
+  drive: { cls:'icon-drive', svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22.56 16.55L13.73 1H10.27L1.44 16.55"/><path d="M1.44 16.55L5.89 23h12.22l4.45-6.45"/><path d="M5.89 23h12.22L13.73 1h-3.46"/></svg>` },
+  doc:   { cls:'icon-doc',   svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>` },
+};
+const _SPRINT_TYPE_LABELS = { pdf:'PDF', pptx:'PowerPoint', ppt:'PowerPoint', drive:'Google Drive', doc:'Google Docs' };
+const _OPEN_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+const _SOON_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+const _PROMPT_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+
+let sprintInited = false;
+
+function renderSprintView(){
+  if(sprintInited) return;
+  sprintInited = true;
+  renderSprintPrompts();
+}
+
+function renderSprintPrompts(){
+  const container = document.getElementById('sprint-prompts-content');
+  if(!SPRINT_DATA.prompts || SPRINT_DATA.prompts.length === 0){
+    container.innerHTML = `<div class="sprint-empty">
+      <div class="sprint-empty-icon">${_PROMPT_ICON}</div>
+      <p class="sprint-empty-text">Los prompts estarán disponibles próximamente.</p>
+    </div>`;
+    return;
+  }
+  const _arrow = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>`;
+  const items = SPRINT_DATA.prompts.map((p, i) => {
+    const safe = p.text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<div class="prompt-accordion" id="pacc-${i}">
+      <div class="prompt-accordion-header" onclick="togglePromptAcc(${i})">
+        <div class="prompt-accordion-title">${p.title}</div>
+        <span class="prompt-accordion-arrow">${_arrow}</span>
+      </div>
+      <div class="prompt-accordion-body">
+        <div class="prompt-accordion-content">${safe}</div>
+      </div>
+    </div>`;
+  }).join('');
+  container.innerHTML = `<div class="prompt-rows">${items}</div>`;
+}
+
+function togglePromptAcc(i){
+  document.getElementById('pacc-'+i).classList.toggle('open');
+}
+
+/* ══════════════════════════════════════════════
+   RECURSOS GRATIS DATA
+   Agrega recursos aquí: { name, type, url }
+   Tipos: 'pdf', 'doc', 'sheet', 'link'
+══════════════════════════════════════════════ */
+const RECURSOS_DATA = {
+  recursos: [
+    // Ejemplo:
+    // { name: 'Guía de productividad con IA', type: 'pdf', url: 'recursos/gratis/guia-ia.pdf' },
+  ]
+};
+
+let recursosInited = false;
+
+function renderRecursosView(){
+  if(recursosInited) return;
+  recursosInited = true;
+  const container = document.getElementById('recursos-content');
+  const items = RECURSOS_DATA.recursos;
+  if(!items || items.length === 0){
+    container.innerHTML = `<div class="sprint-empty">
+      <div class="sprint-empty-icon" style="background:rgba(245,158,11,.1);color:#F59E0B">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <p class="sprint-empty-text">Los recursos gratuitos estarán disponibles muy pronto.<br>¡Gracias por registrarte!</p>
+    </div>`;
+    return;
+  }
+  container.innerHTML = `<div class="day-group">
+    <div class="day-group-label">Recursos disponibles</div>
+    <div class="file-rows">
+      ${items.map(f => {
+        const t = (f.type||'link').toLowerCase();
+        const ic = _SPRINT_FILE_ICONS[t] || _SPRINT_FILE_ICONS.doc;
+        return `<div class="file-row">
+          <div class="file-row-icon ${ic.cls}">${ic.svg}</div>
+          <div class="file-row-info">
+            <div class="file-row-name">${f.name}</div>
+            <div class="file-row-type">${_SPRINT_TYPE_LABELS[t]||'Recurso'}</div>
+          </div>
+          <div class="file-row-action">
+            <a href="${f.url}" target="_blank" rel="noopener" class="file-btn file-btn-green">${_OPEN_ICON} Abrir</a>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+const VIMEO_LIVE_ID = null;
 const PROXIMA_CLASE = {
   titulo: 'Día 1 — Idea y validación de negocio',
   fecha:  'Domingo 31 de agosto · 9:00 am'
 };
-// ────────────────────────────────────────────────────────────────
 
-/* ── STATE ── */
-let currentCourse = null;
+/* ══════════════════════════════════════════════
+   SUPABASE AUTH
+══════════════════════════════════════════════ */
+const SB_URL = 'https://gslzmhtabkklvxemtkhk.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzbHptaHRhYmtrbHZ4ZW10a2hrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwOTI3MjUsImV4cCI6MjEwNTY2ODcyNX0.JHSLrTQCts8ixOPiD34pNLjzPqeev2KaPzAC0OxXQo0';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+let currentUser = null;
+let userAccess = { sprint: false, bootcamp: false, recursos: false };
+
+async function initApp(){
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){ showAuthModal(); return; }
+  currentUser = session.user;
+  await loadUserAccess();
+  renderDashboardCards();
+  showView('view-dashboard');
+}
+
+async function loadUserAccess(){
+  const { data } = await sb.from('user_access').select('*').eq('id', currentUser.id).single();
+  if(data) userAccess = { sprint: !!data.sprint, bootcamp: !!data.bootcamp, recursos: !!data.recursos };
+}
+
+function showAuthModal(){
+  document.getElementById('auth-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('login-email').focus(), 100);
+}
+
+function switchAuthTab(tab){
+  document.getElementById('auth-form-login').style.display   = tab==='login' ? '' : 'none';
+  document.getElementById('auth-form-signup').style.display  = tab==='signup' ? '' : 'none';
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
+  const focusId = tab==='login' ? 'login-email' : 'signup-name';
+  setTimeout(()=>document.getElementById(focusId).focus(), 50);
+}
+
+async function doLogin(){
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl    = document.getElementById('login-error');
+  const btn      = document.getElementById('login-btn');
+  errEl.textContent = '';
+  if(!email || !password){ errEl.textContent = 'Ingresa tu correo y contraseña.'; return; }
+  btn.textContent = 'Cargando...'; btn.disabled = true;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if(error){
+    errEl.textContent = (error.message.includes('Invalid') || error.message.includes('credentials'))
+      ? 'Correo o contraseña incorrectos.' : error.message;
+    btn.textContent = 'Iniciar sesión →'; btn.disabled = false;
+    return;
+  }
+  currentUser = data.user;
+  await loadUserAccess();
+  document.getElementById('auth-modal').classList.remove('open');
+  renderDashboardCards();
+  showView('view-dashboard');
+}
+
+async function doSignup(){
+  const name     = document.getElementById('signup-name').value.trim();
+  const email    = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const errEl    = document.getElementById('signup-error');
+  const btn      = document.getElementById('signup-btn');
+  errEl.textContent = '';
+  if(!name){ errEl.textContent = 'Ingresa tu nombre.'; return; }
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ errEl.textContent = 'Ingresa un correo válido.'; return; }
+  if(password.length < 8){ errEl.textContent = 'La contraseña debe tener al menos 8 caracteres.'; return; }
+  btn.textContent = 'Creando cuenta...'; btn.disabled = true;
+  const { data, error } = await sb.auth.signUp({ email, password, options:{ data:{ name } } });
+  if(error){
+    errEl.textContent = error.message.includes('already registered')
+      ? 'Este correo ya tiene una cuenta. Inicia sesión.' : error.message;
+    btn.textContent = 'Crear cuenta →'; btn.disabled = false;
+    return;
+  }
+  if(data.user){
+    await sb.from('profiles').update({ name }).eq('id', data.user.id);
+    currentUser = data.user;
+    await loadUserAccess();
+    document.getElementById('auth-modal').classList.remove('open');
+    renderDashboardCards();
+    showView('view-dashboard');
+  }
+}
+
+async function doSignOut(){
+  await sb.auth.signOut();
+  window.location.reload();
+}
+
+function renderDashboardCards(){
+  setCard('card-sprint',    userAccess.sprint,    'sprint',   'Sprint');
+  setCard('card-bootcamp',  userAccess.bootcamp,  'online',   'Bootcamp');
+  setCard('card-recursos',  userAccess.recursos,  'recursos', 'Recursos');
+}
+
+function setCard(id, hasAcc, section, label){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const lockEl  = card.querySelector('.pc-lock');
+  const arrowEl = card.querySelector('.pc-arrow');
+  if(hasAcc){
+    card.style.cursor = 'pointer';
+    card.style.opacity = '1';
+    card.onclick = ()=>openSection(section);
+    if(lockEl)  lockEl.style.display  = 'none';
+    if(arrowEl) arrowEl.style.display = '';
+  } else {
+    card.style.cursor = 'default';
+    card.style.opacity = '.45';
+    card.onclick = null;
+    if(lockEl)  { lockEl.style.display = ''; lockEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> Sin acceso`; }
+    if(arrowEl) arrowEl.style.display = 'none';
+  }
+}
+
+function openSection(section){
+  if(section==='sprint'   && !userAccess.sprint)    return;
+  if(section==='online'   && !userAccess.bootcamp)  return;
+  if(section==='recursos' && !userAccess.recursos)  return;
+  enterSection(section);
+}
+
+
+/* ══════════════════════════════════════════════
+   THEME TOGGLE
+══════════════════════════════════════════════ */
+(function(){
+  const saved = localStorage.getItem('oscarb2b_theme');
+  if(saved === 'light') applyTheme('light');
+})();
+function applyTheme(mode){
+  document.documentElement.setAttribute('data-theme', mode);
+  const iconDark = document.getElementById('theme-icon-dark');
+  const iconLight = document.getElementById('theme-icon-light');
+  if(iconDark && iconLight){
+    iconDark.style.display  = mode === 'light' ? 'none'  : '';
+    iconLight.style.display = mode === 'light' ? ''      : 'none';
+  }
+}
+function toggleTheme(){
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  localStorage.setItem('oscarb2b_theme', next);
+  applyTheme(next);
+}
+
+/* ══════════════════════════════════════════════
+   VIEW ROUTING
+══════════════════════════════════════════════ */
+function showView(id){
+  ['view-dashboard','view-sprint','view-online','view-recursos'].forEach(v => {
+    document.getElementById(v).style.display = (v === id) ? 'block' : 'none';
+  });
+  // Nav adjustments
+  const isOnline = id === 'view-online';
+  const isDash   = id === 'view-dashboard';
+  document.getElementById('nav-back-btn').style.display       = isDash ? 'none' : 'flex';
+  document.getElementById('online-progress-wrap').style.display = isOnline ? 'flex' : 'none';
+  document.getElementById('sb-toggle-btn').style.display      = isOnline ? '' : 'none';
+}
+
+function enterSection(section){
+  if(section === 'sprint'){
+    showView('view-sprint');
+    renderSprintView();
+  } else if(section === 'recursos'){
+    showView('view-recursos');
+    renderRecursosView();
+  } else {
+    showView('view-online');
+    initOnlineCourse();
+  }
+}
+
+function goToDashboard(){
+  showView('view-dashboard');
+  closeSidebar();
+}
+
+/* ══════════════════════════════════════════════
+   ONLINE COURSE INIT
+══════════════════════════════════════════════ */
+let onlineInited = false;
 let currentLesson = null;
 let done = {};
 try{ done = JSON.parse(localStorage.getItem('oscarb2b_done') || '{}'); }catch(e){}
 
-/* ── LIVE RENDER ── */
-function renderLive(){
-  const sec = document.getElementById('live-section');
+function initOnlineCourse(){
+  if(onlineInited) return;
+  onlineInited = true;
+  renderSidebarLive();
+  renderSidebarTree();
+  updateProgress();
+  const firstDay = document.querySelector('.sb-day');
+  if(firstDay) firstDay.classList.add('open');
+  if(VIMEO_LIVE_ID) showLiveState();
+}
+
+/* ── SIDEBAR ── */
+function renderSidebarLive(){
+  const area = document.getElementById('sb-live-area');
   if(VIMEO_LIVE_ID){
-    sec.innerHTML = `
-      <div class="section-label">En vivo ahora <span></span></div>
-      <div class="live-active-bar">
-        <span class="live-dot-badge"><span class="live-dot"></span>EN VIVO</span>
-        <span class="live-active-title">${PROXIMA_CLASE.titulo}</span>
-      </div>
-      <div class="live-player-wrap">
-        <iframe src="https://vimeo.com/event/${VIMEO_LIVE_ID}/embed"
-          frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-      </div>`;
+    area.innerHTML = `<div class="sb-live" onclick="showLiveState()"><span class="sb-live-dot"></span><span class="sb-live-label">En vivo ahora</span><span class="sb-live-title">${PROXIMA_CLASE.titulo}</span></div>`;
   } else {
-    sec.innerHTML = `
-      <div class="section-label">En vivo <span></span></div>
-      <div class="live-upcoming">
-        <div class="live-upcoming-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <div class="live-upcoming-info">
-          <div class="live-upcoming-title">Próxima clase en vivo</div>
-          <div class="live-upcoming-desc">${PROXIMA_CLASE.titulo} · ${PROXIMA_CLASE.fecha}</div>
-        </div>
-      </div>`;
+    area.innerHTML = `<div class="sb-upcoming"><div class="sb-upcoming-label">Próxima clase</div><div class="sb-upcoming-title">${PROXIMA_CLASE.titulo}</div><div class="sb-upcoming-date">${PROXIMA_CLASE.fecha}</div></div>`;
   }
 }
 
-/* ── CATALOG ── */
-function renderCatalog(){
-  const grid = document.getElementById('course-grid');
-  grid.innerHTML = '';
-  COURSES.forEach(c => {
-    const total = c.modules.reduce((a,m) => a + m.lessons.length, 0);
-    const completed = c.modules.reduce((a,m) => a + m.lessons.filter(l => done[l.id]).length, 0);
-    const pct = total ? Math.round(completed/total*100) : 0;
-    const card = document.createElement('div');
-    card.className = 'course-card';
-    card.innerHTML = `
-      <div class="course-thumb">
-        <div class="course-thumb-placeholder">
-          <span>${c.tag}</span>
-          <strong>${c.name}</strong>
-        </div>
-        ${pct===100 ? '<div style="position:absolute;top:.6rem;left:.6rem;background:var(--green);color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;letter-spacing:.04em;">✓ Completado</div>' : ''}
-      </div>
-      <div class="course-info">
-        <div class="course-tag">${c.tag}</div>
-        <div class="course-name">${c.name}</div>
-        <div class="course-meta">${total} lecciones · ${pct}% completado</div>
-      </div>`;
-    card.onclick = () => openCourse(c.id);
-    grid.appendChild(card);
-  });
-}
-
-/* ── COURSE ── */
-function openCourse(courseId){
-  currentCourse = COURSES.find(c => c.id === courseId);
-  if(!currentCourse) return;
-
-  document.getElementById('view-catalog').style.display = 'none';
-  document.getElementById('view-course').style.display = 'block';
-  document.getElementById('back-btn').style.display = 'inline-flex';
-
-  document.getElementById('sb-tag').textContent = currentCourse.tag;
-  document.getElementById('sb-name').textContent = currentCourse.name;
-
-  renderSidebar();
-  updateProgress();
-
-  // Open first module and select first lesson
-  const firstLesson = currentCourse.modules[0]?.lessons[0];
-  if(firstLesson) selectLesson(firstLesson.id);
-}
-
-function renderSidebar(){
-  const list = document.getElementById('module-list');
-  list.innerHTML = '';
-  currentCourse.modules.forEach((mod, mi) => {
-    const item = document.createElement('div');
-    item.className = 'module-item' + (mi===0?' open':'');
-    item.innerHTML = `
-      <div class="module-header" onclick="toggleModule(this.parentElement)">
-        ${mod.name}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="lesson-list">${mod.lessons.map(l => `
-        <button class="lesson-btn" id="lb-${l.id}" onclick="selectLesson('${l.id}')">
-          <span class="lesson-check ${done[l.id]?'done':''}" id="chk-${l.id}">
-            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+function renderSidebarTree(){
+  const tree = document.getElementById('sb-course-tree');
+  tree.innerHTML = '';
+  COURSES.forEach(course => {
+    const dayEl = document.createElement('div');
+    dayEl.className = 'sb-day';
+    dayEl.id = 'sbday-' + course.id;
+    const lessonsHTML = course.modules.map(mod =>
+      mod.lessons.map(l => `
+        <button class="sb-lesson" id="sbl-${l.id}" onclick="selectLesson('${l.id}');closeSidebar();">
+          <span class="sb-lesson-check ${done[l.id]?'done':''}" id="sbchk-${l.id}">
+            <svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
           </span>
-          <span class="lesson-label">${l.name}</span>
-        </button>`).join('')}
-      </div>`;
-    list.appendChild(item);
+          <span class="sb-lesson-name">${l.name}</span>
+        </button>`).join('')
+    ).join('');
+    dayEl.innerHTML = `
+      <div class="sb-day-header" onclick="toggleDay(this.parentElement)">
+        <span class="sb-day-tag">${course.tag}</span>
+        <span class="sb-day-name">${course.name}</span>
+        <svg class="sb-day-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="sb-day-lessons">${lessonsHTML}</div>`;
+    tree.appendChild(dayEl);
   });
 }
 
-function toggleModule(el){
-  el.classList.toggle('open');
+function toggleDay(el){ el.classList.toggle('open'); }
+
+/* ── MOBILE SIDEBAR ── */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sb-overlay').classList.toggle('open');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
+}
+
+/* ── LESSON STATES ── */
+function showOnlineState(id){
+  ['state-welcome','state-lesson','state-live'].forEach(s => {
+    const el = document.getElementById(s);
+    el.style.display = (s===id) ? 'flex' : 'none';
+    if(s===id) el.style.flexDirection = 'column';
+  });
+  document.getElementById('online-content').scrollTo(0,0);
+}
+
+function showLiveState(){
+  document.getElementById('live-header-title').textContent = PROXIMA_CLASE.titulo;
+  document.getElementById('live-player-area').innerHTML =
+    `<iframe src="https://vimeo.com/event/${VIMEO_LIVE_ID}/embed" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  document.querySelectorAll('.sb-lesson.active').forEach(b=>b.classList.remove('active'));
+  showOnlineState('state-live');
 }
 
 function selectLesson(lessonId){
   currentLesson = null;
-  for(const mod of currentCourse.modules){
-    const l = mod.lessons.find(l => l.id === lessonId);
-    if(l){ currentLesson = l; break; }
+  let modName = '', dayTag = '';
+  for(const c of COURSES){
+    for(const m of c.modules){
+      const l = m.lessons.find(x => x.id===lessonId);
+      if(l){ currentLesson=l; modName=m.name; dayTag=c.tag+' · '+c.name; break; }
+    }
+    if(currentLesson) break;
   }
   if(!currentLesson) return;
 
-  // Update active state
-  document.querySelectorAll('.lesson-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.getElementById('lb-'+lessonId);
-  if(btn){
-    btn.classList.add('active');
-    btn.scrollIntoView({block:'nearest'});
+  document.querySelectorAll('.sb-lesson').forEach(b=>b.classList.remove('active'));
+  const btn = document.getElementById('sbl-'+lessonId);
+  if(btn){ btn.classList.add('active'); btn.scrollIntoView({block:'nearest'}); }
+
+  for(const c of COURSES){
+    if(c.modules.some(m=>m.lessons.some(l=>l.id===lessonId))){
+      const dayEl = document.getElementById('sbday-'+c.id);
+      if(dayEl) dayEl.classList.add('open');
+      break;
+    }
   }
 
-  // Update main content
-  document.getElementById('lesson-title').textContent = currentLesson.name;
-
-  // Video
   const wrap = document.getElementById('video-wrap');
   if(currentLesson.vimeoId){
-    const src = `https://player.vimeo.com/video/${currentLesson.vimeoId}?title=0&byline=0&portrait=0&color=009944`;
-    wrap.innerHTML = `<iframe src="${src}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+    wrap.innerHTML = `<iframe src="https://player.vimeo.com/video/${currentLesson.vimeoId}?title=0&byline=0&portrait=0&color=009944" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
   } else {
-    wrap.innerHTML = `<div class="video-placeholder">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
-      <p>Video próximamente</p>
-    </div>`;
+    wrap.innerHTML = `<div class="video-placeholder"><div class="vph-icon"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><p class="vph-text">Video próximamente</p></div>`;
   }
 
-  // Resources
+  document.getElementById('lesson-eyebrow').textContent = dayTag + (modName ? ' · '+modName : '');
+  document.getElementById('lesson-title').textContent = currentLesson.name;
+
   const rl = document.getElementById('resource-list');
   if(currentLesson.resources.length){
-    rl.innerHTML = `<div class="resources-section">
-      <div class="resources-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Recursos de esta lección
-      </div>
-      ${currentLesson.resources.map(r => `
-        <div class="resource-item">
-          <div class="resource-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          </div>
-          <div class="resource-info">
-            <div class="resource-name">${r.name}</div>
-            <div class="resource-type">${r.type}</div>
-          </div>
-          <a href="${r.url}" target="_blank" class="resource-dl">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Descargar
-          </a>
-        </div>`).join('')}
-    </div>`;
+    const rows = currentLesson.resources.map(r => `
+      <div class="res-row">
+        <div class="res-row-icon">${resIcon(r.type)}</div>
+        <span class="res-row-name">${r.name}</span>
+        <span class="res-row-type">${r.type}</span>
+        <span class="res-row-dots"></span>
+        <a href="${r.url}" target="_blank" rel="noopener" class="res-row-open">
+          Abrir <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>`).join('');
+    rl.innerHTML = `<div class="res-section-label">Recursos de esta lección</div><div class="res-rows">${rows}</div>`;
   } else {
     rl.innerHTML = '';
   }
 
-  // Mark done button
   const btn2 = document.getElementById('mark-done-btn');
   btn2.style.display = 'inline-flex';
   updateMarkBtn();
+  showOnlineState('state-lesson');
+}
+
+function resIcon(type){
+  const t = (type||'').toLowerCase();
+  if(t.includes('pdf')) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>`;
+  if(t.includes('slides')) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+}
+
+function openFirstLesson(){
+  const first = COURSES[0]?.modules[0]?.lessons[0];
+  if(first) selectLesson(first.id);
+}
+
+/* ── PROGRESS ── */
+function updateProgress(){
+  let total=0,completed=0;
+  COURSES.forEach(c=>c.modules.forEach(m=>m.lessons.forEach(l=>{ total++; if(done[l.id]) completed++; })));
+  const pct = total ? Math.round(completed/total*100) : 0;
+  document.getElementById('online-progress-fill').style.width = pct+'%';
+  document.getElementById('online-progress-pct').textContent = pct+'%';
 }
 
 function markDone(){
   if(!currentLesson) return;
   done[currentLesson.id] = !done[currentLesson.id];
   if(!done[currentLesson.id]) delete done[currentLesson.id];
-  try{ localStorage.setItem('oscarb2b_done', JSON.stringify(done)); }catch(e){}
-
-  const chk = document.getElementById('chk-'+currentLesson.id);
-  if(chk) chk.className = 'lesson-check' + (done[currentLesson.id]?' done':'');
+  try{ localStorage.setItem('oscarb2b_done',JSON.stringify(done)); }catch(e){}
+  const chk = document.getElementById('sbchk-'+currentLesson.id);
+  if(chk) chk.className = 'sb-lesson-check'+(done[currentLesson.id]?' done':'');
   updateMarkBtn();
   updateProgress();
 }
@@ -775,71 +2013,18 @@ function markDone(){
 function updateMarkBtn(){
   const btn = document.getElementById('mark-done-btn');
   if(done[currentLesson?.id]){
-    btn.className = 'mark-done-btn done';
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Completada`;
+    btn.className='mark-done-btn done';
+    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Completada`;
   } else {
-    btn.className = 'mark-done-btn';
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Marcar como completada`;
+    btn.className='mark-done-btn';
+    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Marcar como completada`;
   }
 }
 
-function updateProgress(){
-  const total = currentCourse.modules.reduce((a,m) => a + m.lessons.length, 0);
-  const completed = currentCourse.modules.reduce((a,m) => a + m.lessons.filter(l => done[l.id]).length, 0);
-  const pct = total ? Math.round(completed/total*100) : 0;
-  document.getElementById('progress-pct').textContent = pct+'%';
-  document.getElementById('progress-fill').style.width = pct+'%';
-}
-
-function showCatalog(){
-  currentCourse = null;
-  currentLesson = null;
-  document.getElementById('view-catalog').style.display = 'block';
-  document.getElementById('view-course').style.display = 'none';
-  document.getElementById('back-btn').style.display = 'none';
-  renderCatalog();
-}
-
-function openLive(){
-  if(LIVE_URL && LIVE_URL !== '#') window.open(LIVE_URL,'_blank');
-  else alert('La clase en vivo se activa cuando comienza la sesión. Te llegará el link por WhatsApp.');
-}
-
-/* ── LOGIN ── */
-// Códigos válidos — agrega o cambia los que quieras
-const CODES = ['SIE2026','SPRINT01','OSCAR2026'];
-const SESSION_KEY = 'oscarb2b_access';
-
-function checkCode(){
-  const val = document.getElementById('code-input').value.trim().toUpperCase();
-  const input = document.getElementById('code-input');
-  const err = document.getElementById('login-error');
-  if(!val){ err.textContent='Ingresa tu código de acceso.'; input.classList.add('error'); return; }
-  if(CODES.includes(val)){
-    try{ sessionStorage.setItem(SESSION_KEY,'1'); }catch(e){}
-    document.getElementById('login-screen').style.display='none';
-  } else {
-    input.classList.add('error');
-    err.textContent='Código incorrecto. Verifica con Oscar.';
-  }
-}
-
-function initLogin(){
-  let ok = false;
-  try{ ok = sessionStorage.getItem(SESSION_KEY)==='1'; }catch(e){}
-  if(ok) document.getElementById('login-screen').style.display='none';
-  // clear error on type
-  const inp = document.getElementById('code-input');
-  inp.addEventListener('input',()=>{
-    inp.classList.remove('error');
-    document.getElementById('login-error').textContent='';
-  });
-}
-
-/* ── INIT ── */
-initLogin();
-renderLive();
-renderCatalog();
+/* ══════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', initApp);
 </script>
 </body>
 </html>
