@@ -11,10 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-        :root{--gold:#F5A623;--bg:#0a0a0a;}
-        body{background:var(--bg);color:#fff;font-family:'Space Grotesk',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
+        :root{--gold:#009944;--bg:#F6F3EE;--text:#111;--mute:rgba(0,0,0,.55);color-scheme:light dark;}
+        @media (prefers-color-scheme: dark){:root{--bg:#0D0D0D;--text:#F4F4F2;--mute:rgba(255,255,255,.55);}}
+        body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
         .code{font-size:clamp(5rem,20vw,10rem);font-weight:700;line-height:1;color:var(--gold);letter-spacing:-.04em;}
-        .msg{font-size:clamp(1.1rem,3vw,1.5rem);color:rgba(255,255,255,.55);margin:.75rem 0 2.5rem;line-height:1.5;}
+        .msg{font-size:clamp(1.1rem,3vw,1.5rem);color:var(--mute);margin:.75rem 0 2.5rem;line-height:1.5;}
         .btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:#000;font-family:inherit;font-size:.9rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:.85rem 2rem;border-radius:8px;}
         .btn:hover{opacity:.88;}
     </style>

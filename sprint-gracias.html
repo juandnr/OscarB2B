@@ -44,12 +44,29 @@ button{font-family:inherit;cursor:pointer;}
 :root{
   --bg:#0a0a0a; --bg-1:#0e0e0e; --bg-2:#141414;
   --glass:rgba(255,255,255,.04); --glass-b:rgba(255,255,255,.08);
-  --gold:#F5A623; --gold-dim:rgba(245,166,35,.10);
-  --gold-glow:rgba(245,166,35,.22); --gold-strong:rgba(245,166,35,.40);
+  --gold:#F5A623; --gold-dim:rgba(0,153,68,.10);
+  --gold-glow:rgba(0,153,68,.22); --gold-strong:rgba(0,153,68,.40);
   --white:#F5F5F5; --g1:#CCCCCC; --g2:#888888; --g3:#444444;
   --fh:'Space Grotesk',sans-serif; --fb:'Inter',sans-serif;
   --nav-h:68px; --r:16px; --r-sm:10px;
   --ease:cubic-bezier(.4,0,.2,1);
+}
+/* Tema: claro por defecto, oscuro según el dispositivo */
+:root{
+  --bg:#F6F3EE;--bg-1:#EDE9E1;--bg-2:#E4DFD5;
+  --glass:#FFFFFF;--glass-b:rgba(0,0,0,.09);
+  --gold:#009944;--gold-dim:rgba(0,153,68,.10);--gold-glow:rgba(0,153,68,.20);--gold-strong:rgba(0,153,68,.35);
+  --white:#111111;--g1:#333333;--g2:#666666;--g3:#999999;
+  --nav-bg:rgba(246,243,238,.96);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0D0D0D;--bg-1:#141414;--bg-2:#1C1C1C;
+    --glass:#171717;--glass-b:rgba(255,255,255,.09);
+    --white:#F4F4F2;--g1:rgba(255,255,255,.82);--g2:rgba(255,255,255,.60);--g3:rgba(255,255,255,.40);
+    --nav-bg:rgba(13,13,13,.92);
+  }
 }
 
 html{scroll-behavior:smooth;font-size:16px;}
@@ -61,7 +78,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 
 /* NAV */
 #nav{position:fixed;inset:0 0 auto 0;z-index:200;height:var(--nav-h);
-  display:flex;align-items:center;background:rgba(10,10,10,.94);
+  display:flex;align-items:center;background:var(--nav-bg);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-bottom:1px solid var(--glass-b);}
 .nav-row{display:flex;align-items:center;justify-content:space-between;width:100%;gap:1rem;}
@@ -74,7 +91,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 main{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:4rem;}
 
 /* CHECK */
-.check-circle{width:64px;height:64px;border-radius:50%;background:rgba(245,166,35,.12);
+.check-circle{width:64px;height:64px;border-radius:50%;background:rgba(0,153,68,.12);
   border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
   margin:0 auto 1.25rem;font-size:1.6rem;}
 
@@ -88,7 +105,7 @@ main{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:4rem;}
 
 /* MONTO */
 .monto-box{margin-bottom:1.75rem;padding:.9rem 1.25rem;
-  background:rgba(245,166,35,.06);border-left:3px solid var(--gold);
+  background:rgba(0,153,68,.06);border-left:3px solid var(--gold);
   border-radius:0 var(--r-sm) var(--r-sm) 0;}
 .monto-label{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--gold);margin-bottom:.3rem;}
 .monto-note{font-size:.78rem;color:var(--g2);margin-top:.2rem;}
@@ -118,8 +135,8 @@ main{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:4rem;}
 .btn-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 36px var(--gold-strong);}
 .btn-submit:disabled{opacity:.55;cursor:not-allowed;}
 
-.upload-ok{display:none;margin-top:1rem;padding:1rem 1.25rem;background:rgba(245,166,35,.08);
-  border:1px solid rgba(245,166,35,.25);border-radius:var(--r-sm);text-align:center;}
+.upload-ok{display:none;margin-top:1rem;padding:1rem 1.25rem;background:rgba(0,153,68,.08);
+  border:1px solid rgba(0,153,68,.25);border-radius:var(--r-sm);text-align:center;}
 .upload-ok.on{display:block;}
 .upload-ok-title{font-family:var(--fh);font-size:.92rem;font-weight:700;color:var(--gold);margin-bottom:.3rem;}
 .upload-ok-sub{font-size:.82rem;color:var(--g2);line-height:1.65;}
@@ -128,7 +145,8 @@ main{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:4rem;}
   background:rgba(245,80,80,.08);border:1px solid rgba(245,80,80,.25);
   border-radius:var(--r-sm);text-align:center;}
 .upload-err.on{display:block;}
-.upload-err p{font-size:.82rem;color:#f56464;line-height:1.6;}
+.upload-err p{font-size:.82rem;color:#C53030;line-height:1.6;}
+@media (prefers-color-scheme: dark){.upload-err p{color:#f56464;}}
 
 /* FOOTER */
 footer{border-top:1px solid var(--glass-b);padding:1.5rem 0;}

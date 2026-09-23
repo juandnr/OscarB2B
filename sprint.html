@@ -53,6 +53,18 @@ button{font-family:inherit;cursor:pointer;}
   --fh:'Space Grotesk',sans-serif; --fb:'Inter',sans-serif;
   --nav-h:68px; --r:16px; --r-sm:10px;
   --ease:cubic-bezier(.4,0,.2,1);
+  --nav-bg:rgba(246,243,238,.96);
+  --red:#C53030; --red-dim:rgba(220,60,60,.08); --red-bdr:rgba(220,60,60,.28);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0D0D0D; --bg-1:#141414; --bg-2:#1C1C1C;
+    --glass:#171717; --glass-b:rgba(255,255,255,.09);
+    --white:#F4F4F2; --g1:rgba(255,255,255,.82); --g2:rgba(255,255,255,.60); --g3:rgba(255,255,255,.40);
+    --nav-bg:rgba(13,13,13,.92);
+    --red:#F87171; --red-dim:rgba(248,113,113,.10); --red-bdr:rgba(248,113,113,.30);
+  }
 }
 
 html{scroll-behavior:smooth;font-size:16px;}
@@ -65,7 +77,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 #nav{position:fixed;inset:0 0 auto 0;z-index:200;height:var(--nav-h);
   display:flex;align-items:center;border-bottom:1px solid transparent;
   transition:background 300ms,border-color 300ms;}
-#nav.scrolled{background:rgba(246,243,238,.96);backdrop-filter:blur(20px);
+#nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);border-color:var(--glass-b);}
 .nav-row{display:flex;align-items:center;justify-content:space-between;width:100%;gap:1rem;}
 .nav-logo{font-family:var(--fh);font-size:1.3rem;font-weight:700;letter-spacing:-.02em;}
@@ -80,7 +92,7 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 
 /* STICKY MOBILE CTA */
 #mob-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:190;
-  padding:.8rem clamp(1.25rem,5vw,2.5rem);background:rgba(246,243,238,.97);
+  padding:.8rem clamp(1.25rem,5vw,2.5rem);background:var(--nav-bg);
   border-top:1px solid var(--glass-b);backdrop-filter:blur(16px);
   transition:transform 300ms var(--ease);}
 #mob-cta.hide{transform:translateY(100%);}
@@ -100,6 +112,17 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 .alumni-inner strong{font-weight:700;}
 .alumni-arrow{font-family:var(--fh);font-weight:700;color:var(--gold);white-space:nowrap;}
 #alumni-banner + #header{padding-top:3rem;}
+
+/* AVISO INSCRIPCIONES CERRADAS */
+.closed-notice{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;
+  padding:.85rem 1.1rem;margin-bottom:1.75rem;max-width:720px;
+  background:var(--red-dim);border:1.5px solid var(--red-bdr);border-radius:var(--r-sm);}
+.closed-dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex-shrink:0;
+  box-shadow:0 0 0 4px var(--red-dim);}
+.closed-notice p{flex:1;min-width:220px;font-size:.92rem;color:var(--g1);line-height:1.5;}
+.closed-notice strong{color:var(--red);font-weight:700;}
+.closed-notice a{font-family:var(--fh);font-size:.86rem;font-weight:700;color:var(--gold);white-space:nowrap;}
+.closed-notice a:hover{text-decoration:underline;}
 
 /* HEADER */
 #header{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:2.5rem;border-bottom:1px solid var(--glass-b);position:relative;overflow:hidden;}
@@ -151,9 +174,9 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 /* Day list */
 .day-list{display:flex;flex-direction:column;gap:.75rem;}
 .day-row{display:grid;grid-template-columns:80px 1fr;gap:1rem;
-  padding:.85rem 1rem;background:#fff;border:1px solid var(--glass-b);
+  padding:.85rem 1rem;background:var(--glass);border:1px solid var(--glass-b);
   border-radius:var(--r-sm);align-items:start;box-shadow:0 1px 4px rgba(0,0,0,.04);}
-.day-row:hover{border-color:rgba(196,125,0,.25);}
+.day-row:hover{border-color:rgba(0,153,68,.25);}
 .day-n{font-family:var(--fh);font-size:.72rem;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase;color:var(--gold);}
 .day-title{font-family:var(--fh);font-size:.92rem;font-weight:600;color:var(--white);margin-bottom:.25rem;}
@@ -163,9 +186,9 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 /* Deliverables */
 .dlv-list{display:flex;flex-direction:column;gap:.65rem;}
 .dlv-row{display:flex;align-items:flex-start;gap:.9rem;
-  padding:.9rem 1rem;background:#fff;border:1px solid var(--glass-b);border-radius:var(--r-sm);box-shadow:0 1px 4px rgba(0,0,0,.04);}
+  padding:.9rem 1rem;background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r-sm);box-shadow:0 1px 4px rgba(0,0,0,.04);}
 .dlv-ico{width:36px;height:36px;border-radius:8px;background:var(--gold-dim);
-  border:1px solid rgba(245,166,35,.15);display:flex;align-items:center;
+  border:1px solid rgba(0,153,68,.15);display:flex;align-items:center;
   justify-content:center;color:var(--gold);flex-shrink:0;}
 .dlv-name{font-family:var(--fh);font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.2rem;}
 .dlv-desc{font-size:.82rem;color:var(--g2);line-height:1.6;}
@@ -180,14 +203,14 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 .steps{display:flex;flex-direction:column;gap:.65rem;}
 .step-row{display:grid;grid-template-columns:32px 1fr;gap:.85rem;align-items:start;}
 .step-n{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);
-  border:1px solid rgba(245,166,35,.3);display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(0,153,68,.3);display:flex;align-items:center;justify-content:center;
   font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--gold);flex-shrink:0;}
 .step-title{font-family:var(--fh);font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.15rem;}
 .step-desc{font-size:.82rem;color:var(--g2);line-height:1.6;}
 
 /* SIDEBAR */
 .sidebar{display:flex;flex-direction:column;gap:1.25rem;}
-.side-card{background:#fff;border:1px solid var(--glass-b);border-radius:var(--r);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.side-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);}
 .side-card-head{padding:.9rem 1.25rem;border-bottom:1px solid var(--glass-b);
   font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--g2);
   letter-spacing:.06em;text-transform:uppercase;}
@@ -244,12 +267,12 @@ details[open] summary.fq::after{transform:rotate(45deg);}
   padding-top:1rem;border-top:1px solid var(--glass-b);margin-top:.25rem;}
 .field-group-title:first-child{border-top:none;padding-top:0;margin-top:0;}
 label{font-size:.76rem;font-weight:600;color:var(--g1);letter-spacing:.02em;}
-input,select,textarea{background:#fff;border:1px solid var(--glass-b);
+input,select,textarea{background:var(--glass);border:1px solid var(--glass-b);
   border-radius:var(--r-sm);color:var(--white);font-family:var(--fb);font-size:.88rem;
   padding:.78rem .95rem;width:100%;transition:border-color 200ms,box-shadow 200ms;-webkit-appearance:none;}
 input::placeholder,textarea::placeholder{color:var(--g3);}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,166,35,.1);}
-select option{background:#fff;color:#111;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(0,153,68,.1);}
+select option{background:var(--glass);color:var(--white);}
 textarea{resize:vertical;min-height:90px;}
 .btn-submit{margin-top:1.5rem;width:100%;padding:1rem 2rem;background:var(--gold);color:#0a0a0a;
   font-family:var(--fh);font-size:.95rem;font-weight:700;border-radius:10px;border:none;
@@ -258,14 +281,14 @@ textarea{resize:vertical;min-height:90px;}
 .btn-submit:hover{transform:translateY(-2px);box-shadow:0 12px 36px var(--gold-strong);}
 .form-note{margin-top:.85rem;font-size:.76rem;color:var(--g3);text-align:center;}
 .form-ok{display:none;padding:2.5rem;background:var(--gold-dim);
-  border:1px solid rgba(245,166,35,.25);border-radius:var(--r);}
+  border:1px solid rgba(0,153,68,.25);border-radius:var(--r);}
 .form-ok.on{display:block;}
 .form-ok h3{font-family:var(--fh);font-size:1.2rem;font-weight:700;color:var(--gold);margin-bottom:.5rem;}
 .form-ok p{font-size:.88rem;color:var(--g2);line-height:1.7;}
 .form-err{display:none;padding:1.25rem 1.5rem;background:rgba(220,60,60,.07);
   border:1px solid rgba(220,60,60,.3);border-radius:var(--r);margin-top:1rem;}
 .form-err.on{display:block;}
-.form-err p{font-size:.86rem;color:#f87171;line-height:1.65;}
+.form-err p{font-size:.86rem;color:var(--red);line-height:1.65;}
 /* Honeypot — invisible para humanos, visible para bots */
 .hp-field{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;tabindex:-1;}
 
@@ -274,11 +297,11 @@ textarea{resize:vertical;min-height:90px;}
   padding:1.25rem;border:1.5px dashed var(--glass-b);border-radius:var(--r-sm);
   cursor:pointer;color:var(--g2);font-size:.84rem;text-align:center;
   transition:border-color 200ms,background 200ms;}
-.upload-label:hover,.upload-label.has-file{border-color:var(--gold);background:rgba(245,166,35,.04);color:var(--g1);}
+.upload-label:hover,.upload-label.has-file{border-color:var(--gold);background:rgba(0,153,68,.04);color:var(--g1);}
 
 /* MÉTODOS DE PAGO */
 .pay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:1rem;}
-.pay-card{background:#fff;border:1px solid var(--glass-b);border-radius:var(--r-sm);padding:1rem 1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.pay-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r-sm);padding:1rem 1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.04);}
 .pay-card-full{grid-column:1/-1;}
 .pay-name{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.5rem;}
 .pay-detail{font-size:.82rem;color:var(--g2);line-height:1.7;}
@@ -347,11 +370,16 @@ textarea{resize:vertical;min-height:90px;}
 <div id="header">
   <div id="bills-bg" aria-hidden="true"></div>
   <div class="wrap" style="position:relative;z-index:1;">
+    <div class="closed-notice" role="status">
+      <span class="closed-dot" aria-hidden="true"></span>
+      <p><strong>Inscripciones cerradas.</strong> Esta edición del Sprint ya está completa.</p>
+      <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+quiero+que+me+avisen+cuando+abran+la+pr%C3%B3xima+edici%C3%B3n+del+Sprint." target="_blank" rel="noopener">Avisarme de la próxima edición →</a>
+    </div>
     <div class="header-tag">Oscar B2B · Programa presencial</div>
     <h1 class="header-title">En 5 días aprendes a construir, validar y vender un negocio real.</h1>
     <p style="font-size:.95rem;color:var(--gold);font-family:var(--fh);font-weight:500;margin-top:.75rem;margin-bottom:.25rem;">Sprint de Inteligencia Empresarial · Jóvenes de 17 a 23 años · Caracas</p>
     <p class="header-sub">Un programa presencial intensivo donde sales con un plan de negocio completo, criterio comercial y la red de contactos que necesitas para arrancar. Agosto–Septiembre 2026 · Nest Coworking.</p>
-    <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.55rem;margin-top:1.5rem;padding:.85rem 1.75rem;background:var(--gold);color:#0a0a0a;font-family:var(--fh);font-size:.95rem;font-weight:700;border-radius:10px;text-decoration:none;transition:transform 200ms,box-shadow 200ms;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 36px rgba(245,166,35,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+    <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.55rem;margin-top:1.5rem;padding:.85rem 1.75rem;background:var(--gold);color:#0a0a0a;font-family:var(--fh);font-size:.95rem;font-weight:700;border-radius:10px;text-decoration:none;transition:transform 200ms,box-shadow 200ms;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 36px rgba(0,153,68,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
       Hablar con Oscar por WhatsApp
     </a>
@@ -508,8 +536,8 @@ textarea{resize:vertical;min-height:90px;}
                 <div class="dlv-desc">Habilidad para articular, resumir y defender una propuesta comercial con datos duros frente a perfiles directivos en el Pitch Day.</div>
               </div>
             </div>
-            <div class="dlv-row" style="border-color:rgba(245,166,35,.25);background:linear-gradient(135deg,rgba(245,166,35,.07),rgba(245,166,35,.03));">
-              <div class="dlv-ico" style="background:rgba(245,166,35,.18);border-color:rgba(245,166,35,.3);">
+            <div class="dlv-row" style="border-color:rgba(0,153,68,.25);background:linear-gradient(135deg,rgba(0,153,68,.07),rgba(0,153,68,.03));">
+              <div class="dlv-ico" style="background:rgba(0,153,68,.18);border-color:rgba(0,153,68,.3);">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="8" cy="4" r="2"/><path d="M2 13c0-2 .9-3 2-3h8c1.1 0 2 1 2 3"/></svg>
               </div>
               <div>
@@ -647,7 +675,7 @@ textarea{resize:vertical;min-height:90px;}
           </div>
           <div class="side-cta">
             <div style="padding:.75rem 1rem;background:rgba(220,60,60,.07);border:1px solid rgba(220,60,60,.2);border-radius:8px;text-align:center;margin-bottom:.75rem;">
-              <span style="font-size:.75rem;font-weight:700;color:#f87171;letter-spacing:.06em;text-transform:uppercase;">Inscripciones cerradas</span>
+              <span style="font-size:.75rem;font-weight:700;color:var(--red);letter-spacing:.06em;text-transform:uppercase;">Inscripciones cerradas</span>
             </div>
             <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+quiero+que+me+avisen+cuando+abran+la+pr%C3%B3xima+edici%C3%B3n+del+Sprint." class="btn-apply" target="_blank" rel="noopener" style="background:#111;color:#fff;border:1px solid rgba(255,255,255,.1);">
               Avisarme de la próxima edición
@@ -656,8 +684,8 @@ textarea{resize:vertical;min-height:90px;}
           </div>
         </div>
 
-        <div class="side-card" style="border-color:rgba(245,166,35,.22);">
-          <div class="side-card-head" style="color:var(--gold);background:rgba(245,166,35,.06);border-bottom-color:rgba(245,166,35,.15);">Tu inversión incluye</div>
+        <div class="side-card" style="border-color:rgba(0,153,68,.22);">
+          <div class="side-card-head" style="color:var(--gold);background:rgba(0,153,68,.06);border-bottom-color:rgba(0,153,68,.15);">Tu inversión incluye</div>
           <div class="inc-list">
             <div class="inc-row">Pitch Day con empresarios</div>
             <div class="inc-row">Certificado de participación</div>
@@ -683,7 +711,7 @@ textarea{resize:vertical;min-height:90px;}
 
       <div style="padding:2rem;background:rgba(220,60,60,.05);border:1.5px solid rgba(220,60,60,.18);border-radius:var(--r);text-align:center;margin-bottom:2.5rem;">
         <div style="font-size:1.5rem;margin-bottom:.5rem;">🔒</div>
-        <h2 style="font-family:var(--fh);font-size:1.35rem;font-weight:700;color:#f87171;margin-bottom:.5rem;">Inscripciones cerradas</h2>
+        <h2 style="font-family:var(--fh);font-size:1.35rem;font-weight:700;color:var(--red);margin-bottom:.5rem;">Inscripciones cerradas</h2>
         <p style="font-size:.9rem;color:var(--g2);line-height:1.7;max-width:440px;margin:0 auto .75rem;">Esta edición del Sprint ya está completa. Déjanos tu contacto por WhatsApp y te avisamos cuando abramos la próxima edición.</p>
         <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+quiero+que+me+avisen+cuando+abran+la+pr%C3%B3xima+edici%C3%B3n+del+Sprint." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.55rem;padding:.8rem 1.5rem;background:#25D366;color:#fff;font-family:var(--fh);font-size:.9rem;font-weight:700;border-radius:9px;text-decoration:none;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.857L.057 23.012a.75.75 0 0 0 .931.931l5.155-1.476A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.696 9.696 0 0 1-4.945-1.352l-.355-.21-3.676 1.052 1.052-3.676-.21-.355A9.696 9.696 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
@@ -707,19 +735,19 @@ textarea{resize:vertical;min-height:90px;}
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;max-width:700px;">
 
-      <a href="sprint.html" style="display:block;padding:1.5rem;background:#fff;border:1px solid var(--glass-b);border-radius:14px;text-decoration:none;transition:border-color 200ms;" onmouseover="this.style.borderColor='rgba(0,153,68,.3)'" onmouseout="this.style.borderColor='var(--glass-b)'">
+      <a href="sprint.html" style="display:block;padding:1.5rem;background:var(--glass);border:1px solid var(--glass-b);border-radius:14px;text-decoration:none;transition:border-color 200ms;" onmouseover="this.style.borderColor='rgba(0,153,68,.3)'" onmouseout="this.style.borderColor='var(--glass-b)'">
         <div style="display:inline-flex;align-items:center;gap:.45rem;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,153,68,.1);color:var(--gold);border:1px solid rgba(0,153,68,.2);border-radius:99px;padding:.25rem .7rem;margin-bottom:.85rem;">
           <span style="width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;"></span>Este programa
         </div>
-        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:#111;margin-bottom:.3rem;">Sprint de Inteligencia Empresarial</div>
+        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.3rem;">Sprint de Inteligencia Empresarial</div>
         <div style="font-size:.82rem;color:var(--g2);">5 días presenciales · Caracas · 17–23 años</div>
       </a>
 
-      <div style="padding:1.5rem;background:#fff;border:1.5px dashed var(--glass-b);border-radius:14px;opacity:.7;">
+      <div style="padding:1.5rem;background:var(--glass);border:1.5px dashed var(--glass-b);border-radius:14px;opacity:.7;">
         <div style="display:inline-flex;align-items:center;gap:.45rem;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.05);color:var(--g3);border:1px solid var(--glass-b);border-radius:99px;padding:.25rem .7rem;margin-bottom:.85rem;">
           Próximamente
         </div>
-        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:#555;margin-bottom:.3rem;">Bootcamp</div>
+        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--g2);margin-bottom:.3rem;">Bootcamp</div>
         <div style="font-size:.82rem;color:var(--g3);">Más intensivo · Detalles pronto</div>
       </div>
 

@@ -19,6 +19,15 @@ fbq('init','605342989639546');fbq('track','PageView');
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
 <title>Portal de Estudiantes — Oscar B2B</title>
+<script>
+// Elección manual guardada o, si no hay, el modo del dispositivo (antes de pintar, sin parpadeo)
+(function(){
+  var saved = null;
+  try { saved = localStorage.getItem('oscarb2b_theme'); } catch(e) {}
+  var sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', saved || sys);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1893,8 +1902,12 @@ function openSection(section){
    THEME TOGGLE
 ══════════════════════════════════════════════ */
 (function(){
-  const saved = localStorage.getItem('oscarb2b_theme');
-  if(saved === 'light') applyTheme('light');
+  applyTheme(document.documentElement.getAttribute('data-theme'));
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+    let saved = null;
+    try { saved = localStorage.getItem('oscarb2b_theme'); } catch(err) {}
+    if(!saved) applyTheme(e.matches ? 'light' : 'dark');
+  });
 })();
 function applyTheme(mode){
   document.documentElement.setAttribute('data-theme', mode);
@@ -1908,7 +1921,7 @@ function applyTheme(mode){
 function toggleTheme(){
   const current = document.documentElement.getAttribute('data-theme');
   const next = current === 'light' ? 'dark' : 'light';
-  localStorage.setItem('oscarb2b_theme', next);
+  try { localStorage.setItem('oscarb2b_theme', next); } catch(e) {}
   applyTheme(next);
 }
 
