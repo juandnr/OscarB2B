@@ -66,6 +66,24 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             --r:            20px;
             --r-sm:         12px;
             --ease:         cubic-bezier(0.4,0,0.2,1);
+            --bg-rgb:       246,243,238;
+            --nav-bg:       rgba(246,243,238,.96);
+            color-scheme:   light dark;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg:       #0D0D0D;
+                --bg-1:     #141414;
+                --bg-2:     #1C1C1C;
+                --glass:    #171717;
+                --glass-b:  rgba(255,255,255,.09);
+                --white:    #F4F4F2;
+                --g1:       rgba(255,255,255,.82);
+                --g2:       rgba(255,255,255,.60);
+                --g3:       rgba(255,255,255,.40);
+                --bg-rgb:   13,13,13;
+                --nav-bg:   rgba(13,13,13,.92);
+            }
         }
 
         html { scroll-behavior: smooth; font-size: 16px; }
@@ -156,9 +174,12 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             align-items: center;
             transition: background 300ms, border-color 300ms, backdrop-filter 300ms;
             border-bottom: 1px solid transparent;
+            background: var(--nav-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
         }
         #nav.scrolled {
-            background: rgba(246,243,238,.96);
+            background: var(--nav-bg);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-color: var(--glass-b);
@@ -211,7 +232,7 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             position: absolute;
             top: calc(100% + 12px); left: 50%;
             transform: translateX(-50%);
-            background: rgba(246,243,238,.97);
+            background: var(--nav-bg);
             border: 1px solid var(--glass-b);
             border-radius: 12px;
             padding: .4rem;
@@ -272,7 +293,7 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             position: fixed;
             top: var(--nav-h); left: 0; right: 0;
             z-index: 199;
-            background: rgba(246,243,238,.97);
+            background: var(--nav-bg);
             backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--glass-b);
             padding: 1.25rem 0 1.75rem;
@@ -297,65 +318,131 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
            SOBRE MÍ — First section, no animation
         ══════════════════════════════════════════════════ */
         #sobre {
-            padding-top: calc(var(--nav-h) + 3rem);
-            padding-bottom: 3rem;
-        }
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.4fr;
-            gap: 3.5rem;
-            align-items: start;
-        }
-        .about-card {
-            width: 100%;
-            height: min(520px, 68vh);
-            border: 1px solid var(--glass-b);
-            border-radius: var(--r);
-            display: flex;
-            align-items: flex-end;
-            padding: 1.5rem;
             position: relative;
+            min-height: max(640px, 100svh);
+            background: var(--bg);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
-        .about-card img {
+        .hero-photo {
             position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; right: 0;
+            width: 62%; height: 100%;
             object-fit: cover;
-            object-position: center 10%;
+            object-position: 50% 82%;
         }
-        .about-card::before {
+        #sobre::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.15) 55%, transparent 100%);
             z-index: 1;
+            pointer-events: none;
+            background:
+                linear-gradient(90deg, rgb(var(--bg-rgb)) 34%, rgba(var(--bg-rgb),.85) 46%, rgba(var(--bg-rgb),0) 72%),
+                linear-gradient(0deg, rgba(var(--bg-rgb),.9) 0%, rgba(var(--bg-rgb),0) 30%);
         }
-        .about-quote {
+        .hero-inner {
             position: relative;
             z-index: 2;
-            font-family: var(--fh);
-            font-size: clamp(0.9rem, 1.5vw, 1.15rem);
-            font-weight: 600;
-            line-height: 1.4;
-            color: var(--white);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: calc(var(--nav-h) + 2rem);
+            padding-bottom: 5.5rem;
         }
-        .about-quote::before {
-            content: '\201C';
-            font-size: 3.5rem;
-            line-height: 0;
-            vertical-align: -1.4rem;
-            color: var(--gold);
+        .hero-title {
             font-family: var(--fh);
-            margin-right: 0.1em;
+            font-size: clamp(2.5rem, 5vw, 4.4rem);
+            font-weight: 700;
+            line-height: 1.02;
+            letter-spacing: -0.035em;
+            max-width: 620px;
+        }
+        .hero-title span { color: var(--gold); }
+        .hero-sub {
+            margin-top: 1.25rem;
+            font-size: 1.05rem;
+            line-height: 1.65;
+            color: var(--g2);
+            max-width: 460px;
+        }
+        .hero-ctas {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .hero-ctas .btn-cta { padding: 1rem 2rem; font-family: var(--fh); }
+        .hero-link {
+            font-family: var(--fh);
+            font-weight: 600;
+            font-size: .95rem;
+            color: var(--g1);
+            transition: color 200ms;
+        }
+        .hero-link:hover { color: var(--gold); }
+        .hero-brands {
+            position: absolute;
+            z-index: 2;
+            bottom: 2rem;
+            left: 0; right: 0;
+        }
+        .hero-brands .wrap {
+            display: flex;
+            gap: 1.75rem;
+            flex-wrap: wrap;
+            font-family: var(--fh);
+            font-weight: 600;
+            font-size: .8rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--g3);
+        }
+        @media (max-width: 880px) {
+            #sobre { min-height: auto; }
+            .hero-photo { width: 100%; height: 62svh; object-position: 50% 78%; }
+            #sobre::after {
+                background: linear-gradient(0deg, rgb(var(--bg-rgb)) calc(100% - 62svh + 4rem), rgba(var(--bg-rgb),0) calc(100% - 30svh));
+            }
+            .hero-inner { padding-top: calc(62svh - 5rem); padding-bottom: 2rem; }
+            .hero-brands { position: relative; bottom: auto; padding-bottom: 2.5rem; }
+            .hero-brands .wrap { gap: 1.1rem; font-size: .72rem; }
+        }
+
+        /* ── Mi historia ───────────────────────────────── */
+        #historia {
+            padding: 5.5rem 0;
+            border-top: 1px solid var(--glass-b);
+        }
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        .story-quote {
+            margin-top: 1.75rem;
+            padding-left: 1.25rem;
+            border-left: 2px solid var(--gold);
+            font-family: var(--fh);
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.45;
+            color: var(--white);
         }
         .about-story {
             color: var(--g1);
-            font-size: 0.96rem;
+            font-size: 1rem;
             line-height: 1.78;
         }
-        .about-story p + p { margin-top: 0.85rem; }
+        .about-story p + p { margin-top: 1rem; }
+        @media (max-width: 880px) {
+            #historia { padding: 4rem 0; }
+            .story-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+        }
         .values {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -382,10 +469,6 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             gap: 1rem;
             margin-top: 1.5rem;
             flex-wrap: wrap;
-        }
-        @media (max-width: 880px) {
-            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-            .about-card { height: min(400px, 55vw); }
         }
 
         /* ══════════════════════════════════════════════════
@@ -524,7 +607,7 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             content: '';
             position: absolute; bottom: 0; left: 0; right: 0;
             height: 70px;
-            background: linear-gradient(to top, rgba(246,243,238,.8) 0%, transparent 100%);
+            background: linear-gradient(to top, rgba(var(--bg-rgb),.8) 0%, transparent 100%);
             pointer-events: none;
         }
 
@@ -795,7 +878,7 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
         <nav class="nav-row">
             <a href="#sobre" class="nav-logo">Oscar<span>b2b</span></a>
             <ul class="nav-links">
-                <li><a href="#sobre">Quién soy</a></li>
+                <li><a href="#historia">Quién soy</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li class="nav-dropdown">
                     <a href="#cursos" onclick="return false;">Cursos <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 4l4 4 4-4"/></svg></a>
@@ -817,7 +900,7 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
 
 <nav id="mob-nav">
     <ul>
-        <li><a href="#sobre">Quién soy</a></li>
+        <li><a href="#historia">Quién soy</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="#contacto">Contacto</a></li>
         <li style="padding:.2rem 0;"><span style="display:block;padding:.3rem clamp(1.25rem,5vw,2.5rem);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g3);">Cursos</span></li>
@@ -830,14 +913,38 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
 
 <!-- ════ SOBRE MÍ — Carga inmediata, sin animación ══════ -->
 <section id="sobre">
+    <img class="hero-photo" src="oscar-paez-hero.webp" alt="Oscar Paez en su oficina" width="1200" height="1800" fetchpriority="high">
+    <div class="wrap hero-inner">
+        <span class="label">Oscar Paez · Empresario</span>
+        <h1 class="hero-title">Criterio de negocios para el <span>mundo real.</span></h1>
+        <p class="hero-sub">Fundador de Merch Caracas. Construí con marcas como Toyota y Coca-Cola — hoy enseño lo que de verdad funciona.</p>
+        <div class="hero-ctas">
+            <a href="sprint.html" class="btn-cta">Conoce el Sprint →</a>
+            <a href="#historia" class="hero-link">Mi historia ↓</a>
+        </div>
+    </div>
+    <div class="hero-brands" aria-label="Marcas con las que he trabajado">
+        <div class="wrap"><span>Toyota</span><span>Coca-Cola</span><span>Santa Teresa</span><span>Polar</span></div>
+    </div>
+</section>
+
+<!-- ════ MI HISTORIA ══════ -->
+<section id="historia">
     <div class="wrap">
-        <div class="about-grid">
+        <div class="story-grid">
 
             <div>
-                <div class="about-card">
-                    <img src="oscar-paez.webp" alt="Oscar Paez — Consultor de Ventas & Business Coach" width="600" height="800" fetchpriority="high">
+                <span class="label">Mi historia</span>
+                <h2 class="stitle">Quién soy</h2>
+                <p class="story-quote">No soy influencer. Soy un empresario que invirtió 8 años en entender los fundamentos del éxito comercial.</p>
+            </div>
+
+            <div>
+                <div class="about-story">
+                    <p>Soy Oscar Paez, empresario venezolano de 35 años y fundador de Merch Caracas. Llevo años trabajando con marcas como Toyota, Coca-Cola, Santa Teresa y Polar — y también cometí todos los errores posibles por no tener los sistemas adecuados.</p>
+                    <p>Con tecnología, procesos e Inteligencia Artificial diseñé el mapa que le faltaba a mi "yo del pasado". Hoy lo enseño a una comunidad de emprendedores en Venezuela que quieren desarrollar criterio para el mundo real.</p>
                 </div>
-                <div class="about-socials">
+                <div class="about-socials" style="margin-top:1.75rem">
                     <a href="https://www.youtube.com/@oscarb2b" class="soc" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
                         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
                     </a>
@@ -852,22 +959,6 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
                     </a>
                     <a href="https://www.tiktok.com/@oscarb2b_" class="soc" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
                         <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
-                    </a>
-                </div>
-            </div>
-
-            <div>
-                <span class="label">Quién soy</span>
-                <h2 class="stitle" style="margin-bottom:1.5rem">Quién soy</h2>
-                <div class="about-story">
-                    <p>Soy Oscar Paez, empresario venezolano de 35 años y el fundador de Merch Caracas.</p>
-                    <p>En Merch construí un negocio real que ha trabajado por años con grandes marcas como Toyota, Coca-Cola, Santa Teresa y Polar. Pero también cometí todos los errores posibles por no contar con los sistemas adecuados. Cuando empecé no tenía las herramientas, los sistemas, los procesos ni la estructura para escalar de forma inteligente que tengo hoy en día.</p>
-                    <p>A través de tecnología, desarrollo de procesos y entendiendo la Inteligencia Artificial, logré diseñar el mapa que necesitaba mi "yo del pasado" cuando empezó. Hoy, además de Merch; estoy construyendo una comunidad de emprendedores en Venezuela para ayudarlos a desarrollar el criterio y las habilidades que funcionan en el mundo real y cómo llevar empresas según mis conocimientos y experiencias profesionales.</p>
-                    <p>No soy influencer. Soy un empresario que invirtió 8 años en entender los fundamentos del éxito comercial, y ahora lo enseño a los lideres del futuro.</p>
-                </div>
-                <div class="about-cta-row">
-                    <a href="sprint.html" class="btn-cta" style="font-size:.9rem;padding:.8rem 1.5rem;">
-                        Ver el Sprint →
                     </a>
                 </div>
             </div>
