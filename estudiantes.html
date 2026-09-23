@@ -2140,15 +2140,16 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('newpass-modal').classList.add('open');
     return;
   }
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if(session && !currentUser){
-      currentUser = session.user;
-      await loadUserAccess();
-      renderDashboardCards();
-      document.getElementById('auth-modal').classList.remove('open');
-      showView('view-dashboard');
-    } else if(!session){
-      showAuthModal();
+  initApp();
+  sb.auth.onAuthStateChange((event, session) => {
+    if(event === 'SIGNED_IN' && session && !currentUser){
+      setTimeout(async () => {
+        currentUser = session.user;
+        await loadUserAccess();
+        renderDashboardCards();
+        document.getElementById('auth-modal').classList.remove('open');
+        showView('view-dashboard');
+      }, 0);
     }
   });
 });
