@@ -238,17 +238,21 @@ async function doAdminLogin(){
   errEl.textContent = '';
   if(!email || !pass){ errEl.textContent = 'Ingresa correo y contraseña.'; return; }
   btn.textContent = 'Cargando...'; btn.disabled = true;
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
   if(error){
     errEl.textContent = 'Credenciales incorrectas.';
     btn.textContent = 'Entrar →'; btn.disabled = false;
     return;
   }
-  await checkAdminAndLoad(data.user);
+  // onAuthStateChange se encarga de llamar a checkAdminAndLoad
 }
 
+let checkingAdmin = false;
 async function checkAdminAndLoad(user){
+  if(checkingAdmin) return;
+  checkingAdmin = true;
   const { data: adm } = await sb.from('admins').select('id').eq('id', user.id).single();
+  checkingAdmin = false;
   if(!adm){
     await sb.auth.signOut();
     document.getElementById('adm-error').textContent = 'No tienes acceso de administrador.';
