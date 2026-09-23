@@ -620,6 +620,41 @@ nav{
   </div>
 </nav>
 
+<!-- ════════ RESET PASSWORD MODAL ════════ -->
+<div class="modal-overlay" id="reset-modal">
+  <div class="modal-card">
+    <div class="modal-logo">Oscar<span>b2b</span></div>
+    <div id="reset-form-view">
+      <p style="font-size:.88rem;color:var(--g2);margin:.5rem 0 1rem;line-height:1.6;">Ingresa tu correo y te enviamos un link para restablecer tu contraseña.</p>
+      <label class="modal-label">Correo electrónico</label>
+      <input id="reset-email" class="modal-input modal-input-email" type="email" placeholder="tucorreo@email.com" autocomplete="email" onkeydown="if(event.key==='Enter')doResetPassword()">
+      <div class="modal-error" id="reset-error"></div>
+      <button class="modal-btn" id="reset-btn" onclick="doResetPassword()">Enviar link →</button>
+      <button onclick="closeResetModal()" style="background:none;border:none;width:100%;text-align:center;font-size:.78rem;color:var(--g2);margin-top:.65rem;cursor:pointer;padding:.25rem;">Volver</button>
+    </div>
+    <div id="reset-success-view" style="display:none;text-align:center;padding:1rem 0;">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--green-dim);border:2px solid var(--green-bdr);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:var(--green);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p style="font-size:.95rem;font-weight:600;margin-bottom:.35rem;">Revisa tu correo</p>
+      <p style="font-size:.82rem;color:var(--g2);line-height:1.6;">Te enviamos un link para restablecer tu contraseña.</p>
+      <button onclick="closeResetModal()" style="background:none;border:none;font-size:.82rem;color:var(--green);margin-top:1rem;cursor:pointer;">Volver al inicio de sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ NEW PASSWORD MODAL ════════ -->
+<div class="modal-overlay" id="newpass-modal">
+  <div class="modal-card">
+    <div class="modal-logo">Oscar<span>b2b</span></div>
+    <p style="font-size:.88rem;color:var(--g2);margin:.5rem 0 1rem;line-height:1.6;">Elige una nueva contraseña para tu cuenta.</p>
+    <label class="modal-label">Nueva contraseña</label>
+    <input id="newpass-input" class="modal-input modal-input-email" type="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" onkeydown="if(event.key==='Enter')doUpdatePassword()">
+    <div class="modal-error" id="newpass-error"></div>
+    <button class="modal-btn" id="newpass-btn" onclick="doUpdatePassword()">Guardar contraseña →</button>
+  </div>
+</div>
+
 <!-- ════════ AUTH MODAL ════════ -->
 <div class="modal-overlay" id="auth-modal">
   <div class="modal-card">
@@ -642,6 +677,7 @@ nav{
       <input id="login-password" class="modal-input modal-input-email" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
       <div class="modal-error" id="login-error"></div>
       <button class="modal-btn" id="login-btn" onclick="doLogin()">Iniciar sesión →</button>
+      <button onclick="showForgotPassword()" style="background:none;border:none;width:100%;text-align:center;font-size:.78rem;color:var(--g2);margin-top:.65rem;cursor:pointer;padding:.25rem;">¿Olvidaste tu contraseña?</button>
     </div>
     <!-- Signup -->
     <div id="auth-form-signup" style="display:none">
@@ -1679,6 +1715,12 @@ let currentUser = null;
 let userAccess = { sprint: false, bootcamp: false, recursos: false };
 
 async function initApp(){
+  // Detectar si viene de un link de recuperación de contraseña
+  const hash = window.location.hash;
+  if(hash.includes('type=recovery')){
+    document.getElementById('newpass-modal').classList.add('open');
+    return;
+  }
   const { data: { session } } = await sb.auth.getSession();
   if(!session){ showAuthModal(); return; }
   currentUser = session.user;
@@ -1697,6 +1739,51 @@ async function doGoogleLogin(){
     provider: 'google',
     options: { redirectTo: 'https://oscarb2b.com/estudiantes.html' }
   });
+}
+
+function showForgotPassword(){
+  document.getElementById('auth-modal').classList.remove('open');
+  document.getElementById('reset-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('reset-email').focus(), 100);
+}
+
+function closeResetModal(){
+  document.getElementById('reset-modal').classList.remove('open');
+  document.getElementById('reset-form-view').style.display = '';
+  document.getElementById('reset-success-view').style.display = 'none';
+  document.getElementById('reset-email').value = '';
+  document.getElementById('reset-error').textContent = '';
+  showAuthModal();
+}
+
+async function doResetPassword(){
+  const email = document.getElementById('reset-email').value.trim();
+  const errEl = document.getElementById('reset-error');
+  const btn   = document.getElementById('reset-btn');
+  errEl.textContent = '';
+  if(!email){ errEl.textContent = 'Ingresa tu correo.'; return; }
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://oscarb2b.com/estudiantes.html'
+  });
+  btn.textContent = 'Enviar link →'; btn.disabled = false;
+  if(error){ errEl.textContent = 'No pudimos enviar el correo. Verifica la dirección.'; return; }
+  document.getElementById('reset-form-view').style.display = 'none';
+  document.getElementById('reset-success-view').style.display = '';
+}
+
+async function doUpdatePassword(){
+  const pass  = document.getElementById('newpass-input').value;
+  const errEl = document.getElementById('newpass-error');
+  const btn   = document.getElementById('newpass-btn');
+  errEl.textContent = '';
+  if(pass.length < 8){ errEl.textContent = 'La contraseña debe tener mínimo 8 caracteres.'; return; }
+  btn.textContent = 'Guardando...'; btn.disabled = true;
+  const { error } = await sb.auth.updateUser({ password: pass });
+  btn.textContent = 'Guardar contraseña →'; btn.disabled = false;
+  if(error){ errEl.textContent = 'Error al guardar. Intenta de nuevo.'; return; }
+  document.getElementById('newpass-modal').classList.remove('open');
+  await initApp();
 }
 
 function showAuthModal(){
