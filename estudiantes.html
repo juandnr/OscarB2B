@@ -696,8 +696,8 @@ nav{
 <!-- ════════ DASHBOARD ════════ -->
 <div id="view-dashboard">
   <div class="dash-eyebrow">Portal de Estudiantes</div>
-  <h1 class="dash-title">Sprint de Inteligencia<br>Empresarial</h1>
-  <p class="dash-sub">Selecciona el acceso que corresponde a tu inscripción.</p>
+  <h1 class="dash-title">Tus programas</h1>
+  <p class="dash-sub">Entra a los recursos de los programas a los que tienes acceso.</p>
 
   <div class="dash-grid">
 
@@ -708,13 +708,13 @@ nav{
       </div>
       <div class="pc-body">
         <div class="pc-tag pc-tag-sprint">Materiales</div>
-        <div class="pc-name">Sprint</div>
-        <p class="pc-desc">Presentaciones de cada día, plantillas y recursos descargables del Sprint presencial.</p>
+        <div class="pc-name">Recursos del Sprint</div>
+        <p class="pc-desc">Prompts, presentaciones y recursos del Sprint de Inteligencia Empresarial.</p>
       </div>
       <div class="pc-footer">
         <span class="pc-lock">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          Acceso con código
+          Solo alumnos del Sprint
         </span>
         <span class="pc-arrow pc-arrow-sprint">
           Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -728,14 +728,14 @@ nav{
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
       </div>
       <div class="pc-body">
-        <div class="pc-tag pc-tag-online">Clases en video</div>
+        <div class="pc-tag pc-tag-online">En construcción</div>
         <div class="pc-name">Bootcamp</div>
-        <p class="pc-desc">Accede a las grabaciones de las clases en vivo y sigue el contenido a tu propio ritmo.</p>
+        <p class="pc-desc">El siguiente nivel después del Sprint. Estamos preparando el programa — te avisaremos cuando abra.</p>
       </div>
       <div class="pc-footer">
         <span class="pc-lock">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          Acceso con código
+          Próximamente
         </span>
         <span class="pc-arrow pc-arrow-online">
           Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1856,12 +1856,13 @@ async function doSignOut(){
 }
 
 function renderDashboardCards(){
-  setCard('card-sprint',    userAccess.sprint,    'sprint',   'Sprint');
-  setCard('card-bootcamp',  userAccess.bootcamp,  'online',   'Bootcamp');
-  setCard('card-recursos',  userAccess.recursos,  'recursos', 'Recursos');
+  setCard('card-sprint',   userAccess.sprint, 'sprint',   'Solo alumnos del Sprint');
+  // Bootcamp fijo en "Próximamente" para todos hasta su lanzamiento
+  setCard('card-bootcamp', false,             'online',   'Próximamente');
+  setCard('card-recursos', true,              'recursos', '');
 }
 
-function setCard(id, hasAcc, section, label){
+function setCard(id, hasAcc, section, lockText){
   const card = document.getElementById(id);
   if(!card) return;
   const lockEl  = card.querySelector('.pc-lock');
@@ -1876,15 +1877,14 @@ function setCard(id, hasAcc, section, label){
     card.style.cursor = 'default';
     card.style.opacity = '.45';
     card.onclick = null;
-    if(lockEl)  { lockEl.style.display = ''; lockEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> Sin acceso`; }
+    if(lockEl)  { lockEl.style.display = ''; lockEl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> ${lockText}`; }
     if(arrowEl) arrowEl.style.display = 'none';
   }
 }
 
 function openSection(section){
-  if(section==='sprint'   && !userAccess.sprint)    return;
-  if(section==='online'   && !userAccess.bootcamp)  return;
-  if(section==='recursos' && !userAccess.recursos)  return;
+  if(section==='sprint' && !userAccess.sprint) return;
+  if(section==='online') return;
   enterSection(section);
 }
 

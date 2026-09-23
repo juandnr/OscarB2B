@@ -91,6 +91,16 @@ body{background:var(--bg);color:var(--white);font-family:var(--fb);
 .mob-btn{flex-shrink:0;padding:.7rem 1.3rem;background:var(--gold);color:#0a0a0a;
   font-family:var(--fh);font-size:.86rem;font-weight:700;border-radius:8px;border:none;}
 
+/* BANNER ALUMNOS */
+#alumni-banner{display:block;margin-top:var(--nav-h);background:var(--gold-dim);
+  border-bottom:1px solid rgba(0,153,68,.2);color:var(--white);transition:background 200ms;}
+#alumni-banner:hover{background:var(--gold-glow);}
+.alumni-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding-block:.7rem;font-size:.86rem;}
+.alumni-inner strong{font-weight:700;}
+.alumni-arrow{font-family:var(--fh);font-weight:700;color:var(--gold);white-space:nowrap;}
+#alumni-banner + #header{padding-top:3rem;}
+
 /* HEADER */
 #header{padding-top:calc(var(--nav-h) + 3rem);padding-bottom:2.5rem;border-bottom:1px solid var(--glass-b);position:relative;overflow:hidden;}
 #bills-bg{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
@@ -324,6 +334,14 @@ textarea{resize:vertical;min-height:90px;}
     <a href="https://wa.me/584221863453?text=Hola+Oscar%2C+me+interesa+el+Sprint+de+Inteligencia+Empresarial.+%C2%BFPuedo+obtener+m%C3%A1s+informaci%C3%B3n%3F" class="mob-btn" target="_blank" rel="noopener" onclick="if(typeof fbq==='function')fbq('track','Lead')">Hablar por WhatsApp →</a>
   </div>
 </div>
+
+<!-- BANNER ALUMNOS -->
+<a href="estudiantes.html" id="alumni-banner">
+  <div class="wrap alumni-inner">
+    <span><strong>¿Ya hiciste el Sprint?</strong> Ingresa a tus recursos</span>
+    <span class="alumni-arrow">Ingresar →</span>
+  </div>
+</a>
 
 <!-- HEADER -->
 <div id="header">
