@@ -437,8 +437,11 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
             color: var(--g1);
             font-size: 1rem;
             line-height: 1.78;
+            text-align: justify;
+            hyphens: none;
         }
         .about-story p + p { margin-top: 1rem; }
+        @media (max-width: 480px) { .about-story { text-align: left; } }
         @media (max-width: 880px) {
             #historia { padding: 4rem 0; }
             .story-grid { grid-template-columns: 1fr; gap: 1.75rem; }
@@ -941,7 +944,7 @@ src="https://www.facebook.com/tr?id=605342989639546&ev=PageView&noscript=1"
 
             <div>
                 <div class="about-story">
-                    <p>Soy Oscar Paez, empresario venezolano de 35 años y fundador de Merch Caracas. Llevo años trabajando con marcas como Toyota, Coca-Cola, Santa Teresa y Polar — y también cometí todos los errores posibles por no tener los sistemas adecuados.</p>
+                    <p>Soy Oscar Paez, empresario venezolano de 35 años y fundador de Merch Caracas. Llevo años trabajando con marcas como Toyota, Coca-Cola, Santa Teresa y Polar, y también cometí todos los errores posibles por no tener los sistemas adecuados.</p>
                     <p>Con tecnología, procesos e Inteligencia Artificial diseñé el mapa que le faltaba a mi "yo del pasado". Hoy lo enseño a una comunidad de emprendedores en Venezuela que quieren desarrollar criterio para el mundo real.</p>
                 </div>
                 <div class="about-socials" style="margin-top:1.75rem">
