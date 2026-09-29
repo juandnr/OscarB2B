@@ -4,6 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { crearHttp } = require('../src/http');
 
 // Carga merch-caracas/.env sin pisar variables ya definidas en el entorno.
 function cargarEnv(archivo = path.join(__dirname, '..', '.env')) {
@@ -22,21 +23,6 @@ function cargarEnv(archivo = path.join(__dirname, '..', '.env')) {
 }
 
 // Implementación de la función http de los módulos de src/ con fetch.
-async function http({ method, url, headers, body, timeout }) {
-  const r = await fetch(url, {
-    method,
-    headers,
-    body: body === undefined ? undefined : JSON.stringify(body),
-    signal: AbortSignal.timeout(timeout || 30000),
-  });
-  const texto = await r.text();
-  let json = null;
-  try {
-    json = texto ? JSON.parse(texto) : null;
-  } catch (error) {
-    json = texto;
-  }
-  return { status: r.status, body: json, headers: Object.fromEntries(r.headers) };
-}
+const http = crearHttp();
 
 module.exports = { cargarEnv, http };

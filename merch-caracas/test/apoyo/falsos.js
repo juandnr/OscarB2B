@@ -55,6 +55,10 @@ function crearHubSpotFalso() {
   let secuencia = 5000;
   const errores = []; // [{ metodo, patron, status, veces }]
 
+  const pipelines = [];
+  const propiedades = {};
+  const grupos = [];
+
   function crear(tipo, cuerpo) {
     const id = String(secuencia++);
     const ahora = new Date().toISOString();
@@ -120,6 +124,32 @@ function crearHubSpotFalso() {
       }
       return { status: 200, body: publico(obj), headers: {} };
     }
+    if (method === 'GET' && ruta === '/crm/v3/pipelines/deals') {
+      return { status: 200, body: { results: JSON.parse(JSON.stringify(pipelines)) }, headers: {} };
+    }
+    if (method === 'POST' && ruta === '/crm/v3/pipelines/deals') {
+      const p = { id: `pl${secuencia++}`, label: body.label, stages: body.stages.map((e) => ({ ...e, id: String(secuencia++) })) };
+      pipelines.push(p);
+      return { status: 201, body: p, headers: {} };
+    }
+    if (method === 'POST' && ruta === '/crm/v3/properties/deals/groups') {
+      if (grupos.includes(body.name)) return { status: 409, body: { message: 'existe' }, headers: {} };
+      grupos.push(body.name);
+      return { status: 201, body, headers: {} };
+    }
+    if ((m = /^\/crm\/v3\/properties\/deals\/(\w+)$/.exec(ruta))) {
+      if (method === 'GET') {
+        return propiedades[m[1]] ? { status: 200, body: propiedades[m[1]], headers: {} } : { status: 404, body: { message: 'no' }, headers: {} };
+      }
+      if (method === 'PATCH') {
+        Object.assign(propiedades[m[1]], body);
+        return { status: 200, body: propiedades[m[1]], headers: {} };
+      }
+    }
+    if (method === 'POST' && ruta === '/crm/v3/properties/deals') {
+      propiedades[body.name] = body;
+      return { status: 201, body, headers: {} };
+    }
     if (method === 'GET' && ruta === '/crm/v3/owners') {
       return { status: 200, body: { results: owners }, headers: {} };
     }
@@ -129,6 +159,8 @@ function crearHubSpotFalso() {
   return {
     http,
     datos,
+    pipelines,
+    propiedades,
     llamadas,
     fallar(metodo, patron, status, veces = 1) {
       errores.push({ metodo, patron, status, veces });

@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { empaquetar } = require('../scripts/empaquetar');
 
 const RAIZ = path.join(__dirname, '..');
 const SALIDA = path.join(__dirname, 'workflows');
@@ -23,69 +24,6 @@ const CREDENCIAL_PG = {
     name: process.env.N8N_POSTGRES_CREDENTIAL_NAME || 'Merch Caracas Postgres',
   },
 };
-
-// ── Empaquetado de módulos ──────────────────────────────────────────────────
-
-function fuente(id) {
-  if (id === 'src/prompt.js') {
-    const texto = fs.readFileSync(path.join(RAIZ, 'prompts', 'clasificador.md'), 'utf8');
-    return `'use strict';\nmodule.exports = ${JSON.stringify(texto)};\n`;
-  }
-  return fs.readFileSync(path.join(RAIZ, id), 'utf8');
-}
-
-function resolver(desde, ruta) {
-  let id = path.posix.normalize(path.posix.join(path.posix.dirname(desde), ruta));
-  if (!id.endsWith('.js')) id += '.js';
-  return id;
-}
-
-function recolectar(entrada) {
-  const modulos = new Map();
-  const pendientes = [entrada];
-  while (pendientes.length) {
-    const id = pendientes.pop();
-    if (modulos.has(id)) continue;
-    const codigo = fuente(id);
-    for (const m of codigo.matchAll(/require\('([^']+)'\)/g)) {
-      if (!m[1].startsWith('.')) {
-        throw new Error(`${id} requiere "${m[1]}": los módulos para n8n solo pueden requerir archivos de src/`);
-      }
-      pendientes.push(resolver(id, m[1]));
-    }
-    modulos.set(id, codigo);
-  }
-  return modulos;
-}
-
-function empaquetar(entrada) {
-  const modulos = [...recolectar(entrada).entries()].sort(([a], [b]) => a.localeCompare(b));
-  const cuerpos = modulos
-    .map(([id, codigo]) => `  ${JSON.stringify(id)}: function (module, exports, require) {\n${codigo}\n  },`)
-    .join('\n');
-  return [
-    'const __fuentes = {',
-    cuerpos,
-    '};',
-    'const __cache = {};',
-    'function __resolver(desde, ruta) {',
-    "  const partes = desde.split('/').slice(0, -1);",
-    "  for (const p of ruta.split('/')) {",
-    "    if (p === '..') partes.pop();",
-    "    else if (p !== '.') partes.push(p);",
-    '  }',
-    "  const id = partes.join('/');",
-    "  return id.endsWith('.js') ? id : `${id}.js`;",
-    '}',
-    'function __cargar(id) {',
-    '  if (__cache[id]) return __cache[id].exports;',
-    '  const modulo = { exports: {} };',
-    '  __cache[id] = modulo;',
-    '  __fuentes[id](modulo, modulo.exports, (ruta) => __cargar(__resolver(id, ruta)));',
-    '  return modulo.exports;',
-    '}',
-  ].join('\n');
-}
 
 // Código completo de un Code node que llama a `funcion` de `modulo`.
 function codigoNodo({ flujo, nombre, modulo, funcion, extra }) {

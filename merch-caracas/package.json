@@ -12,6 +12,7 @@
     "db:migrar": "node scripts/migrar.js",
     "hubspot:setup": "node hubspot/setup.js",
     "n8n:construir": "node n8n/construir.js",
+    "supabase:construir": "node supabase/construir.js",
     "webhook:configurar": "node scripts/configurar-webhook-360dialog.js",
     "verificar": "node scripts/verificar.js"
   },

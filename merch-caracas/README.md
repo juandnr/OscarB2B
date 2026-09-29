@@ -8,10 +8,16 @@ Cliente ──► App WhatsApp Business ◄── Vendedores contestan aquí
                    ▼
               360dialog  (webhooks: messages + smb_message_echoes + history)
                    ▼
-                 n8n ──► Postgres (mensajes, asignaciones, estado)
-                   ├──► Claude API (clasifica la conversación → JSON)
-                   └──► HubSpot (contacto, negocio, propietario, tareas, notas)
+   Supabase: Edge Function "merch" ──► Postgres (esquema merch)
+             (cron cada 3–15 min)   ├──► Claude API (clasifica la conversación → JSON)
+                                    └──► HubSpot (contacto, negocio, propietario, tareas, notas)
 ```
+
+## Dónde corre
+
+**Supabase, en el plan gratis.** A pedido de Oscar, para no pagar servidor, los cinco flujos corren como una Edge Function de Supabase en vez de n8n. Las tareas programadas usan el cron de Supabase y la base es la del proyecto. La lógica y las reglas son las mismas. Instalación paso a paso, solo desde el panel de Supabase: **`supabase/INSTALAR.md`**.
+
+**Alternativa: n8n autoalojado.** Los mismos cinco flujos también están listos para n8n, en `n8n/workflows/`, con un servidor preparado en `docker-compose.yml` y `deploy/`. Es útil si más adelante se quiere n8n; el resto de este README describe ese camino.
 
 ## Contenido
 
@@ -24,21 +30,22 @@ Cliente ──► App WhatsApp Business ◄── Vendedores contestan aquí
 | `prompts/clasificador.md` | Prompt del sistema de F2 |
 | `scripts/` | Migraciones, configuración del webhook de 360dialog y verificación de la instalación |
 | `db/revision_f2.sql` | Consultas para revisar a mano el modo sombra |
-| `docker-compose.yml`, `deploy/` | Servidor listo para usar: Postgres + n8n + HTTPS, con guía en `deploy/INSTALAR.md` |
+| `supabase/` | Instalación en Supabase: `instalar.sql` (SQL Editor), `functions/merch/index.ts` (Edge Function) y guía `INSTALAR.md` |
+| `docker-compose.yml`, `deploy/` | Alternativa con n8n: Postgres + n8n + HTTPS en un servidor propio, con guía en `deploy/INSTALAR.md` |
 | `test/` | Pruebas (`npm test`) |
 
-La lógica vive en `src/` y está cubierta por pruebas. `npm run n8n:construir` la empaqueta dentro de los Code nodes de `n8n/workflows/*.json`, así que n8n corre exactamente el código probado. **No edites el código dentro de n8n**: cambia `src/`, reconstruye y vuelve a importar.
+La lógica vive en `src/` y está cubierta por pruebas. `node supabase/construir.js` la empaqueta en la función de Supabase y `npm run n8n:construir` en los Code nodes de n8n, así que las dos corren exactamente el código probado. **No edites el código dentro de Supabase ni de n8n**: cambia `src/`, reconstruye y vuelve a pegar o importar.
 
-## Requisitos
+## Requisitos (camino con n8n)
 
 - **n8n autoalojado** (probado con n8n 2.41.3). La configuración se lee con `$env`, que n8n Cloud no permite.
 - **Postgres** 14 o superior (probado con 16).
 - **Node.js** 22 o superior para los scripts y las pruebas.
 - 360dialog con coexistencia activa, HubSpot con un usuario por vendedor y una API key de Anthropic.
 
-## Puesta en marcha
+## Puesta en marcha con n8n
 
-Sigue el orden de construcción de la especificación. Cada paso tiene su criterio de listo.
+Con Supabase, sigue `supabase/INSTALAR.md`, que respeta el mismo orden. Con n8n, sigue el orden de construcción de la especificación. Cada paso tiene su criterio de listo.
 
 ```bash
 cd merch-caracas
@@ -167,8 +174,9 @@ Surgieron de la implementación:
 
 ```bash
 npm test                                   # pruebas unitarias y de flujos
-TEST_DATABASE_URL=postgres://... npm test  # suma las pruebas contra Postgres (usa el esquema "prueba")
-npm run n8n:construir                      # regenera n8n/workflows/ después de cambiar src/ o el prompt
+TEST_DATABASE_URL=postgres://... npm test  # suma las pruebas contra Postgres (esquema "prueba" y una base temporal para Supabase)
+node supabase/construir.js                 # regenera supabase/instalar.sql y la función después de cambiar src/ o el prompt
+npm run n8n:construir                      # regenera n8n/workflows/
 ```
 
-Una prueba falla si `n8n/workflows/` no está al día con `src/`.
+Hay pruebas que fallan si `supabase/` o `n8n/workflows/` no están al día con `src/`.

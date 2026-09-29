@@ -35,8 +35,12 @@ function leerConfig(env) {
     // F2 escribe solo resumen_ia + nota mientras MODO_SOMBRA no sea "false".
     modoSombra: texto(env.MODO_SOMBRA).toLowerCase() !== 'false',
     f2Lote: entero(env.F2_LOTE, 8),
+    // Segundos que F2 dedica a analizar por corrida (Supabase corta a los 150 s).
+    f2TiempoMaximoS: entero(env.F2_TIEMPO_MAXIMO_S, 200),
     d360: {
       webhookSecret: texto(env.D360_WEBHOOK_SECRET),
+      apiKey: texto(env.D360_API_KEY),
+      apiUrl: texto(env.D360_API_URL) || 'https://waba-v2.360dialog.io',
     },
     hubspot: {
       token: texto(env.HUBSPOT_PRIVATE_APP_TOKEN),

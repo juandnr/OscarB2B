@@ -14,9 +14,6 @@ const { vencimiento, PRIORIDAD, nombreCliente } = require('../tareas');
 const { construirContexto, analizarConversacion } = require('../claude');
 const { decidir } = require('../reglas');
 
-// Deja margen dentro del límite de 5 min del runner de n8n.
-const TIEMPO_MAXIMO_MS = 200000;
-
 function filaTarea(t) {
   return { hubspot_task_id: t.hubspot_task_id, tipo: t.tipo, vence_at: t.vence_at, hubspot_deal_id: t.hubspot_deal_id };
 }
@@ -176,7 +173,8 @@ async function analizar(clientes, ctx) {
   const inicio = Date.now();
   const resultados = [];
   for (const cliente of clientes) {
-    if (Date.now() - inicio > TIEMPO_MAXIMO_MS) {
+    // Con margen dentro del límite de tiempo del entorno (n8n: 300 s; Supabase: 150 s).
+    if (Date.now() - inicio > prep.config.f2TiempoMaximoS * 1000) {
       resultados.push({ telefono: cliente.telefono, liberar: true });
       continue;
     }
