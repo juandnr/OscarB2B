@@ -2,6 +2,18 @@
 
 Deja funcionando en un servidor propio: Postgres, n8n 2.41.3 y HTTPS automático, con la credencial y los 5 flujos ya importados. Se hace una sola vez y toma cerca de media hora.
 
+## Opción rápida: un solo comando
+
+En un servidor Ubuntu nuevo, abre la consola (por SSH o la consola web del proveedor) y pega:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/juandnr/OscarB2B/claude/merch-caracas-whatsapp-ai-12autr/merch-caracas/deploy/instalar-servidor.sh | bash -s -- n8n.tudominio.com
+```
+
+Hace los pasos 2 a 7 de abajo por ti. Si todavía no tienes subdominio, borra `-s -- n8n.tudominio.com` y el comando termina en `| bash`: n8n queda en una dirección automática, como `203-0-113-7.sslip.io`, que sirve para empezar. Más adelante conviene pasarlo a un subdominio propio, porque si cambia la IP del servidor cambia la dirección y hay que reconfigurar el webhook de 360dialog.
+
+Al terminar, abre de inmediato la dirección que imprime y crea la cuenta de propietario de n8n.
+
 ## Qué necesitas antes de empezar
 
 - **Un servidor (VPS) con Ubuntu 24.04**, de al menos 2 vCPU, 4 GB de RAM y 40 GB de disco. Sirve cualquier proveedor: Hetzner, DigitalOcean, Hostinger, Vultr…
