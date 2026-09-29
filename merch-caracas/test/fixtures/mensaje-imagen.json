@@ -1,0 +1,27 @@
+{
+  "object": "whatsapp_business_account",
+  "entry": [{
+    "id": "WABA_ID",
+    "changes": [{
+      "field": "messages",
+      "value": {
+        "messaging_product": "whatsapp",
+        "metadata": { "display_phone_number": "582125550000", "phone_number_id": "PHONE_ID" },
+        "contacts": [{ "profile": { "name": "Luis Rojas" }, "wa_id": "584141234567" }],
+        "messages": [{
+          "from": "584141234567",
+          "id": "wamid.IMAGEN1",
+          "timestamp": "1790686800",
+          "type": "image",
+          "image": { "id": "MEDIA123", "mime_type": "image/jpeg", "caption": "listo, ahí va el pago móvil" }
+        }, {
+          "from": "584141234567",
+          "id": "wamid.REACCION1",
+          "timestamp": "1790686810",
+          "type": "reaction",
+          "reaction": { "message_id": "wamid.X", "emoji": "👍" }
+        }]
+      }
+    }]
+  }]
+}
