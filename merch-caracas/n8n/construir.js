@@ -275,6 +275,8 @@ function construirFlujo(f) {
     connections[desde].main[0].push({ node: hacia, type: 'main', index: 0 });
   }
   return {
+    // ID fijo: volver a importar con la CLI actualiza el flujo en vez de duplicarlo.
+    id: `MerchCaracas${f.clave}`,
     name: f.nombre,
     nodes,
     connections,

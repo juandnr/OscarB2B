@@ -24,6 +24,7 @@ Cliente ──► App WhatsApp Business ◄── Vendedores contestan aquí
 | `prompts/clasificador.md` | Prompt del sistema de F2 |
 | `scripts/` | Migraciones, configuración del webhook de 360dialog y verificación de la instalación |
 | `db/revision_f2.sql` | Consultas para revisar a mano el modo sombra |
+| `docker-compose.yml`, `deploy/` | Servidor listo para usar: Postgres + n8n + HTTPS, con guía en `deploy/INSTALAR.md` |
 | `test/` | Pruebas (`npm test`) |
 
 La lógica vive en `src/` y está cubierta por pruebas. `npm run n8n:construir` la empaqueta dentro de los Code nodes de `n8n/workflows/*.json`, así que n8n corre exactamente el código probado. **No edites el código dentro de n8n**: cambia `src/`, reconstruye y vuelve a importar.
@@ -68,6 +69,8 @@ Copia `db/vendedores.ejemplo.sql` a `db/vendedores.sql`, pon cada vendedor con s
 ✔ Listo cuando los vendedores reales están cargados.
 
 ### 3. n8n y F1 (recepción)
+
+Si todavía no tienes n8n, instálalo en un servidor siguiendo `deploy/INSTALAR.md`: deja Postgres, n8n y HTTPS funcionando, con la credencial y los flujos ya importados, así que aquí solo te quedan los pasos 4 a 6.
 
 1. En el contenedor de n8n define **todas** las variables de `.env` (n8n las lee con `$env`), incluidas `N8N_BLOCK_ENV_ACCESS_IN_NODE=false` y `N8N_RUNNERS_TASK_TIMEOUT=300`. Reinicia n8n.
 2. En n8n crea una credencial de Postgres llamada **Merch Caracas Postgres** que apunte a la base del paso 2.

@@ -1,0 +1,5 @@
+# HTTPS automático (Let's Encrypt) para n8n. El dominio sale de N8N_DOMINIO en .env.
+{$N8N_DOMINIO} {
+	encode gzip
+	reverse_proxy n8n:5678
+}

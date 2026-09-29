@@ -41,6 +41,7 @@ test('los flujos generados están al día con src/ (corre npm run n8n:construir)
   for (const f of FLUJOS) {
     const archivo = JSON.parse(fs.readFileSync(path.join(CARPETA, f.archivo), 'utf8'));
     const esperado = construirFlujo(f);
+    assert.equal(archivo.id, esperado.id);
     assert.deepEqual(archivo.nodes.map((n) => [n.name, n.type, n.typeVersion]), esperado.nodes.map((n) => [n.name, n.type, n.typeVersion]));
     assert.deepEqual(archivo.connections, esperado.connections);
     for (const n of esperado.nodes) {
@@ -71,6 +72,8 @@ test('estructura de los flujos', () => {
       assert.match(n.parameters.jsCode, /\$env/);
       assert.doesNotMatch(n.parameters.jsCode, /require\('(fs|path|crypto|pg)'\)/);
     }
+    assert.equal(w.id, `MerchCaracas${f.clave}`);
+    assert.ok(w.id.length <= 21, 'n8n acepta IDs de hasta 21 caracteres');
     assert.equal(w.settings.timezone, 'America/Caracas');
     assert.equal(w.active, false);
   }
