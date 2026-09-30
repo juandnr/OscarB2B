@@ -21,7 +21,7 @@ En supabase.com crea un proyecto nuevo llamado `merch-caracas`, en el plan grati
 
 1. Menú **SQL Editor** → **New query**.
 2. Pega todo el contenido de `instalar.sql` y pulsa **Run**.
-3. Al final debe salir **Instalación lista** con `migraciones = 2`.
+3. Al final debe salir **Instalación lista** con `migraciones = 3`.
 
 Crea las tablas y las funciones del esquema `merch`, la tabla de configuración y las tareas programadas del cron. Se puede volver a correr cuando haya una versión nueva: no borra nada.
 
