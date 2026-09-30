@@ -12,12 +12,12 @@ create table if not exists configuracion (
 insert into configuracion (clave, valor, descripcion) values
   ('HORARIO_LABORAL',        '',                  'PENDIENTE. Días y horas de trabajo. Formato: lun-vie 08:00-17:00; sab 08:00-12:00'),
   ('FERIADOS',               '',                  'Opcional. Días sin horario laboral, separados por coma: 2026-12-24,2026-12-25'),
-  ('ADMIN_HUBSPOT_OWNER_ID', '',                  'ID del usuario de HubSpot que recibe los escalamientos y el resumen diario'),
+  ('ADMIN_HUBSPOT_OWNER_ID', '',                  'Opcional. ID del usuario de HubSpot que recibe los escalamientos y el resumen general'),
   ('MODO_SOMBRA',            'true',              'true = F2 solo escribe resumen_ia y una nota. false = mueve etapas y crea tareas'),
   ('F2_ACTIVO',              'false',             'true = analiza los chats con Claude cada 3 minutos'),
   ('F3_ACTIVO',              'false',             'true = revisa los tiempos de respuesta cada 15 minutos (en horario laboral)'),
   ('F4_ACTIVO',              'false',             'true = revisa las tareas completadas cada 5 minutos'),
-  ('F5_ACTIVO',              'false',             'true = crea el resumen diario a las 7:30'),
+  ('F5_ACTIVO',              'false',             'true = resumen diario a las 7:30 (días laborables): uno por vendedor y el general al administrador'),
   ('TIMEZONE',               'America/Caracas',   'Zona horaria'),
   ('DEBOUNCE_MIN',           '5',                 'Minutos sin mensajes antes de analizar una conversación'),
   ('SLA_RESPUESTA_NUEVO_MIN','15',                'Minutos laborables para contestar a un cliente nuevo'),
@@ -39,7 +39,7 @@ insert into configuracion (clave, valor, descripcion) values
   ('HUBSPOT_ETAPA_ENVIADO',          '', 'Lo llena hubspot-setup'),
   ('HUBSPOT_ETAPA_ENTREGADO',        '', 'Lo llena hubspot-setup'),
   ('HUBSPOT_ETAPA_PERDIDO',          '', 'Lo llena hubspot-setup')
-on conflict (clave) do nothing;
+on conflict (clave) do update set descripcion = excluded.descripcion;  -- nunca pisa el valor
 
 -- Qué hizo la función y con qué resultado (se borra a los 14 días).
 create table if not exists bitacora (

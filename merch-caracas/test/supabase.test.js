@@ -163,6 +163,8 @@ test('Supabase: instalación, salud, HubSpot, webhook de WhatsApp, flujos y 360d
     assert.equal(r.ok, true, `${f}: ${JSON.stringify(r.detalle)}`);
   }
   assert.ok(hubspot.tareas().some((t) => /^Resumen WhatsApp/.test(t.properties.hs_task_subject)));
+  const personal = hubspot.tareas().find((t) => /^Tus pendientes/.test(t.properties.hs_task_subject));
+  assert.equal(personal.properties.hubspot_owner_id, '1', 'Ana recibe su propio resumen');
 
   // configurar-webhook apunta 360dialog a la función con el secreto de Vault
   assert.equal((await pedir('configurar-webhook', { headers: cron })).status, 202);

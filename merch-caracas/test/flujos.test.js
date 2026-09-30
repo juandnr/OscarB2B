@@ -414,6 +414,7 @@ test('F5 resumen diario como tarea para el administrador', async () => {
   };
   const [r] = await f5.resumir([{ datos }], ctx);
   const [tarea] = hubspot.tareas();
+  assert.equal(r.para, 'administrador');
   assert.equal(r.hubspot_task_id, tarea.id);
   assert.equal(tarea.properties.hubspot_owner_id, '900');
   assert.equal(tarea.properties.hs_task_subject, 'Resumen WhatsApp 30/09: 1 sin responder, 3 tareas vencidas');
@@ -426,7 +427,40 @@ test('F5 resumen diario como tarea para el administrador', async () => {
   assert.match(cuerpo, /2 análisis de IA con error/);
 });
 
-test('F5 exige ADMIN_HUBSPOT_OWNER_ID', async () => {
-  const { ctx } = crearCtx({ env: envPrueba({ ADMIN_HUBSPOT_OWNER_ID: '' }) });
-  await assert.rejects(f5.resumir([{ datos: {} }], ctx), /ADMIN_HUBSPOT_OWNER_ID/);
+test('F5 resumen personal para cada vendedor con pendientes', async () => {
+  const ahora = new Date('2026-09-30T11:30:00Z'); // miércoles 7:30 en Caracas
+  const { ctx, hubspot } = crearCtx({ env: envPrueba({ ADMIN_HUBSPOT_OWNER_ID: '' }), ahora });
+  hubspot.agregar('deals', { pipeline: 'p1', dealstage: ETAPAS_IDS.cotizado, dealname: 'Luis (WhatsApp)', hubspot_owner_id: '1', producto: 'termos', cantidad: '200' });
+  const datos = {
+    vendedores: [{ nombre: 'Ana', hubspot_owner_id: '1' }, { nombre: 'Beto', hubspot_owner_id: '2' }, { nombre: 'Caro', hubspot_owner_id: '3' }],
+    sin_responder: [{ telefono: TEL, nombre: 'Luis', vendedor: 'Ana', vendedor_owner_id: '1', desde: '2026-09-29T20:00:00Z' }],
+    tareas_vencidas: [{ tipo: 'cotizar', nombre: 'Pedro', vendedor: 'Beto', vendedor_owner_id: '2', vence_at: '2026-09-29T15:00:00Z' }],
+    tareas_abiertas: [
+      { tipo: 'cotizar', nombre: 'Pedro', vendedor_owner_id: '2', vence_at: '2026-09-29T15:00:00Z' },
+      { tipo: 'seguimiento', nombre: 'Rosa', vendedor_owner_id: '1', vence_at: '2026-09-30T18:00:00Z' },
+      { tipo: 'confirmar', nombre: 'Juan', vendedor_owner_id: '1', vence_at: '2026-10-02T18:00:00Z' },
+    ],
+  };
+  const creadas = await f5.resumir([{ datos }], ctx);
+  assert.deepEqual(creadas.map((c) => c.para), ['Ana', 'Beto'], 'Caro no tiene pendientes');
+  const [ana, beto] = hubspot.tareas();
+  assert.equal(ana.properties.hubspot_owner_id, '1');
+  assert.equal(ana.properties.hs_task_subject, 'Tus pendientes 30/09: 1 por responder, 0 vencidas, 1 para hoy');
+  assert.match(ana.properties.hs_task_body, /Buenos días, Ana/);
+  assert.match(ana.properties.hs_task_body, /Luis — desde 29\/09 16:00 \(16 h\)/);
+  assert.match(ana.properties.hs_task_body, /Seguimiento de cotización — Rosa \(a las 14:00\)/);
+  assert.doesNotMatch(ana.properties.hs_task_body, /Juan/, 'la de otro día no es de hoy');
+  assert.match(ana.properties.hs_task_body, /Luis \(WhatsApp\) — termos x 200/);
+  assert.equal(beto.properties.hubspot_owner_id, '2');
+  assert.equal(beto.properties.hs_task_subject, 'Tus pendientes 30/09: 0 por responder, 1 vencidas, 0 para hoy');
+  assert.match(beto.properties.hs_task_body, /Enviar cotización — Pedro \(venció 29\/09 11:00\)/);
+  assert.equal(hubspot.tareas().length, 2, 'sin administrador no hay resumen general');
+});
+
+test('F5 no manda nada en días no laborables ni sin pendientes', async () => {
+  const sabado = crearCtx({ env: envPrueba({ HORARIO_LABORAL: 'lun-vie 09:00-17:00' }), ahora: new Date('2026-10-03T11:30:00Z') });
+  assert.deepEqual(await f5.resumir([{ datos: { vendedores: [{ nombre: 'Ana', hubspot_owner_id: '1' }] } }], sabado.ctx), [{ omitido: 'día no laborable' }]);
+  assert.equal(sabado.hubspot.tareas().length, 0);
+  const vacio = crearCtx({ env: envPrueba({ ADMIN_HUBSPOT_OWNER_ID: '' }), ahora: new Date('2026-09-30T11:30:00Z') });
+  assert.deepEqual(await f5.resumir([{ datos: { vendedores: [{ nombre: 'Ana', hubspot_owner_id: '1' }] } }], vacio.ctx), [{ omitido: 'nadie tiene pendientes' }]);
 });

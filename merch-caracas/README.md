@@ -122,7 +122,7 @@ Pon `MODO_SOMBRA=false` y reinicia n8n. Desde ahí F2 mueve etapas, escribe los 
 | **F2** Análisis | Cada 3 min | Toma los clientes con mensajes nuevos cuyo último mensaje tiene al menos `DEBOUNCE_MIN` minutos, lee el negocio en HubSpot, manda los últimos 40 mensajes a Claude y aplica las reglas (solo avanza, nunca a Pagado, confianza ≥ 0.7, sin tareas duplicadas). |
 | **F3** Tiempos | Cada 15 min, solo en horario laboral | Cliente sin respuesta por más del SLA → tarea "Contestar". Tarea "Contestar" vencida hace más de `ESCALAR_MIN` → nota en el negocio y tarea al administrador (una sola vez). |
 | **F4** Tareas | Cada 5 min | Revisa en HubSpot las tareas abiertas. Verificar pago → Pagado / En producción + tarea de producción; producción → Listo para enviar + "Enviar pedido"; enviar → Enviado + "Confirmar recepción"; confirmar → Entregado. Solo hacia adelante. |
-| **F5** Resumen | 7:30 a. m. | Tarea en HubSpot para el administrador con: chats sin responder, tareas vencidas por vendedor, cotizaciones abiertas, negocios por etapa y perdidos de las últimas 24 h con motivo. |
+| **F5** Resumen | 7:30 a. m., días laborables | Cada vendedor recibe una tarea en HubSpot con sus propios pendientes: clientes esperando respuesta, tareas vencidas, tareas de hoy y cotizaciones abiertas (si no tiene nada, no recibe nada). Si hay administrador, recibe además el resumen general: chats sin responder, tareas vencidas por vendedor, cotizaciones abiertas, negocios por etapa y perdidos de las últimas 24 h con motivo. |
 
 ## Decisiones de implementación
 
@@ -136,7 +136,7 @@ Cosas que la especificación no fijaba y que resolví así. Todas se pueden camb
 6. **Las reacciones y los mensajes de sistema** no cuentan como mensaje del cliente ni como respuesta.
 7. **SLA en minutos laborables**. F3 usa `SLA_RESPUESTA_NUEVO_MIN` si el negocio está en Nuevo y `SLA_RESPUESTA_CURSO_MIN` en las demás etapas. La tarea que crea F3 vence de inmediato, porque el SLA ya se cumplió.
 8. **F3 no crea tareas** para negocios perdidos por "No era cliente (spam/equivocado)" o "Duplicado".
-9. **Administrador**: variable nueva `ADMIN_HUBSPOT_OWNER_ID`. Recibe los escalamientos y el resumen diario como tareas de HubSpot, que le llegan a la app móvil.
+9. **Administrador**: variable nueva `ADMIN_HUBSPOT_OWNER_ID`, opcional. Recibe los escalamientos y el resumen general como tareas de HubSpot, que le llegan a la app móvil.
 10. **Perdidos "del día"** en F5: negocios en Perdido modificados en las últimas 24 h.
 11. **Fechas límite**: "Enviar pedido" vence el día anterior a `fecha_entrega` a las 9:00 (24 h si no hay fecha). "Seguimiento" vence 48 h después del último mensaje de la empresa, que es el envío de la cotización. Las demás siguen la tabla de la especificación en horas corridas.
 12. **El propietario en HubSpot manda**: si alguien reasigna un negocio, el sistema toma el nuevo propietario para las tareas siguientes.
@@ -146,6 +146,7 @@ Cosas que la especificación no fijaba y que resolví así. Todas se pueden camb
 16. **Motivo de pérdida**: propiedad nueva `motivo_perdida` de tipo lista, porque la propiedad nativa de HubSpot es texto libre.
 17. **Probabilidad por etapa** (HubSpot la exige): 10, 20, 40, 70, 90, 90, 95, 100 y 0 %. Se ajusta en HubSpot sin tocar el código.
 18. **Claude**: `ANTHROPIC_MODEL` con salidas estructuradas (esquema JSON del contrato), caché del prompt del sistema, esfuerzo `low` (ajustable con `ANTHROPIC_EFFORT`) y reintento del lado del servidor con otro modelo si el principal rechaza la solicitud (`ANTHROPIC_FALLBACK=default`; `no` lo apaga). Si el JSON no cumple el contrato, se reintenta una vez.
+19. **Resumen diario por vendedor** (pedido de Oscar): además del resumen general, cada vendedor recibe el suyo con sus pendientes. Solo se manda en días con horario laboral.
 
 ## Limitaciones conocidas
 

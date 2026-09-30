@@ -163,7 +163,15 @@ function enHorarioLaboral(fecha, cal, tz) {
   return false;
 }
 
+// ¿El día local de `fecha` tiene horas laborables (y no es feriado)?
+function esDiaLaborable(fecha, cal, tz) {
+  const p = partesLocales(new Date(fecha), tz);
+  const texto = `${p.anio}-${String(p.mes).padStart(2, '0')}-${String(p.dia).padStart(2, '0')}`;
+  return cal.semana[p.diaSemana].length > 0 && !cal.feriados.has(texto);
+}
+
 module.exports = {
+  esDiaLaborable,
   parsearHorario,
   partesLocales,
   instanteLocal,

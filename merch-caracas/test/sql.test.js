@@ -247,8 +247,10 @@ test('F3, F4 y F5 SQL', opciones, () => conBD(async (db) => {
   assert.equal(f4[0].vendedor_owner_id, '1');
 
   const [{ d }] = await q(db, 'select f5_datos() as d');
-  assert.deepEqual(d.sin_responder.map((s) => s.telefono), ['+581']);
+  assert.deepEqual(d.sin_responder.map((s) => [s.telefono, s.vendedor_owner_id]), [['+581', '1']]);
   assert.deepEqual(d.tareas_vencidas.map((t) => t.hubspot_task_id).sort(), ['t1', 't2']);
+  assert.deepEqual(d.tareas_abiertas.map((t) => t.hubspot_task_id).sort(), ['t1', 't2', 't3']);
+  assert.deepEqual(d.vendedores, [{ nombre: 'Ana', hubspot_owner_id: '1' }, { nombre: 'Caro', hubspot_owner_id: '3' }]);
 }));
 
 // ── Punta a punta ───────────────────────────────────────────────────────────

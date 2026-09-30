@@ -582,6 +582,69 @@ $m_002_implementacion_sql$;
   end if;
 end $migracion$;
 
+-- 003_resumen_por_vendedor.sql
+do $migracion$
+begin
+  if not exists (select 1 from merch.schema_migraciones where version = '003_resumen_por_vendedor.sql') then
+    execute $m_003_resumen_por_vendedor_sql$
+-- 003 — Resumen diario por vendedor.
+-- f5_datos() agrega el hubspot_owner_id del vendedor a cada fila, las tareas
+-- abiertas con fecha límite y la lista de vendedores disponibles, para que F5
+-- mande a cada uno sus propios pendientes.
+
+create or replace function f5_datos()
+returns jsonb
+language sql stable as $$
+  select jsonb_build_object(
+    'sin_responder', (
+      select coalesce(jsonb_agg(jsonb_build_object(
+               'telefono', c.telefono, 'nombre', c.nombre_wa, 'etapa', c.etapa,
+               'vendedor', v.nombre, 'vendedor_owner_id', v.hubspot_owner_id,
+               'desde', c.ultimo_msg_cliente_at)
+             order by c.ultimo_msg_cliente_at), '[]'::jsonb)
+      from clientes c
+      left join vendedores v on v.id = c.vendedor_id
+      where c.hubspot_deal_id is not null
+        and c.etapa <> 'perdido'
+        and c.ultimo_msg_cliente_at > coalesce(c.ultimo_msg_empresa_at, '-infinity'::timestamptz)),
+    'tareas_vencidas', (
+      select coalesce(jsonb_agg(jsonb_build_object(
+               'hubspot_task_id', t.hubspot_task_id, 'tipo', t.tipo, 'vence_at', t.vence_at,
+               'telefono', c.telefono, 'nombre', c.nombre_wa,
+               'vendedor', v.nombre, 'vendedor_owner_id', v.hubspot_owner_id)
+             order by v.nombre, t.vence_at), '[]'::jsonb)
+      from tareas t
+      join clientes c on c.telefono = t.telefono
+      left join vendedores v on v.id = c.vendedor_id
+      where t.estado = 'abierta' and t.vence_at < now()),
+    'tareas_abiertas', (
+      select coalesce(jsonb_agg(jsonb_build_object(
+               'hubspot_task_id', t.hubspot_task_id, 'tipo', t.tipo, 'vence_at', t.vence_at,
+               'telefono', c.telefono, 'nombre', c.nombre_wa,
+               'vendedor', v.nombre, 'vendedor_owner_id', v.hubspot_owner_id)
+             order by t.vence_at), '[]'::jsonb)
+      from tareas t
+      join clientes c on c.telefono = t.telefono
+      left join vendedores v on v.id = c.vendedor_id
+      where t.estado = 'abierta' and t.vence_at is not null),
+    'vendedores', (
+      select coalesce(jsonb_agg(jsonb_build_object('nombre', v.nombre, 'hubspot_owner_id', v.hubspot_owner_id)
+             order by v.orden, v.id), '[]'::jsonb)
+      from vendedores v
+      where v.disponible),
+    'analisis_con_error_24h', (
+      select count(*) from analisis a
+      where a.error is not null and a.creado_at > now() - interval '24 hours'),
+    'clientes_sin_analizar', (
+      select count(*) from clientes c
+      where c.pendiente_analisis and c.hubspot_deal_id is not null and c.analisis_fallos >= 5)
+  )
+$$;
+$m_003_resumen_por_vendedor_sql$;
+    insert into merch.schema_migraciones (version) values ('003_resumen_por_vendedor.sql');
+  end if;
+end $migracion$;
+
 -- ── Parte propia de Supabase ────────────────────────────────────────────────
 -- Configuración editable, bitácora, secretos en Vault y tareas programadas.
 
@@ -596,12 +659,12 @@ create table if not exists configuracion (
 insert into configuracion (clave, valor, descripcion) values
   ('HORARIO_LABORAL',        '',                  'PENDIENTE. Días y horas de trabajo. Formato: lun-vie 08:00-17:00; sab 08:00-12:00'),
   ('FERIADOS',               '',                  'Opcional. Días sin horario laboral, separados por coma: 2026-12-24,2026-12-25'),
-  ('ADMIN_HUBSPOT_OWNER_ID', '',                  'ID del usuario de HubSpot que recibe los escalamientos y el resumen diario'),
+  ('ADMIN_HUBSPOT_OWNER_ID', '',                  'Opcional. ID del usuario de HubSpot que recibe los escalamientos y el resumen general'),
   ('MODO_SOMBRA',            'true',              'true = F2 solo escribe resumen_ia y una nota. false = mueve etapas y crea tareas'),
   ('F2_ACTIVO',              'false',             'true = analiza los chats con Claude cada 3 minutos'),
   ('F3_ACTIVO',              'false',             'true = revisa los tiempos de respuesta cada 15 minutos (en horario laboral)'),
   ('F4_ACTIVO',              'false',             'true = revisa las tareas completadas cada 5 minutos'),
-  ('F5_ACTIVO',              'false',             'true = crea el resumen diario a las 7:30'),
+  ('F5_ACTIVO',              'false',             'true = resumen diario a las 7:30 (días laborables): uno por vendedor y el general al administrador'),
   ('TIMEZONE',               'America/Caracas',   'Zona horaria'),
   ('DEBOUNCE_MIN',           '5',                 'Minutos sin mensajes antes de analizar una conversación'),
   ('SLA_RESPUESTA_NUEVO_MIN','15',                'Minutos laborables para contestar a un cliente nuevo'),
@@ -623,7 +686,7 @@ insert into configuracion (clave, valor, descripcion) values
   ('HUBSPOT_ETAPA_ENVIADO',          '', 'Lo llena hubspot-setup'),
   ('HUBSPOT_ETAPA_ENTREGADO',        '', 'Lo llena hubspot-setup'),
   ('HUBSPOT_ETAPA_PERDIDO',          '', 'Lo llena hubspot-setup')
-on conflict (clave) do nothing;
+on conflict (clave) do update set descripcion = excluded.descripcion;  -- nunca pisa el valor
 
 -- Qué hizo la función y con qué resultado (se borra a los 14 días).
 create table if not exists bitacora (

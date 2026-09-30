@@ -78,8 +78,7 @@ function crearOrquestador({ consultar, esquema = null }) {
 
     async f5(ctx) {
       const datos = await filas(`select ${fn('f5_datos')}() as datos`);
-      const [resumen] = await f5.resumir(datos, ctx);
-      return resumen;
+      return { resumenes: await f5.resumir(datos, ctx) };
     },
   };
 }

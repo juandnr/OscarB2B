@@ -122,7 +122,7 @@ function crearManejador({ consultar, envBase, http, enSegundoPlano, ahora = () =
         f2: { activo: activo('f2'), faltan: faltan(['hubspot', 'anthropic']) },
         f3: { activo: activo('f3'), faltan: faltan(['hubspot', 'horario']) },
         f4: { activo: activo('f4'), faltan: faltan(['hubspot']) },
-        f5: { activo: activo('f5'), faltan: faltan(['hubspot', 'admin']) },
+        f5: { activo: activo('f5'), faltan: faltan(['hubspot']) },
       },
     };
   }

@@ -79,7 +79,7 @@ Esto crea en HubSpot el pipeline "WhatsApp Ventas" con sus etapas y propiedades,
 **Configuración.** Tabla `configuracion` del mismo esquema. Cada fila tiene su descripción. Lo mínimo:
 
 - `HORARIO_LABORAL`, por ejemplo `lun-vie 08:00-17:00; sab 08:00-12:00`.
-- `ADMIN_HUBSPOT_OWNER_ID`, la persona que recibe escalamientos y el resumen diario.
+- `ADMIN_HUBSPOT_OWNER_ID` (opcional): la persona que recibe los escalamientos y el resumen general. Cada vendedor recibe igual su propio resumen de pendientes.
 
 ## 7. Conectar WhatsApp
 
