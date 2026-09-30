@@ -91,6 +91,12 @@ select merch.llamar('configurar-webhook');
 
 Revisa el resultado con la consulta de la bitácora, cambiando la ruta por `configurar-webhook`. Desde ese momento cada mensaje llega a la función y se registra. La prueba: escribe al WhatsApp desde otro teléfono. Debe aparecer contacto, negocio y la tarea "Contestar" en HubSpot, y al responder desde la app la tarea se completa sola.
 
+Si justo después de conectar los clientes ven "este número no está en WhatsApp":
+
+1. Revisa en 360dialog que el número esté en **Live** y no en **Pending**. Si está en Pending, haz lo que pida el panel o pregunta al soporte de 360dialog.
+2. En los teléfonos que ya tenían un chat con la empresa, actualiza WhatsApp y borra ese chat. Después escribe desde el enlace `https://wa.me/<número sin +>`.
+3. Si nada funciona, desconecta desde la app: **Configuración → Cuenta → Plataforma empresarial → Desconectar**. El número sigue en la app y se puede volver a conectar después.
+
 ## 8. Encender los flujos
 
 En la tabla `configuracion`:
