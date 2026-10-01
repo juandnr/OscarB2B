@@ -135,6 +135,7 @@ async function crearEnHubspot(asignados, ctx, extra) {
       tipo: 'contestar',
       vence_at: vence.toISOString(),
       hubspot_deal_id: String(dealId),
+      hubspot_owner_id: owner,
     });
   }
   return [{ cambios }];

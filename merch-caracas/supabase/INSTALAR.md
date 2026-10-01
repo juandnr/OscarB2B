@@ -21,7 +21,7 @@ En supabase.com crea un proyecto nuevo llamado `merch-caracas`, en el plan grati
 
 1. Menú **SQL Editor** → **New query**.
 2. Pega todo el contenido de `instalar.sql` y pulsa **Run**.
-3. Al final debe salir **Instalación lista** con `migraciones = 3`.
+3. Al final debe salir **Instalación lista** con `migraciones = 4`.
 
 Crea las tablas y las funciones del esquema `merch`, la tabla de configuración y las tareas programadas del cron. Se puede volver a correr cuando haya una versión nueva: no borra nada.
 
@@ -80,6 +80,7 @@ Esto crea en HubSpot el pipeline "WhatsApp Ventas" con sus etapas y propiedades,
 
 - `HORARIO_LABORAL`, por ejemplo `lun-vie 08:00-17:00; sab 08:00-12:00`.
 - `ADMIN_HUBSPOT_OWNER_ID` (opcional): la persona que recibe los escalamientos y el resumen general. Cada vendedor recibe igual su propio resumen de pendientes.
+- `PRODUCCION_HUBSPOT_OWNER_ID` (opcional): la persona que recibe todas las tareas "Iniciar producción". Si queda vacío, cada una le llega al vendedor del negocio.
 
 ## 7. Conectar WhatsApp
 

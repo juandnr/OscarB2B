@@ -147,6 +147,7 @@ Cosas que la especificación no fijaba y que resolví así. Todas se pueden camb
 17. **Probabilidad por etapa** (HubSpot la exige): 10, 20, 40, 70, 90, 90, 95, 100 y 0 %. Se ajusta en HubSpot sin tocar el código.
 18. **Claude**: `ANTHROPIC_MODEL` con salidas estructuradas (esquema JSON del contrato), caché del prompt del sistema, esfuerzo `low` (ajustable con `ANTHROPIC_EFFORT`) y reintento del lado del servidor con otro modelo si el principal rechaza la solicitud (`ANTHROPIC_FALLBACK=default`; `no` lo apaga). Si el JSON no cumple el contrato, se reintenta una vez.
 19. **Resumen diario por vendedor** (pedido de Oscar): además del resumen general, cada vendedor recibe el suyo con sus pendientes. Solo se manda en días con horario laboral.
+20. **Responsable de producción** (pedido de Oscar): variable nueva `PRODUCCION_HUBSPOT_OWNER_ID`, opcional. Si está definida, todas las tareas "Iniciar producción" van a esa persona y el negocio sigue a nombre del vendedor. Al completarla, "Enviar pedido" vuelve al vendedor. Cada tarea guarda su propietario, y el resumen diario se la muestra a quien la tiene.
 
 ## Limitaciones conocidas
 

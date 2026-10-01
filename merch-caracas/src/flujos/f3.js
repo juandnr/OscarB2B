@@ -66,6 +66,7 @@ async function revisar(filas, ctx) {
         tipo: 'contestar',
         vence_at: vence.toISOString(),
         hubspot_deal_id: String(fila.hubspot_deal_id),
+        hubspot_owner_id: owner,
       });
     }
 

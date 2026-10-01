@@ -47,6 +47,8 @@ function leerConfig(env) {
       pipelineId: texto(env.HUBSPOT_PIPELINE_ID),
       etapas,
       adminOwnerId: texto(env.ADMIN_HUBSPOT_OWNER_ID),
+      // Quién recibe las tareas "Iniciar producción"; vacío = el dueño del negocio.
+      produccionOwnerId: texto(env.PRODUCCION_HUBSPOT_OWNER_ID),
       apiUrl: texto(env.HUBSPOT_API_URL) || 'https://api.hubapi.com',
     },
     anthropic: {

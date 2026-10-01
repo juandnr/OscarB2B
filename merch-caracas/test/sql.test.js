@@ -253,6 +253,30 @@ test('F3, F4 y F5 SQL', opciones, () => conBD(async (db) => {
   assert.deepEqual(d.vendedores, [{ nombre: 'Ana', hubspot_owner_id: '1' }, { nombre: 'Caro', hubspot_owner_id: '3' }]);
 }));
 
+test('Cada tarea cuenta para su propietario en el resumen diario', opciones, () => conBD(async (db) => {
+  await vendedores(db);
+  await registrar(db, [msg('a', '+581', 'entrante', 30)]);
+  await db.query("update clientes set hubspot_deal_id = 'd1', vendedor_id = 1 where telefono = '+581'");
+  await q(db, 'select registrar_cambios($1::jsonb)', [json({
+    tareas_nuevas: [
+      // producción asignada a Caro aunque el cliente es de Ana
+      { hubspot_task_id: 'p1', telefono: '+581', tipo: 'produccion', vence_at: new Date(Date.now() - 3600000).toISOString(), hubspot_deal_id: 'd1', hubspot_owner_id: '3' },
+      // sin propietario guardado → cuenta para el vendedor del cliente
+      { hubspot_task_id: 'e1', telefono: '+581', tipo: 'enviar', vence_at: new Date(Date.now() + 3600000).toISOString(), hubspot_deal_id: 'd1' },
+    ],
+  })]);
+  assert.deepEqual(
+    (await q(db, 'select hubspot_task_id, hubspot_owner_id from tareas order by hubspot_task_id')).map((t) => [t.hubspot_task_id, t.hubspot_owner_id]),
+    [['e1', null], ['p1', '3']],
+  );
+  const [{ d }] = await q(db, 'select f5_datos() as d');
+  assert.deepEqual(d.tareas_vencidas.map((t) => [t.hubspot_task_id, t.vendedor, t.vendedor_owner_id]), [['p1', 'Caro', '3']]);
+  assert.deepEqual(
+    d.tareas_abiertas.map((t) => [t.hubspot_task_id, t.vendedor, t.vendedor_owner_id]),
+    [['p1', 'Caro', '3'], ['e1', 'Ana', '1']],
+  );
+}));
+
 // ── Punta a punta ───────────────────────────────────────────────────────────
 
 // Ejecuta F1 igual que el flujo de n8n: Code → Postgres → Code → Postgres...

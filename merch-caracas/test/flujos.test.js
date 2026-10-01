@@ -65,6 +65,7 @@ test('F1 alta de cliente nuevo: contacto + negocio en Nuevo + tarea Contestar', 
   }]);
   assert.deepEqual(cambios.tareas_nuevas, [{
     hubspot_task_id: tarea.id, telefono: TEL, tipo: 'contestar', vence_at: '2026-09-29T14:15:00.000Z', hubspot_deal_id: negocio.id,
+    hubspot_owner_id: '1',
   }]);
 });
 
@@ -332,8 +333,8 @@ test('F3 completa tareas Contestar de clientes ya respondidos y salta spam', asy
 
 // ── F4 ──────────────────────────────────────────────────────────────────────
 
-function preparaF4(etapa, tipo) {
-  const { ctx, hubspot } = crearCtx({ ahora: MARTES_10AM });
+function preparaF4(etapa, tipo, env) {
+  const { ctx, hubspot } = crearCtx({ ahora: MARTES_10AM, ...(env ? { env } : {}) });
   const negocio = hubspot.agregar('deals', {
     pipeline: 'p1', dealstage: ETAPAS_IDS[etapa], hubspot_owner_id: '1', fecha_entrega: '2026-10-10',
   });
@@ -355,6 +356,27 @@ test('F4 Verificar pago completada → Pagado / En producción + tarea de produc
   assert.equal(cambios.tareas_estado[0].estado, 'completada');
   assert.deepEqual(cambios.clientes, [{ telefono: TEL, etapa: 'pagado', hubspot_owner_id: '1' }]);
   assert.equal(cambios.tareas_nuevas[0].tipo, 'produccion');
+  assert.equal(nueva.properties.hubspot_owner_id, '1', 'sin responsable de producción: el vendedor');
+  assert.equal(cambios.tareas_nuevas[0].hubspot_owner_id, '1');
+});
+
+test('F4 con PRODUCCION_HUBSPOT_OWNER_ID: producción a esa persona, el resto al vendedor', async () => {
+  const env = envPrueba({ PRODUCCION_HUBSPOT_OWNER_ID: '77' });
+  const pago = preparaF4('verificar_pago', 'verificar_pago', env);
+  pago.hubspot.completarTarea(pago.tarea.id);
+  const [{ cambios }] = await f4.procesar([pago.fila], pago.ctx);
+  const produccion = pago.hubspot.tareas().find((t) => t.id !== pago.tarea.id);
+  assert.equal(produccion.properties.hubspot_owner_id, '77');
+  assert.equal(cambios.tareas_nuevas[0].hubspot_owner_id, '77');
+  assert.equal(pago.hubspot.datos.deals[pago.negocio.id].properties.hubspot_owner_id, '1', 'el negocio sigue del vendedor');
+  assert.deepEqual(cambios.clientes, [{ telefono: TEL, etapa: 'pagado', hubspot_owner_id: '1' }]);
+
+  const listo = preparaF4('pagado', 'produccion', env);
+  listo.hubspot.completarTarea(listo.tarea.id);
+  await f4.procesar([listo.fila], listo.ctx);
+  const enviar = listo.hubspot.tareas().find((t) => t.id !== listo.tarea.id);
+  assert.equal(enviar.properties.hs_task_subject, 'Enviar pedido a Luis');
+  assert.equal(enviar.properties.hubspot_owner_id, '1');
 });
 
 test('F4 cadena completa: producción → listo, enviar → enviado, confirmar → entregado', async () => {

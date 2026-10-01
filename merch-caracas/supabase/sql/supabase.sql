@@ -13,6 +13,7 @@ insert into configuracion (clave, valor, descripcion) values
   ('HORARIO_LABORAL',        '',                  'PENDIENTE. Días y horas de trabajo. Formato: lun-vie 08:00-17:00; sab 08:00-12:00'),
   ('FERIADOS',               '',                  'Opcional. Días sin horario laboral, separados por coma: 2026-12-24,2026-12-25'),
   ('ADMIN_HUBSPOT_OWNER_ID', '',                  'Opcional. ID del usuario de HubSpot que recibe los escalamientos y el resumen general'),
+  ('PRODUCCION_HUBSPOT_OWNER_ID', '',             'Opcional. ID del usuario de HubSpot que recibe las tareas "Iniciar producción". Vacío = el vendedor del negocio'),
   ('MODO_SOMBRA',            'true',              'true = F2 solo escribe resumen_ia y una nota. false = mueve etapas y crea tareas'),
   ('F2_ACTIVO',              'false',             'true = analiza los chats con Claude cada 3 minutos'),
   ('F3_ACTIVO',              'false',             'true = revisa los tiempos de respuesta cada 15 minutos (en horario laboral)'),

@@ -88,6 +88,9 @@ async function main() {
       if (config.hubspot.adminOwnerId && !propietarios.has(config.hubspot.adminOwnerId)) {
         mal(`ADMIN_HUBSPOT_OWNER_ID=${config.hubspot.adminOwnerId} no es un usuario de HubSpot`);
       }
+      if (config.hubspot.produccionOwnerId && !propietarios.has(config.hubspot.produccionOwnerId)) {
+        mal(`PRODUCCION_HUBSPOT_OWNER_ID=${config.hubspot.produccionOwnerId} no es un usuario de HubSpot`);
+      }
     } catch (error) {
       mal(`HubSpot: ${error.message}`);
     }

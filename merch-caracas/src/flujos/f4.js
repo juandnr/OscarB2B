@@ -7,6 +7,8 @@
 // Lee en HubSpot las tareas que en Postgres siguen abiertas. Las completadas
 // mueven el negocio según su tipo (solo hacia adelante) y crean la tarea de la
 // etapa siguiente. "Pagado" solo se alcanza aquí, al completar "Verificar pago".
+// La tarea "Iniciar producción" va a PRODUCCION_HUBSPOT_OWNER_ID si está
+// definido; las demás, al dueño del negocio.
 
 const { preparar, escaparHtml } = require('./comun');
 const { claveDesdeId, idDesdeClave, esAvance, orden, etapa: datosEtapa } = require('../etapas');
@@ -81,11 +83,12 @@ async function procesar(filas, ctx) {
     if (tipo && !delCliente.has(tipo)) {
       const cliente = { telefono: f.telefono, nombre_wa: f.nombre_wa };
       const vence = vencimiento(tipo, { ahora, config, cal, fechaEntrega: actual.props.fecha_entrega });
+      const responsable = (tipo === 'produccion' && config.hubspot.produccionOwnerId) || owner;
       const tarea = await hs.crearTarea({
         asunto: tituloTarea(tipo, cliente, actual.props),
         cuerpo: `Creada al completar la tarea "${f.tipo}".`,
         vence,
-        ownerId: owner,
+        ownerId: responsable,
         dealId,
         contactId: f.hubspot_contact_id,
         prioridad: PRIORIDAD[tipo],
@@ -93,6 +96,7 @@ async function procesar(filas, ctx) {
       delCliente.add(tipo);
       cambios.tareas_nuevas.push({
         hubspot_task_id: String(tarea.id), telefono: f.telefono, tipo, vence_at: vence.toISOString(), hubspot_deal_id: dealId,
+        hubspot_owner_id: responsable,
       });
     }
     if (dealId === String(f.hubspot_deal_id)) {
