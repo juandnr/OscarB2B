@@ -180,11 +180,17 @@ const FLUJOS = [
       { nombre: 'Tareas abiertas', tipo: 'postgres', sql: 'select * from f4_tareas_abiertas()', pos: [220, 0] },
       { nombre: 'Procesar completadas', tipo: 'code', modulo: 'src/flujos/f4.js', funcion: 'procesar', pos: [440, 0] },
       { nombre: 'Guardar cambios', tipo: 'postgres', sql: 'select registrar_cambios($1::jsonb) as resultado', parametros: jsonParam('cambios'), pos: [660, 0] },
+      { nombre: 'Clientes abiertos', tipo: 'postgres', sql: 'select * from f4_clientes_abiertos()', pos: [220, 200] },
+      { nombre: 'Revisar traspasos', tipo: 'code', modulo: 'src/flujos/traspasos.js', funcion: 'revisar', pos: [440, 200] },
+      { nombre: 'Guardar traspasos', tipo: 'postgres', sql: 'select registrar_cambios($1::jsonb) as resultado', parametros: jsonParam('cambios'), pos: [660, 200] },
     ],
     conexiones: [
       ['Cada 5 minutos', 'Tareas abiertas'],
       ['Tareas abiertas', 'Procesar completadas'],
       ['Procesar completadas', 'Guardar cambios'],
+      ['Cada 5 minutos', 'Clientes abiertos'],
+      ['Clientes abiertos', 'Revisar traspasos'],
+      ['Revisar traspasos', 'Guardar traspasos'],
     ],
   },
   {

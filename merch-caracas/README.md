@@ -121,7 +121,7 @@ Pon `MODO_SOMBRA=false` y reinicia n8n. Desde ahí F2 mueve etapas, escribe los 
 | **F1** Recepción | Webhook de 360dialog | Guarda los mensajes (sin duplicar). Para un cliente nuevo busca negocio o contacto previo en HubSpot; si había negocio con propietario, reusa ese vendedor; si no, toma el siguiente disponible de la rotación. Crea contacto, negocio en Nuevo y la tarea "Contestar a {nombre}" (15 min laborables). Cuando un vendedor responde desde la app, completa las tareas "Contestar" abiertas. |
 | **F2** Análisis | Cada 3 min | Toma los clientes con mensajes nuevos cuyo último mensaje tiene al menos `DEBOUNCE_MIN` minutos, lee el negocio en HubSpot, manda los últimos 40 mensajes a Claude y aplica las reglas (solo avanza, nunca a Pagado, confianza ≥ 0.7, sin tareas duplicadas). |
 | **F3** Tiempos | Cada 15 min, solo en horario laboral | Cliente sin respuesta por más del SLA → tarea "Contestar". Tarea "Contestar" vencida hace más de `ESCALAR_MIN` → nota en el negocio y tarea al administrador (una sola vez). |
-| **F4** Tareas | Cada 5 min | Revisa en HubSpot las tareas abiertas. Verificar pago → Pagado / En producción + tarea de producción; producción → Listo para enviar + "Enviar pedido"; enviar → Enviado + "Confirmar recepción"; confirmar → Entregado. Solo hacia adelante. |
+| **F4** Tareas | Cada 5 min | Revisa en HubSpot las tareas abiertas. Verificar pago → Pagado / En producción + tarea de producción; producción → Listo para enviar + "Enviar pedido"; enviar → Enviado + "Confirmar recepción"; confirmar → Entregado. Solo hacia adelante. También detecta los traspasos de clientes entre vendedores (ver decisión 21). |
 | **F5** Resumen | 7:30 a. m., días laborables | Cada vendedor recibe una tarea en HubSpot con sus propios pendientes: clientes esperando respuesta, tareas vencidas, tareas de hoy y cotizaciones abiertas (si no tiene nada, no recibe nada). Si hay administrador, recibe además el resumen general: chats sin responder, tareas vencidas por vendedor, cotizaciones abiertas, negocios por etapa y perdidos de las últimas 24 h con motivo. |
 
 ## Decisiones de implementación
@@ -148,6 +148,13 @@ Cosas que la especificación no fijaba y que resolví así. Todas se pueden camb
 18. **Claude**: `ANTHROPIC_MODEL` con salidas estructuradas (esquema JSON del contrato), caché del prompt del sistema, esfuerzo `low` (ajustable con `ANTHROPIC_EFFORT`) y reintento del lado del servidor con otro modelo si el principal rechaza la solicitud (`ANTHROPIC_FALLBACK=default`; `no` lo apaga). Si el JSON no cumple el contrato, se reintenta una vez.
 19. **Resumen diario por vendedor** (pedido de Oscar): además del resumen general, cada vendedor recibe el suyo con sus pendientes. Solo se manda en días con horario laboral.
 20. **Responsable de producción** (pedido de Oscar): variable nueva `PRODUCCION_HUBSPOT_OWNER_ID`, opcional. Si está definida, todas las tareas "Iniciar producción" van a esa persona y el negocio sigue a nombre del vendedor. Al completarla, "Enviar pedido" vuelve al vendedor. Cada tarea guarda su propietario, y el resumen diario se la muestra a quien la tiene.
+21. **Traspasos de clientes** (pedido de Oscar): un vendedor le pasa un cliente a otro cambiando en HubSpot el propietario del negocio. F4 lo compara con el último propietario visto (`clientes.hubspot_owner_visto`) y, si cambió, hace lo siguiente:
+    - pasa al nuevo vendedor las tareas abiertas que eran del anterior, salvo "Iniciar producción" si hay responsable fijo de producción;
+    - pasa también el contacto;
+    - le crea al nuevo vendedor la tarea "Cliente transferido: {nombre} (antes de {vendedor})";
+    - deja una nota en el negocio y guarda el traspaso en la tabla `traspasos`.
+
+    El resumen general del administrador lista los traspasos de las últimas 24 h. El propietario con el que el sistema crea un negocio no cuenta como traspaso, y un negocio que se ve por primera vez solo anota su propietario. Solo se revisan negocios abiertos.
 
 ## Limitaciones conocidas
 

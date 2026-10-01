@@ -11,6 +11,7 @@ const f2 = require('./flujos/f2');
 const f3 = require('./flujos/f3');
 const f4 = require('./flujos/f4');
 const f5 = require('./flujos/f5');
+const traspasos = require('./flujos/traspasos');
 const { leerConfig } = require('./config');
 
 function crearOrquestador({ consultar, esquema = null }) {
@@ -68,12 +69,31 @@ function crearOrquestador({ consultar, esquema = null }) {
       return { clientes: estado.length, tareas_nuevas: salida.cambios.tareas_nuevas.length, tareas_actualizadas: salida.cambios.tareas_estado.length };
     },
 
+    // Tareas completadas y traspasos de clientes. Son independientes: si falla
+    // una parte, la otra igual se guarda y el error se informa al final.
     async f4(ctx) {
-      const abiertas = await filas(`select * from ${fn('f4_tareas_abiertas')}()`);
-      if (!abiertas.length) return { tareas: 0 };
-      const [salida] = await f4.procesar(abiertas, ctx);
-      if (salida) await registrarCambios(salida.cambios);
-      return { tareas: abiertas.length, actualizadas: salida ? salida.cambios.tareas_estado.length : 0, nuevas: salida ? salida.cambios.tareas_nuevas.length : 0 };
+      const resumen = { tareas: 0, actualizadas: 0, nuevas: 0, traspasos: 0 };
+      let error = null;
+      try {
+        const abiertas = await filas(`select * from ${fn('f4_tareas_abiertas')}()`);
+        resumen.tareas = abiertas.length;
+        const [salida] = abiertas.length ? await f4.procesar(abiertas, ctx) : [];
+        if (salida) {
+          await registrarCambios(salida.cambios);
+          resumen.actualizadas = salida.cambios.tareas_estado.length;
+          resumen.nuevas = salida.cambios.tareas_nuevas.length;
+        }
+      } catch (e) {
+        error = e;
+      }
+      const clientes = await filas(`select * from ${fn('f4_clientes_abiertos')}()`);
+      const [revision] = await traspasos.revisar(clientes, ctx);
+      if (revision) {
+        await registrarCambios(revision.cambios);
+        resumen.traspasos = revision.cambios.traspasos.length;
+      }
+      if (error) throw error;
+      return resumen;
     },
 
     async f5(ctx) {

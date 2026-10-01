@@ -213,6 +213,12 @@ function crearHubSpot({ http, token, apiUrl = 'https://api.hubapi.com', esperar 
       return api.leerLote('tasks', ids, ['hs_task_status', 'hs_task_subject', 'hs_task_completion_date', 'hs_timestamp', 'hubspot_owner_id']);
     },
 
+    // null si la tarea no existe (borrada).
+    async actualizarTarea(id, propiedades) {
+      const r = await solicitud('PATCH', `/crm/v3/objects/tasks/${id}`, { properties: propiedades }, { aceptar: [404] });
+      return r.status === 404 ? null : r.body;
+    },
+
     async completarTarea(id) {
       const r = await solicitud(
         'PATCH',

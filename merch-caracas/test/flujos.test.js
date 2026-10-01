@@ -9,6 +9,7 @@ const f1 = require('../src/flujos/f1');
 const f2 = require('../src/flujos/f2');
 const f3 = require('../src/flujos/f3');
 const f4 = require('../src/flujos/f4');
+const traspasos = require('../src/flujos/traspasos');
 const f5 = require('../src/flujos/f5');
 const { crearCtx, envPrueba, analisis, ETAPAS_IDS } = require('./apoyo/falsos');
 
@@ -418,6 +419,81 @@ test('F4 tareas abiertas, eliminadas y tipos que no mueven etapa', async () => {
   assert.deepEqual(await f4.procesar([{ ...fila, hubspot_task_id: t.id }], nada.ctx), []);
 });
 
+// ── Traspasos (F4) ──────────────────────────────────────────────────────────
+
+function preparaTraspaso({ visto = '1', actual = '2', env } = {}) {
+  const { ctx, hubspot } = crearCtx({ ahora: MARTES_10AM, ...(env ? { env } : {}) });
+  const contacto = hubspot.agregar('contacts', { phone: TEL, hubspot_owner_id: '1' });
+  const negocio = hubspot.agregar('deals', { pipeline: 'p1', dealstage: ETAPAS_IDS.cotizado, hubspot_owner_id: actual });
+  const tarea = (props) => hubspot.agregar('tasks', { hs_task_status: 'NOT_STARTED', ...props });
+  const fila = (tareas) => ({
+    telefono: TEL, nombre_wa: 'Luis', hubspot_deal_id: negocio.id, hubspot_contact_id: contacto.id,
+    hubspot_owner_visto: visto, tareas_abiertas: tareas.map(([t, tipo]) => ({ hubspot_task_id: t.id, tipo })),
+  });
+  return { ctx, hubspot, contacto, negocio, tarea, fila };
+}
+
+test('Traspaso: pasa las tareas pendientes, avisa al nuevo vendedor y lo registra', async () => {
+  const { ctx, hubspot, contacto, negocio, tarea, fila } = preparaTraspaso();
+  const seguimiento = tarea({ hs_task_subject: 'Seguimiento de cotización a Luis', hubspot_owner_id: '1' });
+  const contestar = tarea({ hs_task_subject: 'Contestar a Luis', hubspot_owner_id: '1' });
+  const hecha = tarea({ hs_task_subject: 'Enviar cotización a Luis', hubspot_owner_id: '1', hs_task_status: 'COMPLETED' });
+  const deOtro = tarea({ hs_task_subject: 'Iniciar producción del pedido de Luis', hubspot_owner_id: '77' });
+
+  const [{ cambios }] = await traspasos.revisar(
+    [fila([[seguimiento, 'seguimiento'], [contestar, 'contestar'], [hecha, 'cotizar'], [deOtro, 'produccion']])], ctx);
+
+  assert.equal(hubspot.datos.tasks[seguimiento.id].properties.hubspot_owner_id, '2');
+  assert.equal(hubspot.datos.tasks[contestar.id].properties.hubspot_owner_id, '2');
+  assert.equal(hubspot.datos.tasks[hecha.id].properties.hubspot_owner_id, '1', 'las completadas no se tocan');
+  assert.equal(hubspot.datos.tasks[deOtro.id].properties.hubspot_owner_id, '77', 'las de otra persona no se tocan');
+  assert.equal(hubspot.datos.contacts[contacto.id].properties.hubspot_owner_id, '2');
+
+  const aviso = hubspot.tareas().find((t) => /^Cliente transferido/.test(t.properties.hs_task_subject));
+  assert.equal(aviso.properties.hs_task_subject, 'Cliente transferido: Luis (antes de Ana Pérez)');
+  assert.equal(aviso.properties.hubspot_owner_id, '2');
+  assert.equal(aviso.properties.hs_task_priority, 'HIGH');
+  assert.match(aviso.properties.hs_task_body, /era de Ana Pérez y ahora es tuyo/);
+  assert.match(aviso.properties.hs_task_body, /Se te pasaron 2 tarea\(s\)/);
+  assert.deepEqual(aviso.asociados, { deals: [negocio.id], contacts: [contacto.id] });
+  const [nota] = hubspot.notas();
+  assert.match(nota.properties.hs_note_body, /pasó de <b>Ana Pérez<\/b> a <b>Beto Gil<\/b>\. Tareas pendientes pasadas: 2/);
+
+  assert.deepEqual(cambios.tareas_estado, [
+    { hubspot_task_id: seguimiento.id, hubspot_owner_id: '2' },
+    { hubspot_task_id: contestar.id, hubspot_owner_id: '2' },
+  ]);
+  assert.deepEqual(cambios.clientes, [{ telefono: TEL, hubspot_owner_id: '2', hubspot_owner_visto: '2' }]);
+  assert.deepEqual(cambios.traspasos, [{
+    telefono: TEL, hubspot_deal_id: negocio.id, de_owner_id: '1', a_owner_id: '2',
+    de_nombre: 'Ana Pérez', a_nombre: 'Beto Gil', tareas_movidas: 2,
+  }]);
+});
+
+test('Traspaso: "Iniciar producción" se queda con el responsable fijo de producción', async () => {
+  const { ctx, hubspot, tarea, fila } = preparaTraspaso({ visto: '1', actual: '2', env: envPrueba({ PRODUCCION_HUBSPOT_OWNER_ID: '1' }) });
+  const produccion = tarea({ hs_task_subject: 'Iniciar producción del pedido de Luis', hubspot_owner_id: '1' });
+  const enviar = tarea({ hs_task_subject: 'Enviar pedido a Luis', hubspot_owner_id: '1' });
+  const [{ cambios }] = await traspasos.revisar([fila([[produccion, 'produccion'], [enviar, 'enviar']])], ctx);
+  assert.equal(hubspot.datos.tasks[produccion.id].properties.hubspot_owner_id, '1');
+  assert.equal(hubspot.datos.tasks[enviar.id].properties.hubspot_owner_id, '2');
+  assert.equal(cambios.traspasos[0].tareas_movidas, 1);
+});
+
+test('Traspaso: la primera vez solo anota el propietario y sin cambios no hace nada', async () => {
+  const primera = preparaTraspaso({ visto: null, actual: '2' });
+  const [{ cambios }] = await traspasos.revisar([primera.fila([])], primera.ctx);
+  assert.deepEqual(cambios, { clientes: [{ telefono: TEL, hubspot_owner_id: '2', hubspot_owner_visto: '2' }], tareas_estado: [], traspasos: [] });
+  assert.equal(primera.hubspot.tareas().length, 0);
+  assert.equal(primera.hubspot.notas().length, 0);
+
+  const igual = preparaTraspaso({ visto: '2', actual: '2' });
+  assert.deepEqual(await traspasos.revisar([igual.fila([])], igual.ctx), []);
+  const sinNegocio = preparaTraspaso();
+  assert.deepEqual(await traspasos.revisar([{ ...sinNegocio.fila([]), hubspot_deal_id: '999' }], sinNegocio.ctx), []);
+  assert.deepEqual(await traspasos.revisar([], sinNegocio.ctx), []);
+});
+
 // ── F5 ──────────────────────────────────────────────────────────────────────
 
 test('F5 resumen diario como tarea para el administrador', async () => {
@@ -431,6 +507,7 @@ test('F5 resumen diario como tarea para el administrador', async () => {
       { tipo: 'seguimiento', nombre: 'Pedro', vendedor: 'Ana' },
       { tipo: 'contestar', nombre: 'Rosa', vendedor: 'Beto' },
     ],
+    traspasos: [{ telefono: TEL, nombre: 'Luis', de: 'Katherine Terrero', a: 'Victor Herrera', tareas_movidas: 2, cuando: '2026-09-29T19:05:00Z' }],
     analisis_con_error_24h: 2,
     clientes_sin_analizar: 0,
   };
@@ -446,6 +523,8 @@ test('F5 resumen diario como tarea para el administrador', async () => {
   assert.match(cuerpo, /Luis \(WhatsApp\) — Ana Pérez — termos x 200/);
   assert.match(cuerpo, /Cotizado: <b>1<\/b>/);
   assert.match(cuerpo, /Ana \(WhatsApp\) — Beto Gil — motivo: Precio fuera de presupuesto/);
+  assert.match(cuerpo, /Traspasos de clientes en las últimas 24 h \(1\)/);
+  assert.match(cuerpo, /Luis — de Katherine Terrero a Victor Herrera \(29\/09 15:05, 2 tarea\(s\) pasada\(s\)\)/);
   assert.match(cuerpo, /2 análisis de IA con error/);
 });
 

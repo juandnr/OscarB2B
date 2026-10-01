@@ -8,7 +8,8 @@
 //   - a cada vendedor disponible, con sus propios pendientes: clientes esperando
 //     respuesta, tareas vencidas, tareas de hoy y cotizaciones abiertas (si no
 //     tiene nada pendiente, no se le manda nada);
-//   - al administrador (ADMIN_HUBSPOT_OWNER_ID, opcional), el resumen general.
+//   - al administrador (ADMIN_HUBSPOT_OWNER_ID, opcional), el resumen general,
+//     con los traspasos de clientes de las últimas 24 h.
 
 const { preparar, escaparHtml, lista } = require('./comun');
 const { ETAPAS } = require('../etapas');
@@ -160,6 +161,10 @@ async function resumir(filas, ctx) {
       return `${escaparHtml(p.dealname)} — ${escaparHtml(nombreOwner(p.hubspot_owner_id))} — motivo: ${escaparHtml(p.motivo_perdida || 'sin motivo')}`;
     });
 
+    const traspasos = (datos.traspasos || []).map((t) =>
+      `${cliente(t)} — de ${escaparHtml(t.de || '?')} a ${escaparHtml(t.a || '?')} `
+      + `(${fechaCorta(t.cuando, tz)}, ${t.tareas_movidas} tarea(s) pasada(s))`);
+
     const alertas = [];
     if (datos.analisis_con_error_24h) alertas.push(`${datos.analisis_con_error_24h} análisis de IA con error en las últimas 24 h (tabla analisis).`);
     if (datos.clientes_sin_analizar) alertas.push(`${datos.clientes_sin_analizar} cliente(s) sin analizar tras 5 fallos seguidos.`);
@@ -170,6 +175,7 @@ async function resumir(filas, ctx) {
       `<p><b>Cotizaciones abiertas (${cotizaciones.length})</b></p>${lista(cotizadas)}`,
       `<p><b>Negocios por etapa</b></p>${lista(porEtapa)}`,
       `<p><b>Perdidos en las últimas 24 h (${perdidos.length})</b></p>${lista(perdidosTxt)}`,
+      `<p><b>Traspasos de clientes en las últimas 24 h (${traspasos.length})</b></p>${lista(traspasos)}`,
       alertas.length ? `<p><b>Alertas del sistema</b></p>${lista(alertas.map(escaparHtml))}` : '',
     ].join('');
 

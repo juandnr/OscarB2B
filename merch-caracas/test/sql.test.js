@@ -13,6 +13,7 @@ const path = require('path');
 const f1 = require('../src/flujos/f1');
 const f2 = require('../src/flujos/f2');
 const f4 = require('../src/flujos/f4');
+const traspasos = require('../src/flujos/traspasos');
 const { crearCtx, envPrueba, analisis, ETAPAS_IDS } = require('./apoyo/falsos');
 
 const URL_BD = process.env.TEST_DATABASE_URL;
@@ -148,7 +149,7 @@ test('registrar_cambios: clientes, tareas nuevas y estados', opciones, () => con
     clientes: [{ telefono: '+581', hubspot_contact_id: 'c1', hubspot_deal_id: 'd1', etapa: 'nuevo', hubspot_owner_id: '3', alta_completa: true }],
     tareas_nuevas: [{ hubspot_task_id: 't1', telefono: '+581', tipo: 'contestar', vence_at: '2026-09-29T14:15:00Z', hubspot_deal_id: 'd1' }],
   })]);
-  assert.deepEqual(r[0].r, { clientes: 1, tareas_nuevas: 1, tareas_actualizadas: 0 });
+  assert.deepEqual(r[0].r, { clientes: 1, tareas_nuevas: 1, tareas_actualizadas: 0, traspasos: 0 });
   let c = await cliente(db, '+581');
   assert.deepEqual([c.hubspot_contact_id, c.hubspot_deal_id, c.etapa, c.vendedor_id, c.alta_intentada_at], ['c1', 'd1', 'nuevo', 3, null]);
 
@@ -363,4 +364,44 @@ test('punta a punta: mensaje → alta con rotación → respuesta desde la app �
   assert.deepEqual(tareasBd.map((t) => `${t.tipo}:${t.estado}`).sort(), [
     'contestar:completada', 'cotizar:abierta', 'produccion:abierta', 'verificar_pago:completada',
   ]);
+}));
+
+test('punta a punta: traspaso de un cliente de Ana a Caro', opciones, () => conBD(async (db) => {
+  await vendedores(db);
+  const env = envPrueba({ HORARIO_LABORAL: 'lun-dom 00:00-24:00' });
+  const { ctx, hubspot } = crearCtx({ env, ahora: new Date() });
+  await correrF1(db, ctx, payload('entrante', 'wamid.t1', 10, 'Hola, quiero 50 gorras'));
+  let c = await cliente(db, '+584141234567');
+  assert.deepEqual([c.vendedor_id, c.hubspot_owner_visto], [1, '1'], 'el alta anota el propietario: no es un traspaso');
+  const [deal] = Object.values(hubspot.datos.deals);
+  const [contestar] = hubspot.tareas();
+
+  const revisar = async () => {
+    const [salida] = await traspasos.revisar(await q(db, 'select * from f4_clientes_abiertos()'), ctx);
+    if (salida) await q(db, 'select registrar_cambios($1::jsonb)', [json(salida.cambios)]);
+    return salida;
+  };
+  assert.equal(await revisar(), undefined, 'sin cambios no pasa nada');
+
+  // Ana le pasa el cliente a Caro en HubSpot
+  deal.properties.hubspot_owner_id = '3';
+  await revisar();
+  c = await cliente(db, '+584141234567');
+  assert.deepEqual([c.vendedor_id, c.hubspot_owner_visto], [3, '3']);
+  assert.equal(contestar.properties.hubspot_owner_id, '3');
+  assert.equal((await q(db, "select hubspot_owner_id from tareas where tipo = 'contestar'"))[0].hubspot_owner_id, '3');
+  const [t] = await q(db, 'select * from traspasos');
+  assert.deepEqual([t.de_owner_id, t.a_owner_id, t.de_nombre, t.a_nombre, t.tareas_movidas], ['1', '3', 'Ana Pérez', 'usuario 3', 1]);
+  assert.ok(hubspot.tareas().some((x) => x.properties.hs_task_subject === 'Cliente transferido: Luis (antes de Ana Pérez)'));
+
+  // No se repite en la siguiente corrida, y aparece en el resumen del administrador
+  assert.equal(await revisar(), undefined);
+  assert.equal((await q(db, 'select count(*)::int as n from traspasos'))[0].n, 1);
+  const [{ d }] = await q(db, 'select f5_datos() as d');
+  assert.deepEqual(d.traspasos.map((x) => [x.nombre, x.de, x.a, x.tareas_movidas]), [['Luis', 'Ana Pérez', 'usuario 3', 1]]);
+  assert.deepEqual(d.tareas_abiertas.map((x) => [x.tipo, x.vendedor, x.vendedor_owner_id]), [['contestar', 'Caro', '3']]);
+
+  // Los negocios cerrados no se revisan
+  await db.query("update clientes set etapa = 'perdido'");
+  assert.equal((await q(db, 'select * from f4_clientes_abiertos()')).length, 0);
 }));
