@@ -2,16 +2,22 @@
 
 // Empaqueta un módulo de src/ con todas sus dependencias en un solo bloque de
 // código (sin require de Node), para pegarlo en un Code node de n8n o en la
-// Edge Function de Supabase. El prompt de F2 se incrusta como texto.
+// Edge Function de Supabase. Los prompts de prompts/ se incrustan como texto.
 
 const fs = require('fs');
 const path = require('path');
 
 const RAIZ = path.join(__dirname, '..');
 
+// Módulos que leen un prompt con fs → texto literal.
+const PROMPTS = {
+  'src/prompt.js': 'clasificador.md',
+  'src/prompt-correo.js': 'correo.md',
+};
+
 function fuente(id) {
-  if (id === 'src/prompt.js') {
-    const texto = fs.readFileSync(path.join(RAIZ, 'prompts', 'clasificador.md'), 'utf8');
+  if (PROMPTS[id]) {
+    const texto = fs.readFileSync(path.join(RAIZ, 'prompts', PROMPTS[id]), 'utf8');
     return `'use strict';\nmodule.exports = ${JSON.stringify(texto)};\n`;
   }
   return fs.readFileSync(path.join(RAIZ, id), 'utf8');

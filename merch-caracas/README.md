@@ -1,6 +1,6 @@
 # Merch Caracas: seguimiento de WhatsApp con IA
 
-Lee las conversaciones del WhatsApp Business compartido (coexistencia con 360dialog), asigna cada cliente a un vendedor por rotación, avanza el pipeline de HubSpot y crea las tareas de cada vendedor. Los vendedores solo contestan en WhatsApp y marcan tareas como completadas en la app de HubSpot.
+Lee las conversaciones del WhatsApp Business compartido (coexistencia con 360dialog) y los correos del Gmail de la empresa. Asigna cada cliente a un vendedor por rotación, avanza el pipeline de HubSpot y crea las tareas de cada vendedor. Los vendedores solo contestan en WhatsApp o en Gmail y marcan tareas como completadas en la app de HubSpot.
 
 ```
 Cliente ──► App WhatsApp Business ◄── Vendedores contestan aquí
@@ -8,29 +8,32 @@ Cliente ──► App WhatsApp Business ◄── Vendedores contestan aquí
                    ▼
               360dialog  (webhooks: messages + smb_message_echoes + history)
                    ▼
-   Supabase: Edge Function "merch" ──► Postgres (esquema merch)
+   Supabase: Edge Function "merch" ◄── Gmail (script de Apps Script, cada 5 min)
+                   │               ──► Postgres (esquema merch)
              (cron cada 3–15 min)   ├──► Claude API (clasifica la conversación → JSON)
                                     └──► HubSpot (contacto, negocio, propietario, tareas, notas)
 ```
 
 ## Dónde corre
 
-**Supabase, en el plan gratis.** A pedido de Oscar, para no pagar servidor, los cinco flujos corren como una Edge Function de Supabase en vez de n8n. Las tareas programadas usan el cron de Supabase y la base es la del proyecto. La lógica y las reglas son las mismas. Instalación paso a paso, solo desde el panel de Supabase: **`supabase/INSTALAR.md`**.
+**Supabase, en el plan gratis.** A pedido de Oscar, para no pagar servidor, los flujos corren como una Edge Function de Supabase en vez de n8n. Las tareas programadas usan el cron de Supabase y la base es la del proyecto. La lógica y las reglas son las mismas. Instalación paso a paso, solo desde el panel de Supabase: **`supabase/INSTALAR.md`**.
 
-**Alternativa: n8n autoalojado.** Los mismos cinco flujos también están listos para n8n, en `n8n/workflows/`, con un servidor preparado en `docker-compose.yml` y `deploy/`. Es útil si más adelante se quiere n8n; el resto de este README describe ese camino.
+**Alternativa: n8n autoalojado.** Los flujos de WhatsApp (F1–F5) también están listos para n8n, en `n8n/workflows/`, con un servidor preparado en `docker-compose.yml` y `deploy/`. Es útil si más adelante se quiere n8n; el resto de este README describe ese camino.
 
 ## Contenido
 
 | Carpeta | Qué hay |
 |---|---|
 | `db/migraciones/` | `001_esquema.sql` (tablas de la especificación) y `002_implementacion.sql` (columnas extra, tabla `analisis` y funciones que usan los flujos) |
-| `hubspot/setup.js` | Crea el pipeline "WhatsApp Ventas", las propiedades y los motivos de pérdida; imprime los IDs para `.env` |
+| `hubspot/setup.js` | Crea el pipeline "Ventas" (antes "WhatsApp Ventas"), las propiedades, el canal y los motivos de pérdida; imprime los IDs para `.env` |
 | `n8n/workflows/` | Los 5 flujos listos para importar en n8n (F1–F5) |
 | `src/` | Toda la lógica (normalización de webhooks, horario laboral, reglas, Claude, HubSpot, pasos de cada flujo) |
 | `prompts/clasificador.md` | Prompt del sistema de F2 |
+| `prompts/correo.md` | Prompt del clasificador de correos de F6 (¿es un cliente?) |
 | `scripts/` | Migraciones, configuración del webhook de 360dialog y verificación de la instalación |
 | `db/revision_f2.sql` | Consultas para revisar a mano el modo sombra |
-| `supabase/` | Instalación en Supabase: `instalar.sql` (SQL Editor), `functions/merch/index.ts` (Edge Function) y guía `INSTALAR.md` |
+| `supabase/` | Instalación en Supabase: `instalar.sql` (SQL Editor), `functions/merch/index.ts` (Edge Function), guía `INSTALAR.md` y guía del correo `GMAIL.md` |
+| `gmail/` | Script de Google Apps Script que manda los correos del Gmail de la empresa a la función (`Codigo.gs` y `appsscript.json`) |
 | `docker-compose.yml`, `deploy/` | Alternativa con n8n: Postgres + n8n + HTTPS en un servidor propio, con guía en `deploy/INSTALAR.md` |
 | `test/` | Pruebas (`npm test`) |
 
@@ -122,6 +125,7 @@ Pon `MODO_SOMBRA=false` y reinicia n8n. Desde ahí F2 mueve etapas, escribe los 
 | **F2** Análisis | Cada 3 min | Toma los clientes con mensajes nuevos cuyo último mensaje tiene al menos `DEBOUNCE_MIN` minutos, lee el negocio en HubSpot, manda los últimos 40 mensajes a Claude y aplica las reglas (solo avanza, nunca a Pagado, confianza ≥ 0.7, sin tareas duplicadas). |
 | **F3** Tiempos | Cada 15 min, solo en horario laboral | Cliente sin respuesta por más del SLA → tarea "Contestar". Tarea "Contestar" vencida hace más de `ESCALAR_MIN` → nota en el negocio y tarea al administrador (una sola vez). |
 | **F4** Tareas | Cada 5 min | Revisa en HubSpot las tareas abiertas. Verificar pago → Pagado / En producción + tarea de producción; producción → Listo para enviar + "Enviar pedido"; enviar → Enviado + "Confirmar recepción"; confirmar → Entregado. Solo hacia adelante. También detecta los traspasos de clientes entre vendedores (ver decisión 21). |
+| **F6** Correo (solo Supabase) | Cada vez que el script de Gmail manda correos (cada 5 min) | Guarda los correos recibidos y enviados. Los enviados a un cliente cuentan como respuesta. Los automáticos o masivos se ignoran. Un remitente cuyo contacto ya tiene negocio en HubSpot es cliente. Para el resto, Claude decide si es un cliente; si lo es, se crea el cliente `correo:<email>` y sigue igual que F1 (contacto con email, negocio "(Correo)", rotación, tarea "Contestar"). Desde ahí F2–F5 lo tratan como a cualquier cliente. |
 | **F5** Resumen | 7:30 a. m., días laborables | Cada vendedor recibe una tarea en HubSpot con sus propios pendientes: clientes esperando respuesta, tareas vencidas, tareas de hoy y cotizaciones abiertas (si no tiene nada, no recibe nada). Si hay administrador, recibe además el resumen general: chats sin responder, tareas vencidas por vendedor, cotizaciones abiertas, negocios por etapa y perdidos de las últimas 24 h con motivo. |
 
 ## Decisiones de implementación
@@ -155,11 +159,22 @@ Cosas que la especificación no fijaba y que resolví así. Todas se pueden camb
     - deja una nota en el negocio y guarda el traspaso en la tabla `traspasos`.
 
     El resumen general del administrador lista los traspasos de las últimas 24 h. El propietario con el que el sistema crea un negocio no cuenta como traspaso, y un negocio que se ve por primera vez solo anota su propietario. Solo se revisan negocios abiertos.
+22. **Canal de correo** (pedido de Oscar): las decisiones fueron una sola cuenta de Gmail, que el sistema reconozca a los clientes entre correos de publicidad y basura, respuestas desde esa misma cuenta y el mismo pipeline. Por eso:
+    - el pipeline se renombra a **Ventas** y la propiedad nueva `canal` (WhatsApp / Correo) dice de dónde vino cada negocio;
+    - los correos llegan con un script de Google Apps Script en esa cuenta, con permiso de solo lectura, sin Google Cloud ni costo;
+    - los clientes de correo usan la clave `correo:<email>` en `clientes.telefono`, así F2–F5, los traspasos y los resúmenes funcionan sin cambios;
+    - Claude clasifica los remitentes nuevos con su propio prompt (`prompts/correo.md`) y confianza mínima 0.7;
+    - un remitente descartado no se vuelve a consultar durante 30 días, salvo que su contacto tenga negocio en HubSpot;
+    - los SLA son los mismos que en WhatsApp;
+    - si una persona escribe por los dos canales y el contacto de HubSpot tiene el teléfono y el email, se reutiliza el mismo negocio.
+
+    F6 existe solo en Supabase, no en n8n.
 
 ## Limitaciones conocidas
 
 - **Claude no ve imágenes ni escucha notas de voz.** Recibe `[imagen]`, `[nota de voz o audio]` o el nombre del documento, junto con el texto que los acompañe. Un comprobante se detecta por el contexto ("listo, ahí va el pago" + imagen). Descargar los archivos desde 360dialog y mandárselos a Claude es una mejora posible.
 - **No se sabe qué vendedor escribió cada mensaje**, porque todos usan el mismo número.
+- **Correo: solo se leen el texto y el asunto**, no los adjuntos. Las respuestas que se envían desde otra cuenta que no es la de la empresa no se registran.
 - **La búsqueda de HubSpot tarda unos segundos en indexar** registros nuevos. Postgres tiene un candado para que dos mensajes seguidos del mismo cliente no creen dos negocios.
 
 ## Pendiente de definir por Oscar

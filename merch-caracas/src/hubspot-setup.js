@@ -1,13 +1,17 @@
 'use strict';
 
 // Crea en HubSpot (o completa, si ya existe) lo que usa el sistema: pipeline
-// "WhatsApp Ventas" con sus 9 etapas, grupo y propiedades del negocio y la
-// propiedad motivo_perdida con la lista cerrada de motivos. Se puede repetir.
+// "Ventas" con sus 9 etapas, grupo y propiedades del negocio, la propiedad
+// motivo_perdida con la lista cerrada de motivos y la propiedad canal
+// (WhatsApp / Correo). Se puede repetir. Si el pipeline todavía se llama
+// "WhatsApp Ventas" (versiones anteriores), le cambia el nombre.
 // Lo usan hubspot/setup.js (línea de comandos) y la función de Supabase.
 
 const { ETAPAS, MOTIVOS_PERDIDA } = require('./etapas');
 
-const NOMBRE_PIPELINE = 'WhatsApp Ventas';
+const NOMBRE_PIPELINE = 'Ventas';
+const NOMBRES_ANTERIORES = ['WhatsApp Ventas'];
+const CANALES = ['WhatsApp', 'Correo'];
 const GRUPO = { name: 'merch_caracas_whatsapp', label: 'WhatsApp (Merch Caracas)', displayOrder: -1 };
 
 const PROPIEDADES = [
@@ -26,6 +30,9 @@ const PROPIEDADES = [
   { name: 'motivo_perdida', label: 'Motivo de pérdida', type: 'enumeration', fieldType: 'select',
     description: 'Motivo por el que se perdió el negocio (lo elige el vendedor al pasarlo a Perdido).',
     options: MOTIVOS_PERDIDA.map((m, i) => ({ label: m, value: m, displayOrder: i })) },
+  { name: 'canal', label: 'Canal', type: 'enumeration', fieldType: 'select',
+    description: 'Por dónde llegó el cliente: WhatsApp o Correo.',
+    options: CANALES.map((m, i) => ({ label: m, value: m, displayOrder: i })) },
 ];
 
 function metadataEtapa(e) {
@@ -34,9 +41,18 @@ function metadataEtapa(e) {
   return m;
 }
 
-async function asegurarPipeline(hs, log = console.log) {
+// pipelineId: el ya configurado, si lo hay (se busca primero por ID).
+async function asegurarPipeline(hs, log = console.log, { pipelineId } = {}) {
   const r = await hs.solicitud('GET', '/crm/v3/pipelines/deals');
-  let pipeline = (r.body.results || []).find((p) => p.label === NOMBRE_PIPELINE);
+  const todos = r.body.results || [];
+  let pipeline = (pipelineId && todos.find((p) => String(p.id) === String(pipelineId)))
+    || todos.find((p) => p.label === NOMBRE_PIPELINE)
+    || todos.find((p) => NOMBRES_ANTERIORES.includes(p.label));
+  if (pipeline && pipeline.label !== NOMBRE_PIPELINE) {
+    await hs.solicitud('PATCH', `/crm/v3/pipelines/deals/${pipeline.id}`, { label: NOMBRE_PIPELINE });
+    log(`✔ Pipeline "${pipeline.label}" renombrado a "${NOMBRE_PIPELINE}"`);
+    pipeline.label = NOMBRE_PIPELINE;
+  }
 
   if (!pipeline) {
     const creado = await hs.solicitud('POST', '/crm/v3/pipelines/deals', {
@@ -87,4 +103,4 @@ async function asegurarPropiedades(hs, log = console.log) {
   }
 }
 
-module.exports = { asegurarPipeline, asegurarPropiedades, PROPIEDADES, NOMBRE_PIPELINE, GRUPO };
+module.exports = { asegurarPipeline, asegurarPropiedades, PROPIEDADES, NOMBRE_PIPELINE, NOMBRES_ANTERIORES, GRUPO };

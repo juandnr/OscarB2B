@@ -5,11 +5,13 @@
 //
 //   GET  salud               estado de la instalación (no muestra secretos)
 //   POST whatsapp            webhook de 360dialog (F1); pide el secreto del webhook
-//   POST f2 | f3 | f4 | f5   flujos programados (los llama el cron)
+//   POST correo              correos nuevos que manda el script de Gmail (F6);
+//                            pide el secreto de correo (merch_correo_secreto)
+//   POST f2 … f6             flujos programados (los llama el cron; f6, a mano)
 //   POST hubspot-setup       crea pipeline y propiedades y guarda los IDs
 //   POST configurar-webhook  apunta el webhook de 360dialog a esta función
 //
-// Las rutas POST salvo whatsapp exigen el encabezado x-cron-secreto (secreto
+// Las rutas POST salvo whatsapp y correo exigen el encabezado x-cron-secreto (secreto
 // guardado en Vault; se llaman con select merch.llamar('<ruta>')). Todo lo que
 // tarda se hace después de responder y queda anotado en merch.bitacora.
 
@@ -19,9 +21,10 @@ const { secretoValido } = require('./whatsapp');
 const { crearHubSpot } = require('./hubspot');
 const { asegurarPipeline, asegurarPropiedades } = require('./hubspot-setup');
 const { configurarWebhook } = require('./d360');
+const { normalizarLote } = require('./correo');
 
 const ESQUEMA = 'merch';
-const PROGRAMADAS = ['f2', 'f3', 'f4', 'f5'];
+const PROGRAMADAS = ['f2', 'f3', 'f4', 'f5', 'f6'];
 
 function iguales(a, b) {
   const x = String(a || '');
@@ -110,6 +113,7 @@ function crearManejador({ consultar, envBase, http, enSegundoPlano, ahora = () =
     const activo = (f) => String(env[`${f.toUpperCase()}_ACTIVO`]).toLowerCase() === 'true';
     const [{ n }] = await consultar(`select count(*)::int as n from ${ESQUEMA}.vendedores where disponible`);
     const [{ w }] = await consultar(`select count(*)::int as w from ${ESQUEMA}.mensajes`);
+    const [{ c }] = await consultar(`select count(*)::int as c from ${ESQUEMA}.correos`);
     return {
       ok: true,
       url_funcion: url,
@@ -123,6 +127,7 @@ function crearManejador({ consultar, envBase, http, enSegundoPlano, ahora = () =
         f3: { activo: activo('f3'), faltan: faltan(['hubspot', 'horario']) },
         f4: { activo: activo('f4'), faltan: faltan(['hubspot']) },
         f5: { activo: activo('f5'), faltan: faltan(['hubspot']) },
+        f6: { activo: activo('f6'), faltan: faltan(['hubspot', 'anthropic', 'horario']), correos_recibidos: c },
       },
     };
   }
@@ -132,9 +137,9 @@ function crearManejador({ consultar, envBase, http, enSegundoPlano, ahora = () =
     if (!config.hubspot.token) throw new Error('Falta HUBSPOT_PRIVATE_APP_TOKEN en los secretos de la función');
     const hs = crearHubSpot({ http, token: config.hubspot.token, apiUrl: config.hubspot.apiUrl, esperar });
     const pasos = [];
-    const { pipelineId, etapas } = await asegurarPipeline(hs, (m) => pasos.push(m));
+    const { pipelineId, etapas } = await asegurarPipeline(hs, (m) => pasos.push(m), { pipelineId: config.hubspot.pipelineId });
     await asegurarPropiedades(hs, (m) => pasos.push(m));
-    const valores = { HUBSPOT_PIPELINE_ID: pipelineId };
+    const valores = { HUBSPOT_PIPELINE_ID: pipelineId, HUBSPOT_CANAL: 'true' };
     for (const [clave, id] of Object.entries(etapas)) valores[`HUBSPOT_ETAPA_${clave.toUpperCase()}`] = id;
     await consultar(
       `insert into ${ESQUEMA}.configuracion (clave, valor, descripcion)
@@ -178,6 +183,25 @@ function crearManejador({ consultar, envBase, http, enSegundoPlano, ahora = () =
         const body = await request.json().catch(() => null);
         enFondo('f1', () => orquestador.f1([{ headers, query, body }], ctx(env)));
         return responder(200, { ok: true });
+      }
+
+      if (ruta === 'correo') {
+        const headers = {};
+        request.headers.forEach((valor, clave) => { headers[clave.toLowerCase()] = valor; });
+        const esperadoCorreo = await secreto('merch_correo_secreto');
+        if (!esperadoCorreo || !secretoValido({ headers, query: Object.fromEntries(url.searchParams) }, esperadoCorreo.valor)) {
+          return responder(401, { error: 'Secreto inválido' });
+        }
+        const env = await entorno();
+        const correos = normalizarLote(await request.json().catch(() => null));
+        let nuevos = 0;
+        if (correos.length) {
+          [{ nuevos }] = await consultar(`select ${ESQUEMA}.f6_guardar_correos($1::text::jsonb) as nuevos`, [JSON.stringify(correos)]);
+        }
+        // Se procesan aunque no lleguen nuevos: así se retoman los que quedaron pendientes.
+        const activo = String(env.F6_ACTIVO).toLowerCase() === 'true';
+        if (activo) enFondo('f6', () => orquestador.f6(ctx(env)));
+        return responder(200, { ok: true, recibidos: correos.length, nuevos, procesando: activo });
       }
 
       const esperado = await secreto('merch_cron_secreto');

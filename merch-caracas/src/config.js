@@ -37,6 +37,11 @@ function leerConfig(env) {
     f2Lote: entero(env.F2_LOTE, 8),
     // Segundos que F2 dedica a analizar por corrida (Supabase corta a los 150 s).
     f2TiempoMaximoS: entero(env.F2_TIEMPO_MAXIMO_S, 200),
+    // F6 (correo): correos por corrida, segundos de clasificación por corrida y
+    // remitentes (emails o dominios, separados por coma) que nunca son clientes.
+    f6Lote: entero(env.F6_LOTE, 25),
+    f6TiempoMaximoS: entero(env.F6_TIEMPO_MAXIMO_S, 90),
+    correoIgnorar: texto(env.CORREO_IGNORAR).split(',').map((x) => x.trim()).filter(Boolean),
     d360: {
       webhookSecret: texto(env.D360_WEBHOOK_SECRET),
       apiKey: texto(env.D360_API_KEY),
@@ -49,6 +54,8 @@ function leerConfig(env) {
       adminOwnerId: texto(env.ADMIN_HUBSPOT_OWNER_ID),
       // Quién recibe las tareas "Iniciar producción"; vacío = el dueño del negocio.
       produccionOwnerId: texto(env.PRODUCCION_HUBSPOT_OWNER_ID),
+      // La propiedad "canal" (WhatsApp / Correo) existe: la crea hubspot-setup.
+      canal: texto(env.HUBSPOT_CANAL).toLowerCase() === 'true',
       apiUrl: texto(env.HUBSPOT_API_URL) || 'https://api.hubapi.com',
     },
     anthropic: {

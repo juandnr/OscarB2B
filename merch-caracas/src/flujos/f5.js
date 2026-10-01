@@ -14,6 +14,7 @@
 const { preparar, escaparHtml, lista } = require('./comun');
 const { ETAPAS } = require('../etapas');
 const { partesLocales, esDiaLaborable } = require('../horario');
+const { nombreCliente } = require('../tareas');
 
 const NOMBRE_TAREA = {
   contestar: 'Contestar',
@@ -46,7 +47,7 @@ function horasDesde(fecha, ahora) {
   return Math.max(0, Math.round((new Date(ahora) - new Date(fecha)) / 3600000));
 }
 
-const cliente = (x) => escaparHtml(x.nombre || x.telefono);
+const cliente = (x) => escaparHtml(nombreCliente({ nombre_wa: x.nombre, telefono: x.telefono }));
 const tipoTarea = (t) => escaparHtml(NOMBRE_TAREA[t.tipo] || t.tipo);
 
 function pedido(p) {

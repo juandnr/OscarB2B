@@ -19,6 +19,9 @@ insert into configuracion (clave, valor, descripcion) values
   ('F3_ACTIVO',              'false',             'true = revisa los tiempos de respuesta cada 15 minutos (en horario laboral)'),
   ('F4_ACTIVO',              'false',             'true = revisa las tareas completadas cada 5 minutos'),
   ('F5_ACTIVO',              'false',             'true = resumen diario a las 7:30 (días laborables): uno por vendedor y el general al administrador'),
+  ('F6_ACTIVO',              'false',             'true = procesa los correos que manda el script de Gmail: Claude decide cuáles son de clientes y se crean sus negocios'),
+  ('CORREO_IGNORAR',         '',                  'Opcional. Emails o dominios que nunca son clientes, separados por coma: banco.com, aviso@tienda.com'),
+  ('HUBSPOT_CANAL',          '',                  'Lo llena hubspot-setup: true cuando existe la propiedad "canal" (WhatsApp / Correo) en HubSpot'),
   ('TIMEZONE',               'America/Caracas',   'Zona horaria'),
   ('DEBOUNCE_MIN',           '5',                 'Minutos sin mensajes antes de analizar una conversación'),
   ('SLA_RESPUESTA_NUEVO_MIN','15',                'Minutos laborables para contestar a un cliente nuevo'),
@@ -64,7 +67,7 @@ begin
 end $$;
 
 -- Secretos generados al azar en Vault: uno para que solo el cron pueda llamar
--- a la función y otro para el webhook de 360dialog.
+-- a la función, otro para el webhook de 360dialog y otro para el script de Gmail.
 do $$
 begin
   if not exists (select 1 from vault.secrets where name = 'merch_cron_secreto') then
@@ -72,6 +75,9 @@ begin
   end if;
   if not exists (select 1 from vault.secrets where name = 'merch_webhook_secreto') then
     perform vault.create_secret(replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''), 'merch_webhook_secreto');
+  end if;
+  if not exists (select 1 from vault.secrets where name = 'merch_correo_secreto') then
+    perform vault.create_secret(replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''), 'merch_correo_secreto');
   end if;
 end $$;
 
@@ -106,6 +112,7 @@ begin
     perform cron.schedule('merch-f5', '30 11 * * *',  'select merch.llamar(''f5'')');
     perform cron.schedule('merch-limpieza', '15 4 * * *', $c$
       delete from merch.bitacora where creado_at < now() - interval '14 days';
+      delete from merch.correos where estado in ('ignorado', 'no_cliente') and creado_at < now() - interval '60 days';
       delete from cron.job_run_details where end_time < now() - interval '7 days';
     $c$);
   end if;

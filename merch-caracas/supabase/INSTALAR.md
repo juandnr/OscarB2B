@@ -21,7 +21,7 @@ En supabase.com crea un proyecto nuevo llamado `merch-caracas`, en el plan grati
 
 1. Menú **SQL Editor** → **New query**.
 2. Pega todo el contenido de `instalar.sql` y pulsa **Run**.
-3. Al final debe salir **Instalación lista** con `migraciones = 5`.
+3. Al final debe salir **Instalación lista** con `migraciones = 6`.
 
 Crea las tablas y las funciones del esquema `merch`, la tabla de configuración y las tareas programadas del cron. Se puede volver a correr cuando haya una versión nueva: no borra nada.
 
@@ -72,7 +72,7 @@ Espera unos 30 segundos y mira el resultado:
 select ok, detalle from merch.bitacora where ruta = 'hubspot-setup' order by id desc limit 1;
 ```
 
-Esto crea en HubSpot el pipeline "WhatsApp Ventas" con sus etapas y propiedades, y guarda solos los IDs. En `detalle` → `usuarios` aparecen los usuarios de HubSpot con su `hubspot_owner_id`.
+Esto crea en HubSpot el pipeline "Ventas" con sus etapas y propiedades (si se llamaba "WhatsApp Ventas", le cambia el nombre), y guarda solos los IDs. En `detalle` → `usuarios` aparecen los usuarios de HubSpot con su `hubspot_owner_id`.
 
 **Vendedores.** Menú **Table Editor**, esquema **merch**, tabla `vendedores` → **Insert row**. Llena `nombre`, `hubspot_owner_id` y `orden` (posición en la rotación). Para sacar a alguien de la rotación sin borrarlo, pon `disponible` en false.
 
@@ -103,10 +103,14 @@ Si justo después de conectar los clientes ven "este número no está en WhatsAp
 En la tabla `configuracion`:
 
 1. **`F2_ACTIVO` = `true`.** Claude analiza los chats en **modo sombra**: solo escribe `resumen_ia` y una nota. Déjalo así una semana y revisa la precisión con `db/revision_f2.sql`. Antes de esas consultas corre `set search_path = merch;` en el SQL Editor.
-2. **`F3_ACTIVO`, `F4_ACTIVO` y `F5_ACTIVO` = `true`.** Tiempos de respuesta, tareas completadas y resumen diario.
+2. **`F3_ACTIVO`, `F4_ACTIVO` y `F5_ACTIVO` = `true`.** Tiempos de respuesta, tareas completadas (y traspasos de clientes) y resumen diario.
 3. **`MODO_SOMBRA` = `false`.** Claude empieza a mover etapas y crear tareas.
 
 Los cambios en `configuracion` se aplican en la siguiente corrida, sin tocar la función.
+
+## 9. Conectar el correo (opcional)
+
+Para que los clientes que escriben al Gmail de la empresa también entren a HubSpot, sigue **`GMAIL.md`**. Después enciende `F6_ACTIVO`.
 
 ## Día a día
 

@@ -1,7 +1,8 @@
 'use strict';
 
-// Encadena los pasos de F1–F5 con las funciones de Postgres, en el mismo orden
-// que los nodos de los flujos de n8n. Lo usa la función de Supabase.
+// Encadena los pasos de F1–F6 con las funciones de Postgres, en el mismo orden
+// que los nodos de los flujos de n8n (F6, el correo, solo existe en Supabase).
+// Lo usa la función de Supabase.
 //
 // consultar(sql, parametros) → Promise<filas>. Las filas se pasan por JSON
 // para que las fechas lleguen como texto ISO, igual que en n8n.
@@ -11,6 +12,7 @@ const f2 = require('./flujos/f2');
 const f3 = require('./flujos/f3');
 const f4 = require('./flujos/f4');
 const f5 = require('./flujos/f5');
+const f6 = require('./flujos/f6');
 const traspasos = require('./flujos/traspasos');
 const { leerConfig } = require('./config');
 
@@ -20,6 +22,32 @@ function crearOrquestador({ consultar, esquema = null }) {
   const filas = async (sql, parametros = []) => JSON.parse(JSON.stringify(await consultar(sql, parametros)));
   const registrarCambios = (cambios) => filas(`select ${fn('registrar_cambios')}($1::text::jsonb) as resultado`, [json(cambios)]);
 
+  // Alta en HubSpot de los clientes nuevos y tareas "Contestar" respondidas, a
+  // partir de las filas de f1_registrar_mensajes. Lo usan F1 (WhatsApp) y F6
+  // (correo). Las dos ramas son independientes: si falla el alta, igual se
+  // completan las respondidas, y el error se informa al final.
+  async function altaYRespondidas(registradas, ctx, resumen) {
+    let errorAlta = null;
+    try {
+      const [busqueda] = await f1.buscarEnHubspot(registradas, ctx);
+      if (busqueda) {
+        const asignados = await filas(`select * from ${fn('f1_asignar_vendedor')}($1::text::jsonb)`, [json(busqueda.asignaciones)]);
+        const [creado] = await f1.crearEnHubspot(asignados, ctx, { busquedas: busqueda.busquedas });
+        await registrarCambios(creado.cambios);
+        resumen.altas = asignados.length;
+      }
+    } catch (error) {
+      errorAlta = error;
+    }
+    const [respondidas] = await f1.completarRespondidas(registradas, ctx);
+    if (respondidas) {
+      await registrarCambios(respondidas.cambios);
+      resumen.respondidas = respondidas.cambios.tareas_estado.length;
+    }
+    if (errorAlta) throw errorAlta;
+    return resumen;
+  }
+
   return {
     // entrada: [{ headers, query, body }] como llega el webhook.
     async f1(entrada, ctx) {
@@ -27,28 +55,7 @@ function crearOrquestador({ consultar, esquema = null }) {
       if (!normalizado) return { mensajes: 0 };
       const registradas = await filas(`select * from ${fn('f1_registrar_mensajes')}($1::text::jsonb)`, [json(normalizado.mensajes)]);
       const resumen = { mensajes: normalizado.mensajes.length, clientes: registradas.length, altas: 0, respondidas: 0 };
-
-      // Las dos ramas son independientes: si falla el alta, igual se completan
-      // las tareas respondidas, y el error se informa al final.
-      let errorAlta = null;
-      try {
-        const [busqueda] = await f1.buscarEnHubspot(registradas, ctx);
-        if (busqueda) {
-          const asignados = await filas(`select * from ${fn('f1_asignar_vendedor')}($1::text::jsonb)`, [json(busqueda.asignaciones)]);
-          const [creado] = await f1.crearEnHubspot(asignados, ctx, { busquedas: busqueda.busquedas });
-          await registrarCambios(creado.cambios);
-          resumen.altas = asignados.length;
-        }
-      } catch (error) {
-        errorAlta = error;
-      }
-      const [respondidas] = await f1.completarRespondidas(registradas, ctx);
-      if (respondidas) {
-        await registrarCambios(respondidas.cambios);
-        resumen.respondidas = respondidas.cambios.tareas_estado.length;
-      }
-      if (errorAlta) throw errorAlta;
-      return resumen;
+      return altaYRespondidas(registradas, ctx, resumen);
     },
 
     async f2(ctx) {
@@ -99,6 +106,27 @@ function crearOrquestador({ consultar, esquema = null }) {
     async f5(ctx) {
       const datos = await filas(`select ${fn('f5_datos')}() as datos`);
       return { resumenes: await f5.resumir(datos, ctx) };
+    },
+
+    // Correos que mandó el script de Gmail y siguen pendientes.
+    async f6(ctx) {
+      const config = leerConfig(ctx.env);
+      const tomados = await filas(`select * from ${fn('f6_tomar_correos')}($1::int)`, [config.f6Lote]);
+      if (!tomados.length) return { correos: 0 };
+      const [{ resultado }] = await f6.clasificar(tomados, ctx);
+      const registradas = await filas(`select * from ${fn('f6_guardar_resultados')}($1::text::jsonb)`, [json(resultado)]);
+      const cuenta = (estado) => resultado.correos.filter((c) => c.estado === estado).length;
+      const resumen = {
+        correos: tomados.length,
+        de_clientes: cuenta('cliente'),
+        no_clientes: cuenta('no_cliente'),
+        ignorados: cuenta('ignorado'),
+        pendientes: resultado.liberar.length,
+        altas: 0,
+        respondidas: 0,
+      };
+      if (resultado.errores.length) resumen.errores = resultado.errores;
+      return altaYRespondidas(registradas, ctx, resumen);
     },
   };
 }

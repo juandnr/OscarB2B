@@ -4,6 +4,7 @@
 
 const { sumarMinutosLaborables, instanteLocal } = require('./horario');
 const { orden, esCerrada } = require('./etapas');
+const { emailDe } = require('./correo');
 
 const TIPOS_TAREA = ['contestar', 'cotizar', 'seguimiento', 'verificar_pago', 'produccion', 'enviar', 'confirmar'];
 
@@ -20,8 +21,14 @@ const PRIORIDAD = {
   confirmar: 'LOW',
 };
 
+// Nombre para mostrar: el de WhatsApp o el del correo; si no hay, el teléfono o el email.
 function nombreCliente(cliente) {
-  return (cliente.nombre_wa && cliente.nombre_wa.trim()) || cliente.telefono;
+  return (cliente.nombre_wa && cliente.nombre_wa.trim()) || emailDe(cliente.telefono) || cliente.telefono;
+}
+
+// "WhatsApp" o "Correo", según la clave del cliente.
+function canalCliente(telefono) {
+  return emailDe(telefono) ? 'Correo' : 'WhatsApp';
 }
 
 function tituloTarea(tipo, cliente, datos = {}) {
@@ -116,6 +123,7 @@ module.exports = {
   TIPOS_SUGERIBLES,
   PRIORIDAD,
   nombreCliente,
+  canalCliente,
   tituloTarea,
   vencimiento,
   tareaPermitida,

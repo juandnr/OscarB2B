@@ -1,9 +1,11 @@
 'use strict';
 
-// Llamada a la API de Claude para F2: arma la solicitud, interpreta la respuesta
-// y valida el JSON contra el contrato.
+// Llamadas a la API de Claude: el análisis de conversaciones de F2 y el
+// clasificador de correos de F6. Arma la solicitud, interpreta la respuesta y
+// valida el JSON contra el contrato.
 
 const SISTEMA = require('./prompt');
+const SISTEMA_CORREO = require('./prompt-correo');
 const { partesLocales } = require('./horario');
 
 const ETAPAS_DETECTABLES = [
@@ -85,7 +87,8 @@ function construirContexto({ cliente, etapaActual, datos, tareasAbiertas, mensaj
     `Etapa actual del negocio: ${etapaActual}`,
     `Datos registrados: ${registrados}`,
     `Tareas abiertas: ${tareas}`,
-    `Nombre del cliente en WhatsApp: ${(cliente.nombre_wa && cliente.nombre_wa.trim()) || 'desconocido'}`,
+    `Canal: ${String(cliente.telefono || '').startsWith('correo:') ? 'correo electrónico' : 'WhatsApp'}`,
+    `Nombre del cliente: ${(cliente.nombre_wa && cliente.nombre_wa.trim()) || 'desconocido'}`,
     '',
     `Conversación (${mensajes.length} mensajes, del más antiguo al más reciente):`,
     '<conversacion>',
@@ -94,14 +97,14 @@ function construirContexto({ cliente, etapaActual, datos, tareasAbiertas, mensaj
   ].join('\n');
 }
 
-function construirSolicitud(config, contexto) {
+function construirSolicitud(config, contexto, { sistema = SISTEMA, esquema = ESQUEMA } = {}) {
   const a = config.anthropic;
   const body = {
     model: a.modelo,
     max_tokens: 8000,
-    system: [{ type: 'text', text: SISTEMA, cache_control: { type: 'ephemeral' } }],
+    system: [{ type: 'text', text: sistema, cache_control: { type: 'ephemeral' } }],
     messages: [{ role: 'user', content: contexto }],
-    output_config: { effort: a.esfuerzo, format: { type: 'json_schema', schema: ESQUEMA } },
+    output_config: { effort: a.esfuerzo, format: { type: 'json_schema', schema: esquema } },
   };
   const headers = {
     'x-api-key': a.apiKey,
@@ -187,7 +190,7 @@ function validarAnalisis(obj) {
 }
 
 // Extrae y valida el JSON de una respuesta 200 de /v1/messages.
-function interpretarRespuesta(body) {
+function interpretarRespuesta(body, validar = validarAnalisis) {
   if (!body || !Array.isArray(body.content)) {
     throw new ErrorClaude('json_invalido', 'Respuesta de Claude sin contenido', body);
   }
@@ -206,13 +209,14 @@ function interpretarRespuesta(body) {
   } catch (error) {
     throw new ErrorClaude('json_invalido', `No se pudo leer el JSON: ${error.message}`, crudo.slice(0, 500));
   }
-  return validarAnalisis(obj);
+  return validar(obj);
 }
 
 // Hace la llamada con reintentos ante 429/5xx/529 o fallas de red.
-async function llamarClaude({ http, config, contexto, esperar }) {
+// sistema/esquema/validar: por defecto, el análisis de conversaciones de F2.
+async function llamarClaude({ http, config, contexto, esperar, sistema, esquema, validar = validarAnalisis }) {
   const pausa = esperar || ((ms) => new Promise((r) => setTimeout(r, ms)));
-  const solicitud = construirSolicitud(config, contexto);
+  const solicitud = construirSolicitud(config, contexto, { sistema, esquema });
   let intento = 0;
   for (;;) {
     intento += 1;
@@ -227,7 +231,7 @@ async function llamarClaude({ http, config, contexto, esperar }) {
       throw new ErrorClaude('http', `Error de red con la API de Claude: ${error.message}`);
     }
     if (r.status === 200) {
-      return { analisis: interpretarRespuesta(r.body), usage: r.body.usage || null, modelo: r.body.model || null };
+      return { analisis: interpretarRespuesta(r.body, validar), usage: r.body.usage || null, modelo: r.body.model || null };
     }
     if ((r.status === 429 || r.status >= 500) && intento < 3) {
       const reintentar = Number(r.headers && r.headers['retry-after']);
@@ -251,8 +255,71 @@ async function analizarConversacion(opciones) {
   }
 }
 
+// ── Clasificador de correos (F6) ────────────────────────────────────────────
+
+const ESQUEMA_CORREO = {
+  type: 'object',
+  properties: {
+    es_cliente: { type: 'boolean' },
+    confianza: { type: 'number' },
+    motivo: texto,
+    nombre: { anyOf: [texto, nulo] },
+    empresa: { anyOf: [texto, nulo] },
+  },
+  required: ['es_cliente', 'confianza', 'motivo', 'nombre', 'empresa'],
+  additionalProperties: false,
+};
+
+function validarCorreo(obj) {
+  const errores = [];
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    throw new ErrorClaude('json_invalido', 'La respuesta no es un objeto JSON');
+  }
+  if (typeof obj.es_cliente !== 'boolean') errores.push('es_cliente debe ser true o false');
+  const confianza = Number(obj.confianza);
+  if (obj.confianza === null || obj.confianza === '' || !Number.isFinite(confianza) || confianza < 0 || confianza > 1) {
+    errores.push(`confianza inválida: ${obj.confianza}`);
+  }
+  if (typeof obj.motivo !== 'string') errores.push('motivo debe ser texto');
+  if (errores.length) throw new ErrorClaude('json_invalido', `JSON inválido: ${errores.join('; ')}`, obj);
+  return {
+    es_cliente: obj.es_cliente,
+    confianza,
+    motivo: obj.motivo.trim(),
+    nombre: textoONulo(obj.nombre),
+    empresa: textoONulo(obj.empresa),
+  };
+}
+
+// correos: [{ de_email, de_nombre, asunto, texto, fecha }] del mismo remitente.
+function contextoCorreo(correos, tz) {
+  const [primero] = correos;
+  const remitente = primero.de_nombre ? `${primero.de_nombre} <${primero.de_email}>` : primero.de_email;
+  const bloques = correos.map((c) => [
+    `[${fechaLocal(c.fecha, tz)}] Asunto: ${c.asunto || '(sin asunto)'}`,
+    String(c.texto || '').slice(0, 3000) || '[sin texto]',
+  ].join('\n'));
+  return [
+    `Remitente: ${remitente}`,
+    '',
+    `Correos de este remitente (${correos.length}, del más antiguo al más reciente):`,
+    '<correos>',
+    bloques.join('\n\n---\n\n'),
+    '</correos>',
+  ].join('\n');
+}
+
+async function clasificarCorreo({ http, config, correos, esperar }) {
+  const opciones = {
+    http, config, esperar, contexto: contextoCorreo(correos, config.timezone),
+    sistema: SISTEMA_CORREO, esquema: ESQUEMA_CORREO, validar: validarCorreo,
+  };
+  return analizarConversacion(opciones);
+}
+
 module.exports = {
   ESQUEMA,
+  ESQUEMA_CORREO,
   ETAPAS_DETECTABLES,
   TIPOS_TAREA_CLAUDE,
   ErrorClaude,
@@ -262,4 +329,7 @@ module.exports = {
   interpretarRespuesta,
   llamarClaude,
   analizarConversacion,
+  validarCorreo,
+  contextoCorreo,
+  clasificarCorreo,
 };

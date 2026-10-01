@@ -127,6 +127,12 @@ function crearHubSpotFalso() {
     if (method === 'GET' && ruta === '/crm/v3/pipelines/deals') {
       return { status: 200, body: { results: JSON.parse(JSON.stringify(pipelines)) }, headers: {} };
     }
+    if (method === 'PATCH' && (m = /^\/crm\/v3\/pipelines\/deals\/(\w+)$/.exec(ruta))) {
+      const p = pipelines.find((x) => x.id === m[1]);
+      if (!p) return { status: 404, body: { message: 'not found' }, headers: {} };
+      Object.assign(p, body);
+      return { status: 200, body: p, headers: {} };
+    }
     if (method === 'POST' && ruta === '/crm/v3/pipelines/deals') {
       const p = { id: `pl${secuencia++}`, label: body.label, stages: body.stages.map((e) => ({ ...e, id: String(secuencia++) })) };
       pipelines.push(p);

@@ -112,6 +112,16 @@ function crearHubSpot({ http, token, apiUrl = 'https://api.hubapi.com', esperar 
       return (r.results || [])[0] || null;
     },
 
+    async buscarContactoPorEmail(email) {
+      const r = await api.buscar('contacts', {
+        filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: String(email).toLowerCase() }] }],
+        properties: ['firstname', 'lastname', 'email', 'hubspot_owner_id'],
+        sorts: [{ propertyName: 'createdate', direction: 'ASCENDING' }],
+        limit: 10,
+      });
+      return (r.results || [])[0] || null;
+    },
+
     async negociosDeContacto(contactId, pipelineId) {
       const r = await api.buscar('deals', {
         filterGroups: [{

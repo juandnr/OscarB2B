@@ -48,6 +48,10 @@ async function revisar(filas, ctx) {
     return propietarios[String(id)] || `usuario ${id}`;
   };
 
+  // Un mismo negocio puede estar en dos clientes (el de WhatsApp y el de correo
+  // de la misma persona): se avisa una sola vez.
+  const avisados = new Set();
+
   for (const f of filas) {
     const negocio = negocios[String(f.hubspot_deal_id)];
     if (!negocio) continue;
@@ -55,12 +59,13 @@ async function revisar(filas, ctx) {
     const visto = f.hubspot_owner_visto ? String(f.hubspot_owner_visto) : null;
     if (!actual || actual === visto) continue;
 
-    if (!visto) {
+    if (!visto || avisados.has(String(f.hubspot_deal_id))) {
       cambios.clientes.push({ telefono: f.telefono, hubspot_owner_id: actual, hubspot_owner_visto: actual });
       continue;
     }
 
     // ── Traspaso de `visto` a `actual` ──
+    avisados.add(String(f.hubspot_deal_id));
     const cliente = nombreCliente({ telefono: f.telefono, nombre_wa: f.nombre_wa });
     const deNombre = await nombre(visto);
     const aNombre = await nombre(actual);

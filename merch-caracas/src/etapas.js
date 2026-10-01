@@ -1,6 +1,6 @@
 'use strict';
 
-// Etapas del pipeline "WhatsApp Ventas" en orden. `tarea` es el tipo de tarea que
+// Etapas del pipeline "Ventas" en orden. `tarea` es el tipo de tarea que
 // se crea al entrar a la etapa. `probabilidad` la exige HubSpot para cada etapa
 // de negocio (se puede ajustar luego en HubSpot sin tocar el código).
 const ETAPAS = [

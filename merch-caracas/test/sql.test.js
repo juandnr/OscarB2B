@@ -14,6 +14,7 @@ const f1 = require('../src/flujos/f1');
 const f2 = require('../src/flujos/f2');
 const f4 = require('../src/flujos/f4');
 const traspasos = require('../src/flujos/traspasos');
+const f6 = require('../src/flujos/f6');
 const { crearCtx, envPrueba, analisis, ETAPAS_IDS } = require('./apoyo/falsos');
 
 const URL_BD = process.env.TEST_DATABASE_URL;
@@ -404,4 +405,68 @@ test('punta a punta: traspaso de un cliente de Ana a Caro', opciones, () => conB
   // Los negocios cerrados no se revisan
   await db.query("update clientes set etapa = 'perdido'");
   assert.equal((await q(db, 'select * from f4_clientes_abiertos()')).length, 0);
+}));
+
+test('punta a punta: correo de un cliente nuevo → negocio → respuesta desde Gmail completa "Contestar"', opciones, () => conBD(async (db) => {
+  await vendedores(db);
+  const env = envPrueba({ HORARIO_LABORAL: 'lun-dom 00:00-24:00', HUBSPOT_CANAL: 'true' });
+  const { ctx, hubspot, claude } = crearCtx({ env, ahora: new Date() });
+  const hace = (min) => new Date(Date.now() - min * 60000).toISOString();
+  const correo = (id, extra) => ({
+    id, hilo: 'h1', direccion: 'entrante', de_email: 'juan@acme.com', de_nombre: 'Juan Pérez', destinatarios: ['ventas@m.com'],
+    asunto: 'Cotización', texto: 'Necesito 200 termos', fecha: hace(10), etiquetas: ['INBOX'], cabeceras: {}, ...extra,
+  });
+
+  // Como la ruta /correo + F6 de la función de Supabase
+  const correrF6 = async (lote) => {
+    if (lote.length) await q(db, 'select f6_guardar_correos($1::jsonb)', [json(lote)]);
+    const tomados = await q(db, 'select * from f6_tomar_correos(25)');
+    if (!tomados.length) return null;
+    const [{ resultado }] = await f6.clasificar(JSON.parse(JSON.stringify(tomados)), ctx);
+    const filas = await q(db, 'select * from f6_guardar_resultados($1::jsonb)', [json(resultado)]);
+    const [busqueda] = await f1.buscarEnHubspot(filas, ctx);
+    if (busqueda) {
+      const asignados = await asignar(db, busqueda.asignaciones);
+      const [{ cambios }] = await f1.crearEnHubspot(asignados, ctx, { busquedas: busqueda.busquedas });
+      await q(db, 'select registrar_cambios($1::jsonb)', [json(cambios)]);
+    }
+    const [respondidas] = await f1.completarRespondidas(filas, ctx);
+    if (respondidas) await q(db, 'select registrar_cambios($1::jsonb)', [json(respondidas.cambios)]);
+    return resultado;
+  };
+
+  claude.responder({ es_cliente: true, confianza: 0.95, motivo: 'Pide 200 termos', nombre: 'Juan', empresa: 'Acme' });
+  await correrF6([correo('g1'), correo('g2', { de_email: 'ofertas@tienda.com', cabeceras: { list_unsubscribe: true } })]);
+  let c = await cliente(db, 'correo:juan@acme.com');
+  assert.ok(c.hubspot_deal_id);
+  assert.deepEqual([c.vendedor_id, c.nombre_wa, c.pendiente_analisis, c.hubspot_owner_visto], [1, 'Juan Pérez', true, '1']);
+  const negocio = hubspot.datos.deals[c.hubspot_deal_id];
+  assert.deepEqual([negocio.properties.dealname, negocio.properties.canal], ['Juan Pérez (Correo)', 'Correo']);
+  const [contestar] = hubspot.tareas();
+  assert.equal(contestar.properties.hs_task_status, 'NOT_STARTED');
+  const estados = await q(db, 'select id, estado, cliente from correos order by id');
+  assert.deepEqual(estados.map((e) => [e.id, e.estado, e.cliente]), [['g1', 'cliente', 'correo:juan@acme.com'], ['g2', 'ignorado', null]]);
+
+  // Repetido: no hace nada. Respuesta desde Gmail: completa la tarea.
+  assert.equal(await correrF6([correo('g1')]), null);
+  await correrF6([correo('s1', { direccion: 'saliente', de_email: 'ventas@m.com', destinatarios: ['juan@acme.com'], fecha: hace(5), asunto: 'Re: Cotización', texto: 'Hola Juan, va la cotización' })]);
+  assert.equal(contestar.properties.hs_task_status, 'COMPLETED');
+  c = await cliente(db, 'correo:juan@acme.com');
+  assert.ok(c.ultimo_msg_empresa_at > c.ultimo_msg_cliente_at);
+
+  // F2 ve el correo con su asunto
+  await db.query("update clientes set ultimo_msg_cliente_at = now() - interval '1 hour', ultimo_msg_empresa_at = now() - interval '1 hour'");
+  const [pendiente] = await q(db, 'select * from f2_tomar_pendientes(0, 10)');
+  assert.deepEqual(pendiente.mensajes.map((m) => [m.direccion, m.texto]), [
+    ['entrante', 'Asunto: Cotización\n\nNecesito 200 termos'],
+    ['saliente', 'Asunto: Re: Cotización\n\nHola Juan, va la cotización'],
+  ]);
+
+  // Un no cliente queda descartado y no se vuelve a consultar
+  claude.responder({ es_cliente: false, confianza: 0.9, motivo: 'Proveedor', nombre: null, empresa: null });
+  await correrF6([correo('n1', { de_email: 'cajas@proveedor.com' })]);
+  await correrF6([correo('n2', { de_email: 'cajas@proveedor.com', fecha: hace(1) })]);
+  assert.equal(claude.solicitudes.length, 2);
+  const descartados = await q(db, "select id, motivo from correos where estado = 'no_cliente' order by id");
+  assert.deepEqual(descartados.map((d) => d.motivo), ['Proveedor (confianza 0.9)', 'el remitente ya se descartó en los últimos 30 días']);
 }));

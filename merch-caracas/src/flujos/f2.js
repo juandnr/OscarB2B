@@ -10,7 +10,8 @@
 
 const { preparar, escaparHtml, lista } = require('./comun');
 const { claveDesdeId, idDesdeClave, etapa: datosEtapa } = require('../etapas');
-const { vencimiento, PRIORIDAD, nombreCliente } = require('../tareas');
+const { vencimiento, PRIORIDAD, nombreCliente, canalCliente } = require('../tareas');
+const { esCorreo } = require('../correo');
 const { construirContexto, analizarConversacion } = require('../claude');
 const { decidir } = require('../reglas');
 
@@ -94,11 +95,12 @@ async function analizarCliente(cliente, ctx, prep, parcial = { tareasCreadas: []
     if (decision.negocioNuevo) {
       const nuevo = await hs.crearNegocio({
         ...propiedades,
-        dealname: `${nombreCliente(cliente)} (WhatsApp)`,
+        dealname: `${nombreCliente(cliente)} (${canalCliente(cliente.telefono)})`,
         pipeline: pipelineId,
         dealstage: idDesdeClave(decision.negocioNuevo, etapas),
         hubspot_owner_id: owner,
-        wa_telefono: cliente.telefono,
+        ...(esCorreo(cliente.telefono) ? {} : { wa_telefono: cliente.telefono }),
+        ...(config.hubspot.canal ? { canal: canalCliente(cliente.telefono) } : {}),
       }, cliente.hubspot_contact_id);
       dealId = nuevo.id;
       etapaFinal = decision.negocioNuevo;

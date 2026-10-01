@@ -1,6 +1,7 @@
 'use strict';
 
-// F1 — Recepción (webhook de 360dialog, tiempo real).
+// F1 — Recepción (webhook de 360dialog, tiempo real). El alta y las tareas
+// respondidas también las usa F6 para los clientes de correo.
 //
 //   Webhook → normalizar → [Postgres f1_registrar_mensajes]
 //     ├→ buscarEnHubspot → [Postgres f1_asignar_vendedor] → crearEnHubspot → [Postgres registrar_cambios]
@@ -9,7 +10,8 @@
 const { preparar } = require('./comun');
 const { normalizarWebhook, secretoValido } = require('../whatsapp');
 const { claveDesdeId, esCerrada } = require('../etapas');
-const { tituloTarea, vencimiento, nombreCliente } = require('../tareas');
+const { tituloTarea, vencimiento, nombreCliente, canalCliente } = require('../tareas');
+const { emailDe } = require('../correo');
 
 // Entrada: items del nodo Webhook ({ headers, query, body }).
 // Salida: un item { mensajes: [...] } o nada si no hay mensajes.
@@ -40,8 +42,10 @@ async function buscarEnHubspot(filas, ctx) {
   const asignaciones = [];
   const busquedas = {};
   for (const fila of nuevos) {
-    let negocio = (await hs.buscarNegociosPorTelefono(fila.telefono, pipelineId))[0] || null;
-    const contacto = await hs.buscarContactoPorTelefono(fila.telefono);
+    // Clientes de correo (F6): se buscan por email; no tienen wa_telefono.
+    const email = emailDe(fila.telefono);
+    let negocio = email ? null : (await hs.buscarNegociosPorTelefono(fila.telefono, pipelineId))[0] || null;
+    const contacto = email ? await hs.buscarContactoPorEmail(email) : await hs.buscarContactoPorTelefono(fila.telefono);
     if (!negocio && contacto) {
       negocio = (await hs.negociosDeContacto(contacto.id, pipelineId))[0] || null;
     }
@@ -80,9 +84,11 @@ async function crearEnHubspot(asignados, ctx, extra) {
     const nombre = nombreCliente(cliente);
     const owner = a.hubspot_owner_id;
 
+    const email = emailDe(a.telefono);
+    const canal = canalCliente(a.telefono);
     let contactId = b.contacto_id;
     if (!contactId) {
-      const propiedades = { phone: a.telefono, hubspot_owner_id: owner };
+      const propiedades = email ? { email, hubspot_owner_id: owner } : { phone: a.telefono, hubspot_owner_id: owner };
       if (b.nombre_wa) propiedades.firstname = b.nombre_wa;
       contactId = (await hs.crearContacto(propiedades)).id;
     } else if (!b.contacto_owner_id) {
@@ -92,13 +98,15 @@ async function crearEnHubspot(asignados, ctx, extra) {
     let dealId = b.negocio_abierto_id;
     let etapa = b.negocio_abierto_etapa;
     if (!dealId) {
-      const negocio = await hs.crearNegocio({
-        dealname: `${nombre} (WhatsApp)`,
+      const propiedades = {
+        dealname: `${nombre} (${canal})`,
         pipeline: pipelineId,
         dealstage: etapas.nuevo,
         hubspot_owner_id: owner,
-        wa_telefono: a.telefono,
-      }, contactId);
+      };
+      if (!email) propiedades.wa_telefono = a.telefono;
+      if (config.hubspot.canal) propiedades.canal = canal;
+      const negocio = await hs.crearNegocio(propiedades, contactId);
       dealId = negocio.id;
       etapa = 'nuevo';
     } else {
@@ -106,14 +114,16 @@ async function crearEnHubspot(asignados, ctx, extra) {
       // propietario previo no es un vendedor de la rotación, pasa al asignado.
       const propiedades = {};
       if (b.negocio_owner_id !== owner) propiedades.hubspot_owner_id = owner;
-      if (b.negocio_wa_telefono !== a.telefono) propiedades.wa_telefono = a.telefono;
+      if (!email && b.negocio_wa_telefono !== a.telefono) propiedades.wa_telefono = a.telefono;
       if (Object.keys(propiedades).length) await hs.actualizarNegocio(dealId, propiedades);
     }
 
     const vence = vencimiento('contestar', { ahora, config, cal });
     const tarea = await hs.crearTarea({
       asunto: tituloTarea('contestar', cliente),
-      cuerpo: `Mensaje nuevo de WhatsApp de ${a.telefono}. Asignado a ${a.vendedor_nombre} (${a.metodo}).`,
+      cuerpo: email
+        ? `Correo nuevo de ${email}. Asignado a ${a.vendedor_nombre} (${a.metodo}).`
+        : `Mensaje nuevo de WhatsApp de ${a.telefono}. Asignado a ${a.vendedor_nombre} (${a.metodo}).`,
       vence,
       ownerId: owner,
       dealId,

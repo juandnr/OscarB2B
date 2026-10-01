@@ -2,9 +2,10 @@
 'use strict';
 
 // Crea en HubSpot (o completa, si ya existe) todo lo que usa el sistema:
-//   - pipeline de negocios "WhatsApp Ventas" con sus 9 etapas
+//   - pipeline de negocios "Ventas" con sus 9 etapas (renombra "WhatsApp Ventas")
 //   - grupo y propiedades personalizadas del negocio
 //   - propiedad "motivo_perdida" con la lista cerrada de motivos
+//   - propiedad "canal" (WhatsApp / Correo)
 // y guarda los IDs en config/hubspot.json. Al final imprime las líneas para .env
 // y la lista de usuarios (propietarios) de HubSpot para cargar la tabla vendedores.
 //
@@ -22,7 +23,7 @@ async function main() {
   cargarEnv();
   const hs = crearHubSpot({ http, token: process.env.HUBSPOT_PRIVATE_APP_TOKEN, apiUrl: process.env.HUBSPOT_API_URL || undefined });
 
-  const { pipelineId, etapas } = await asegurarPipeline(hs);
+  const { pipelineId, etapas } = await asegurarPipeline(hs, console.log, { pipelineId: process.env.HUBSPOT_PIPELINE_ID });
   await asegurarPropiedades(hs);
 
   const destino = path.join(__dirname, '..', 'config', 'hubspot.json');
@@ -32,6 +33,7 @@ async function main() {
 
   console.log('\nAgrega estas líneas al .env (y a las variables de entorno de n8n):\n');
   console.log(`HUBSPOT_PIPELINE_ID=${pipelineId}`);
+  console.log('HUBSPOT_CANAL=true');
   for (const e of ETAPAS) console.log(`HUBSPOT_ETAPA_${e.clave.toUpperCase()}=${etapas[e.clave]}`);
 
   try {

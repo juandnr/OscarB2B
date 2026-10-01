@@ -565,3 +565,139 @@ test('F5 no manda nada en días no laborables ni sin pendientes', async () => {
   const vacio = crearCtx({ env: envPrueba({ ADMIN_HUBSPOT_OWNER_ID: '' }), ahora: new Date('2026-09-30T11:30:00Z') });
   assert.deepEqual(await f5.resumir([{ datos: { vendedores: [{ nombre: 'Ana', hubspot_owner_id: '1' }] } }], vacio.ctx), [{ omitido: 'nadie tiene pendientes' }]);
 });
+
+// ── F6 (correo) ─────────────────────────────────────────────────────────────
+
+const f6 = require('../src/flujos/f6');
+
+function filaCorreo(extra = {}) {
+  return {
+    id: 'g1', direccion: 'entrante', de_email: 'juan@acme.com', de_nombre: 'Juan Pérez', destinatarios: ['ventas@m.com'],
+    asunto: 'Cotización', texto: 'Necesito 200 termos con logo', fecha: '2026-09-29T14:00:00.000Z', etiquetas: ['INBOX'],
+    cabeceras: {}, cliente_existente: null, clientes_destino: [], remitente_descartado: false, ...extra,
+  };
+}
+
+test('F6 respuestas enviadas, clientes que ya existen y correos automáticos', async () => {
+  const { ctx, claude } = crearCtx({ ahora: MARTES_10AM });
+  const [{ resultado }] = await f6.clasificar([
+    filaCorreo({ id: 's1', direccion: 'saliente', de_email: 'ventas@m.com', clientes_destino: ['correo:juan@acme.com', 'correo:ana@acme.com'] }),
+    filaCorreo({ id: 's2', direccion: 'saliente', de_email: 'ventas@m.com', clientes_destino: [] }),
+    filaCorreo({ id: 'e1', cliente_existente: 'correo:juan@acme.com' }),
+    filaCorreo({ id: 'p1', de_email: 'ofertas@tienda.com', cabeceras: { list_unsubscribe: true } }),
+  ], ctx);
+  assert.equal(claude.solicitudes.length, 0, 'nada de esto necesita a Claude');
+  assert.deepEqual(resultado.correos, [
+    { id: 's1', estado: 'cliente', motivo: 'respuesta a un cliente', cliente: 'correo:juan@acme.com' },
+    { id: 's2', estado: 'ignorado', motivo: 'enviado a alguien que no es cliente', cliente: null },
+    { id: 'e1', estado: 'cliente', motivo: 'el remitente ya es cliente', cliente: 'correo:juan@acme.com' },
+    { id: 'p1', estado: 'ignorado', motivo: 'correo masivo (trae enlace para darse de baja)', cliente: null },
+  ]);
+  assert.deepEqual(resultado.mensajes.map((m) => [m.id, m.telefono, m.direccion, m.origen, m.tipo]), [
+    ['gmail:s1:0', 'correo:juan@acme.com', 'saliente', 'echo', 'email'],
+    ['gmail:s1:1', 'correo:ana@acme.com', 'saliente', 'echo', 'email'],
+    ['gmail:e1', 'correo:juan@acme.com', 'entrante', 'messages', 'email'],
+  ]);
+  assert.equal(resultado.mensajes[2].texto, 'Asunto: Cotización\n\nNecesito 200 termos con logo');
+  assert.equal(resultado.mensajes[2].nombre_wa, 'Juan Pérez');
+  assert.equal(resultado.mensajes[0].nombre_wa, null);
+});
+
+test('F6 remitente nuevo: Claude decide (cliente, no cliente, confianza baja)', async () => {
+  const { ctx, claude } = crearCtx({ ahora: MARTES_10AM });
+  claude.responder({ es_cliente: true, confianza: 0.9, motivo: 'Pide 200 termos', nombre: 'Juan', empresa: 'Acme' });
+  claude.responder({ es_cliente: false, confianza: 0.95, motivo: 'Proveedor de cajas', nombre: null, empresa: null });
+  claude.responder({ es_cliente: true, confianza: 0.5, motivo: 'Pregunta ambigua', nombre: null, empresa: null });
+  const [{ resultado }] = await f6.clasificar([
+    filaCorreo({ id: 'a1', de_nombre: null }),
+    filaCorreo({ id: 'a2', de_nombre: null, asunto: 'Re: Cotización', texto: 'Para el viernes' }),
+    filaCorreo({ id: 'b1', de_email: 'cajas@proveedor.com' }),
+    filaCorreo({ id: 'c1', de_email: 'duda@x.com' }),
+  ], ctx);
+  assert.equal(claude.solicitudes.length, 3, 'una consulta por remitente');
+  assert.match(claude.solicitudes[0].messages[0].content, /Correos de este remitente \(2/);
+  assert.deepEqual(resultado.correos.map((c) => [c.id, c.estado, c.cliente]), [
+    ['a1', 'cliente', 'correo:juan@acme.com'],
+    ['a2', 'cliente', 'correo:juan@acme.com'],
+    ['b1', 'no_cliente', null],
+    ['c1', 'no_cliente', null],
+  ]);
+  assert.equal(resultado.correos[0].motivo, 'Pide 200 termos (confianza 0.9)');
+  assert.equal(resultado.correos[3].motivo, 'Pregunta ambigua (confianza 0.5)');
+  assert.deepEqual(resultado.mensajes.map((m) => [m.id, m.nombre_wa]), [['gmail:a1', 'Juan'], ['gmail:a2', 'Juan']]);
+  assert.deepEqual(resultado.liberar, []);
+});
+
+test('F6 contacto con negocio en HubSpot es cliente sin consultar a Claude; descartados no se vuelven a consultar', async () => {
+  const { ctx, hubspot, claude } = crearCtx({ ahora: MARTES_10AM });
+  const contacto = hubspot.agregar('contacts', { email: 'juan@acme.com' });
+  hubspot.agregar('deals', { pipeline: 'p1', dealstage: ETAPAS_IDS.cotizado }, { contacts: [contacto.id] });
+  hubspot.agregar('contacts', { email: 'sinnegocio@x.com' });
+  const [{ resultado }] = await f6.clasificar([
+    filaCorreo({ id: 'h1', remitente_descartado: true }),
+    filaCorreo({ id: 'd1', de_email: 'sinnegocio@x.com', remitente_descartado: true }),
+  ], ctx);
+  assert.equal(claude.solicitudes.length, 0);
+  assert.deepEqual(resultado.correos.map((c) => [c.id, c.estado, c.motivo]), [
+    ['h1', 'cliente', 'ya tiene un negocio en HubSpot'],
+    ['d1', 'no_cliente', 'el remitente ya se descartó en los últimos 30 días'],
+  ]);
+});
+
+test('F6 sin clave de Claude, con error de Claude o sin tiempo: quedan pendientes', async () => {
+  const sinClave = crearCtx({ env: envPrueba({ ANTHROPIC_API_KEY: '' }), ahora: MARTES_10AM });
+  let [{ resultado }] = await f6.clasificar([filaCorreo()], sinClave.ctx);
+  assert.deepEqual([resultado.correos, resultado.liberar], [[], ['g1']]);
+
+  const conError = crearCtx({ ahora: MARTES_10AM });
+  conError.claude.responderError(400, { error: { type: 'invalid_request_error', message: 'mal' } });
+  [{ resultado }] = await f6.clasificar([filaCorreo(), filaCorreo({ id: 'g2', de_email: 'otro@x.com', cabeceras: { precedence: 'bulk' } })], conError.ctx);
+  assert.deepEqual(resultado.liberar, ['g1']);
+  assert.match(resultado.errores[0], /^juan@acme.com: API de Claude → 400/);
+  assert.deepEqual(resultado.correos.map((c) => c.id), ['g2']);
+
+  const sinTiempo = crearCtx({ env: envPrueba({ F6_TIEMPO_MAXIMO_S: '-1' }), ahora: MARTES_10AM });
+  [{ resultado }] = await f6.clasificar([filaCorreo()], sinTiempo.ctx);
+  assert.deepEqual(resultado.liberar, ['g1']);
+  assert.deepEqual(await f6.clasificar([], sinTiempo.ctx), []);
+});
+
+test('F1 alta de cliente de correo: contacto con email, negocio "(Correo)" con canal, sin wa_telefono', async () => {
+  const { ctx, hubspot } = crearCtx({ env: envPrueba({ HUBSPOT_CANAL: 'true' }), ahora: MARTES_10AM });
+  const clave = 'correo:juan@acme.com';
+  const [busqueda] = await f1.buscarEnHubspot([{ telefono: clave, nombre_wa: 'Juan Pérez', necesita_alta: true }], ctx);
+  assert.deepEqual(busqueda.asignaciones, [{ telefono: clave, hubspot_owner_id: null }]);
+  const asignados = [{ telefono: clave, vendedor_id: 1, hubspot_owner_id: '1', vendedor_nombre: 'Ana', metodo: 'rotacion' }];
+  const [{ cambios }] = await f1.crearEnHubspot(asignados, ctx, { busquedas: busqueda.busquedas });
+
+  const [contacto] = Object.values(hubspot.datos.contacts);
+  assert.deepEqual(contacto.properties.email, 'juan@acme.com');
+  assert.equal(contacto.properties.phone, undefined);
+  const [negocio] = Object.values(hubspot.datos.deals);
+  assert.equal(negocio.properties.dealname, 'Juan Pérez (Correo)');
+  assert.equal(negocio.properties.canal, 'Correo');
+  assert.equal(negocio.properties.wa_telefono, undefined);
+  const [tarea] = hubspot.tareas();
+  assert.equal(tarea.properties.hs_task_subject, 'Contestar a Juan Pérez');
+  assert.match(tarea.properties.hs_task_body, /^Correo nuevo de juan@acme.com/);
+  assert.equal(cambios.clientes[0].telefono, clave);
+
+  // Si el contacto ya existe con un negocio abierto, se reutiliza.
+  const otro = crearCtx({ ahora: MARTES_10AM });
+  const c = otro.hubspot.agregar('contacts', { email: 'juan@acme.com', hubspot_owner_id: '2' });
+  const n = otro.hubspot.agregar('deals', { pipeline: 'p1', dealstage: ETAPAS_IDS.solicitud, hubspot_owner_id: '2' }, { contacts: [c.id] });
+  const [b] = await f1.buscarEnHubspot([{ telefono: clave, nombre_wa: 'Juan', necesita_alta: true }], otro.ctx);
+  assert.deepEqual(b.asignaciones, [{ telefono: clave, hubspot_owner_id: '2' }]);
+  assert.equal(b.busquedas[clave].negocio_abierto_id, n.id);
+});
+
+test('F1 alta de WhatsApp: canal solo si existe la propiedad', async () => {
+  for (const [canal, esperado] of [['true', 'WhatsApp'], ['', undefined]]) {
+    const { ctx, hubspot } = crearCtx({ env: envPrueba({ HUBSPOT_CANAL: canal }), ahora: MARTES_10AM });
+    const [busqueda] = await f1.buscarEnHubspot([{ telefono: TEL, nombre_wa: 'Luis', necesita_alta: true }], ctx);
+    await f1.crearEnHubspot([{ telefono: TEL, vendedor_id: 1, hubspot_owner_id: '1', vendedor_nombre: 'Ana', metodo: 'rotacion' }], ctx, { busquedas: busqueda.busquedas });
+    const [negocio] = Object.values(hubspot.datos.deals);
+    assert.equal(negocio.properties.canal, esperado);
+    assert.equal(negocio.properties.wa_telefono, TEL);
+  }
+});

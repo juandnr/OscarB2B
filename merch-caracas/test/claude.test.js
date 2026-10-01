@@ -151,3 +151,44 @@ test('reintenta ante 429 y 529; no ante 400', async () => {
   );
   assert.equal(otro.solicitudes.length, 1);
 });
+
+// ── Clasificador de correos (F6) ────────────────────────────────────────────
+
+const { clasificarCorreo, validarCorreo, contextoCorreo, ESQUEMA_CORREO } = require('../src/claude');
+const SISTEMA_CORREO = require('../src/prompt-correo');
+
+test('correo: solicitud con su propio prompt y esquema', async () => {
+  const claude = crearClaudeFalso();
+  claude.responder({ es_cliente: true, confianza: 0.92, motivo: 'Pide "200 termos con logo".', nombre: 'Juan', empresa: 'Acme' });
+  const correos = [{ de_email: 'juan@acme.com', de_nombre: 'Juan Pérez', asunto: 'Cotización', texto: 'Necesito 200 termos', fecha: '2026-09-29T14:00:00Z' }];
+  const r = await clasificarCorreo({ http: claude.http, config, correos, esperar: async () => {} });
+  assert.deepEqual(r.analisis, { es_cliente: true, confianza: 0.92, motivo: 'Pide "200 termos con logo".', nombre: 'Juan', empresa: 'Acme' });
+  const [s] = claude.solicitudes;
+  assert.equal(s.system[0].text, SISTEMA_CORREO);
+  assert.deepEqual(s.system[0].cache_control, { type: 'ephemeral' });
+  assert.equal(s.output_config.format.schema, ESQUEMA_CORREO);
+  assert.match(s.messages[0].content, /Remitente: Juan Pérez <juan@acme.com>/);
+  assert.match(s.messages[0].content, /<correos>\n\[2026-09-29 10:00\] Asunto: Cotización\nNecesito 200 termos\n<\/correos>/);
+  assert.doesNotMatch(SISTEMA_CORREO, /\$\{|\{\{/);
+});
+
+test('correo: contexto con varios correos y validación del contrato', () => {
+  const c = contextoCorreo([
+    { de_email: 'a@b.com', asunto: null, texto: '', fecha: '2026-09-29T14:00:00Z' },
+    { de_email: 'a@b.com', asunto: 'Re', texto: 'x'.repeat(5000), fecha: '2026-09-29T15:00:00Z' },
+  ], 'America/Caracas');
+  assert.match(c, /^Remitente: a@b.com\n/);
+  assert.match(c, /Asunto: \(sin asunto\)\n\[sin texto\]\n\n---\n\n\[2026-09-29 11:00\] Asunto: Re/);
+  assert.ok(!c.includes('x'.repeat(3001)), 'cada correo se recorta a 3000 caracteres');
+
+  assert.deepEqual(validarCorreo({ es_cliente: false, confianza: 0.3, motivo: ' Publicidad ', nombre: ' ', empresa: null }),
+    { es_cliente: false, confianza: 0.3, motivo: 'Publicidad', nombre: null, empresa: null });
+  assert.throws(() => validarCorreo({ es_cliente: 'sí', confianza: 2, motivo: 1 }), (e) => e instanceof ErrorClaude && e.tipo === 'json_invalido');
+  assert.throws(() => validarCorreo([]), /no es un objeto/);
+});
+
+test('el contexto de F2 dice el canal del cliente', () => {
+  const base = { etapaActual: 'nuevo', datos: {}, tareasAbiertas: [], mensajes: [], ahora: '2026-09-29T14:00:00Z', tz: 'America/Caracas' };
+  assert.match(construirContexto({ ...base, cliente: { telefono: 'correo:a@b.com', nombre_wa: 'Ana' } }), /Canal: correo electrónico\nNombre del cliente: Ana/);
+  assert.match(construirContexto({ ...base, cliente: { telefono: '+58414', nombre_wa: null } }), /Canal: WhatsApp\nNombre del cliente: desconocido/);
+});

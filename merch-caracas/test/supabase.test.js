@@ -14,6 +14,7 @@ const path = require('path');
 const { construirSql, construirFuncion } = require('../supabase/construir');
 const { crearManejador } = require('../src/supabase');
 const { crearHubSpotFalso, crearClaudeFalso, analisis } = require('./apoyo/falsos');
+const { ETAPAS } = require('../src/etapas');
 
 const URL_BD = process.env.TEST_DATABASE_URL;
 const opciones = { skip: URL_BD ? false : 'define TEST_DATABASE_URL para correr las pruebas de Supabase' };
@@ -187,6 +188,63 @@ test('Supabase: instalación, salud, HubSpot, webhook de WhatsApp, flujos y 360d
 
   assert.equal((await pedir('otra', { headers: cron })).status, 404);
   assert.equal((await pedir('f2', { metodo: 'GET' })).status, 405);
+}));
+
+test('Supabase: correo de Gmail, pipeline "Ventas" y propiedad canal', opciones, () => conBaseTemporal(async (pool) => {
+  const { hubspot, claude, pedir } = montar(pool);
+  await pedir('salud', { metodo: 'GET' });
+  const [{ llamar }] = await q(pool, "select merch.llamar('f6') as llamar");
+  const cron = { 'x-cron-secreto': (await q(pool, 'select headers from net.solicitudes where id = $1', [llamar]))[0].headers['x-cron-secreto'] };
+
+  // Un pipeline de una versión anterior se renombra y se crea la propiedad canal
+  hubspot.pipelines.push({ id: 'pl1', label: 'WhatsApp Ventas', stages: ETAPAS.map((e, i) => ({ id: `e${i}`, label: e.etiqueta })) });
+  assert.equal((await pedir('hubspot-setup', { headers: cron })).status, 202);
+  const setup = await bitacora(pool, 'hubspot-setup');
+  assert.equal(setup.ok, true, JSON.stringify(setup.detalle));
+  assert.deepEqual(hubspot.pipelines.map((p) => [p.id, p.label]), [['pl1', 'Ventas']]);
+  assert.ok(setup.detalle.pasos.includes('✔ Pipeline "WhatsApp Ventas" renombrado a "Ventas"'));
+  assert.deepEqual(hubspot.propiedades.canal.options.map((o) => o.value), ['WhatsApp', 'Correo']);
+  const config = Object.fromEntries((await q(pool, 'select clave, valor from merch.configuracion')).map((f) => [f.clave, f.valor]));
+  assert.deepEqual([config.HUBSPOT_PIPELINE_ID, config.HUBSPOT_CANAL], ['pl1', 'true']);
+  await pool.query("update merch.configuracion set valor = 'lun-dom 00:00-24:00' where clave = 'HORARIO_LABORAL'");
+  await pool.query("insert into merch.vendedores (nombre, hubspot_owner_id, orden) values ('Ana', '1', 1)");
+
+  // /correo pide su propio secreto
+  const correoSecreto = await secreto(pool, 'merch_correo_secreto');
+  assert.notEqual(correoSecreto, await secreto(pool, 'merch_webhook_secreto'));
+  const lote = {
+    correos: [
+      { id: 'g1', hilo: 'h1', de: 'Juan Pérez <juan@acme.com>', para: 'ventas@m.com', asunto: 'Cotización',
+        fecha: Date.now() - 600000, texto: 'Necesito 200 termos', etiquetas: ['INBOX'], cabeceras: {} },
+      { id: 'g2', de: 'Tienda <ofertas@tienda.com>', para: 'ventas@m.com', asunto: '50%', fecha: Date.now() - 500000,
+        texto: 'Oferta', etiquetas: ['INBOX'], cabeceras: { list_unsubscribe: true } },
+    ],
+  };
+  assert.equal((await pedir('correo', { body: lote })).status, 401);
+  assert.equal((await pedir('correo', { body: lote, headers: { 'x-webhook-secret': await secreto(pool, 'merch_webhook_secreto') } })).status, 401);
+
+  // Con F6 apagado solo se guardan
+  const r1 = await pedir('correo', { body: lote, headers: { 'x-webhook-secret': correoSecreto } });
+  assert.deepEqual([r1.status, r1.json], [200, { ok: true, recibidos: 2, nuevos: 2, procesando: false }]);
+  assert.deepEqual((await q(pool, 'select estado from merch.correos order by id')).map((c) => c.estado), ['pendiente', 'pendiente']);
+  const salud = await pedir('salud', { metodo: 'GET' });
+  assert.deepEqual([salud.json.flujos.f6.activo, salud.json.flujos.f6.correos_recibidos], [false, 2]);
+
+  // Con F6 encendido se procesan (también los que estaban pendientes)
+  await pool.query("update merch.configuracion set valor = 'true' where clave = 'F6_ACTIVO'");
+  claude.responder({ es_cliente: true, confianza: 0.95, motivo: 'Pide 200 termos', nombre: 'Juan', empresa: 'Acme' });
+  const r2 = await pedir('correo', { body: { correos: [] }, query: `?secreto=${correoSecreto}` });
+  assert.deepEqual(r2.json, { ok: true, recibidos: 0, nuevos: 0, procesando: true });
+  const f6 = await bitacora(pool, 'f6');
+  assert.equal(f6.ok, true, JSON.stringify(f6.detalle));
+  assert.deepEqual(f6.detalle, { correos: 2, de_clientes: 1, no_clientes: 0, ignorados: 1, pendientes: 0, altas: 1, respondidas: 0 });
+  const [c] = await q(pool, "select * from merch.clientes where telefono = 'correo:juan@acme.com'");
+  assert.equal(hubspot.datos.deals[c.hubspot_deal_id].properties.canal, 'Correo');
+  assert.equal(hubspot.datos.deals[c.hubspot_deal_id].properties.pipeline, 'pl1');
+
+  // También se puede correr a mano con el secreto del cron
+  assert.equal((await pedir('f6', { headers: cron })).status, 202);
+  assert.deepEqual((await bitacora(pool, 'f6')).detalle, { correos: 0 });
 }));
 
 // Ejecuta el index.ts generado tal cual (sin el import de npm) con Deno y
